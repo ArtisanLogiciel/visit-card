@@ -1,9 +1,12 @@
 import React from "react";
-import { UserContext } from "../../Providers/usersProviders";
 import { useNavigate } from "react-router-dom";
+import {
+  UserContext,
+  UserContextProvider,
+} from "../../Providers/usersProviders";
 
 const ButtonLogout = () => {
-  const { logoutUser } = React.useContext(UserContext);
+  const { logoutUser } = React.useContext(UserContext) as UserContextProvider;
   const navigate = useNavigate();
   const handleLogout = () => {
     logoutUser();
