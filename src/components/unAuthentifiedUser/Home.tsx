@@ -2,10 +2,8 @@ import { Link } from "react-router-dom";
 
 const Home = () => {
   return (
-    <div className="flex flex-col justify-center items-center">
-      <h1 className="mb-4 text-3xl font-bold">
-        Cartes de visites Authentification
-      </h1>
+    <div className="animate-fade-in flex flex-col justify-center items-center">
+      <h1 className="mb-4 text-3xl font-bold">Cartes de visites</h1>
       <Link to="/login">
         <button>S'authentifier</button>
       </Link>

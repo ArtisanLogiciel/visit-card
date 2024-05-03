@@ -11,7 +11,7 @@ const Home = () => {
     UserContext
   ) as UserContextProvider;
   return (
-    <div className="flex flex-col align-middle items-center min-h-screen">
+    <div className="animate-fade-in flex flex-col align-middle items-center min-h-screen">
       <ButtonLogout />
       <p>Utilisateur connecté {authUser?.user.email}</p>
 

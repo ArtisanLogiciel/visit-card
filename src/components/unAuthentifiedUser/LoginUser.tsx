@@ -22,7 +22,7 @@ const LoginUser = () => {
     navigate("/");
   };
   return (
-    <div className="flex flex-col justify-center items-center min-h-screen">
+    <div className="animate-fade-in flex flex-col justify-center items-center min-h-screen">
       <h1 className="text-2xl">S'authentifier</h1>
       <form className="flex flex-col" onSubmit={handleSubmit} ref={formRef}>
         <label className="mt-3" htmlFor="email">
