@@ -6,7 +6,7 @@ import {
 } from "../../Providers/usersProviders";
 
 const LoginUser = () => {
-  const { loginUser, errorFirebaseUser, authUser } =
+  const { loginUser, errorFirebaseUser } =
     React.useContext<UserContextProvider | null>(
       UserContext
     ) as UserContextProvider;
