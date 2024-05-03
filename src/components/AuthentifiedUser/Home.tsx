@@ -7,7 +7,7 @@ import {
 import ButtonLogout from "../elements/ButtonLogout";
 
 const Home = () => {
-  const { authUser, logoutUser } = React.useContext<UserContextProvider | null>(
+  const { authUser } = React.useContext<UserContextProvider | null>(
     UserContext
   ) as UserContextProvider;
   return (

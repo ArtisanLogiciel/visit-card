@@ -15,8 +15,8 @@ export default function useDatabase() {
     } catch (error) {
       return {
         error: {
-          code: FirebaseError.error ?? "error",
-          message: FirebaseError.message ?? "errorMessage",
+          code: FirebaseError ?? "error",
+          message: FirebaseError ?? "errorMessage",
         },
       };
     }

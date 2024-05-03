@@ -1,9 +1,12 @@
 import { SubmitHandler, useForm } from "react-hook-form";
 
-import { UserContext } from "../../Providers/usersProviders";
 import React from "react";
 import useDatabase from "../../hooks/useDatabase";
-import { auth } from "../../firebase/firebase.config";
+import {
+  UserContext,
+  UserContextProvider,
+} from "../../Providers/usersProviders";
+// import { auth } from "../../firebase/firebase.config";
 
 type Inputs = { lastname: string; compagny: string };
 const CreateCard = () => {
@@ -14,13 +17,18 @@ const CreateCard = () => {
     formState: { errors },
   } = useForm<Inputs>();
 
-  const firebase = React.useContext(UserContext);
+  const firebase = React.useContext(UserContext) as
+    | UserContextProvider
+    | undefined
+    | null;
 
   const { createUserDocument } = useDatabase();
 
   const handleCreateCard: SubmitHandler<Inputs> = ({ lastname, compagny }) => {
     console.log(lastname, compagny);
-    createUserDocument(firebase?.authUser?.user.uid, { lastname, compagny });
+    if (firebase && firebase.authUser) {
+      createUserDocument(firebase.authUser.user.uid, { lastname, compagny });
+    }
   };
 
   return (
