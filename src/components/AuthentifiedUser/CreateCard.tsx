@@ -26,6 +26,9 @@ type Inputs = {
   email?: string;
   avatarUrl?: string;
   adress?: string;
+  city?: string;
+  zipcode?: string;
+  country?: string;
   phone?: string;
 };
 
@@ -76,11 +79,23 @@ const CreateCard = () => {
     lastname,
     compagny,
     adress,
+    city,
+    zipcode,
+    country,
     email,
     phone,
     avatarUrl,
   }) => {
-    console.log(firstname, lastname, compagny, adress, email, phone, avatarUrl);
+    console.log(
+      firstname,
+      lastname,
+      compagny,
+      adress,
+      city,
+      email,
+      phone,
+      avatarUrl
+    );
     if (firebase && firebase.authUser) {
       // createUserDocument(`cards/${authUser?.user.email}`, {
       //   firstname,
@@ -92,10 +107,14 @@ const CreateCard = () => {
       //   avatarUrl,
       // });
       await setDoc(doc(cardsRef, authUser?.user.email as string), {
+        userEmail: authUser?.user.email,
         firstname: firstname,
         lastname: lastname,
         compagny: compagny,
         adress: adress,
+        city: city,
+        zipcode: zipcode,
+        country: country,
         email: email,
         phone: phone,
         avatarUrl: avatarUrl,
