@@ -1,6 +1,3 @@
-import React from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
-// import useDatabase from "../../hooks/useDatabase";
 import {
   collection,
   CollectionReference,
@@ -10,49 +7,26 @@ import {
   getFirestore,
   setDoc,
 } from "firebase/firestore";
+import React from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import {
   UserContext,
   UserContextProvider,
 } from "../../Providers/usersProviders";
-// import { getDatabase } from "firebase/database";
-
-// import { auth } from "../../firebase/firebase.config";
-
 type Inputs = {
   firstname?: string;
   lastname: string;
   compagny?: string;
-  email?: string;
-  avatarUrl?: string;
   adress?: string;
   city?: string;
   zipcode?: string;
   country?: string;
+  email?: string;
+  avatarUrl?: string;
   phone?: string;
 };
 
-// function writeCardData(
-//   useremail: string,
-//   firstname: string,
-//   lastname: string,
-//   email: string,
-//   avatarUrl: string,
-//   compagny: string,
-//   adress: string,
-//   phone: string
-// ) {
-//   const db = getDatabase();
-//   set(ref(db, "cards/" + useremail), {
-//     firstname: firstname,
-//     lastname: lastname,
-//     compagny: compagny,
-//     adress: adress,
-//     phone: phone,
-//     email: email,
-//     profile_picture: avatarUrl,
-//   });
-// }
 const CreateCard = () => {
   const {
     register,
@@ -86,28 +60,9 @@ const CreateCard = () => {
     phone,
     avatarUrl,
   }) => {
-    console.log(
-      firstname,
-      lastname,
-      compagny,
-      adress,
-      city,
-      email,
-      phone,
-      avatarUrl
-    );
+    console.log(firstname, lastname, compagny, adress, email, phone, avatarUrl);
     if (firebase && firebase.authUser) {
-      // createUserDocument(`cards/${authUser?.user.email}`, {
-      //   firstname,
-      //   lastname,
-      //   compagny,
-      //   adress,
-      //   email,
-      //   phone,
-      //   avatarUrl,
-      // });
       await setDoc(doc(cardsRef, authUser?.user.email as string), {
-        userEmail: authUser?.user.email,
         firstname: firstname,
         lastname: lastname,
         compagny: compagny,
@@ -120,21 +75,11 @@ const CreateCard = () => {
         avatarUrl: avatarUrl,
       });
       navigate("/created-card");
-      // writeCardData(
-      //   authUser?.user.email as string,
-      //   firstname,
-      //   lastname,
-      //   compagny,
-      //   adress,
-      //   email,
-      //   phone,
-      //   avatarUrl
-      // );
     }
   };
 
   return (
-    <div>
+    <div className="animate-fade-in">
       <form className="flex flex-col" onSubmit={handleSubmit(handleCreateCard)}>
         <label>Votre prénom</label>
         <input id="firstname" type="text" {...register("firstname")} />
@@ -153,20 +98,26 @@ const CreateCard = () => {
         <label>Nom de votre entreprise</label>
         <input id="company" type="text" {...register("compagny")} />
         {errors.compagny?.message}
-        <label>Votre email</label>
-        <input id="email" type="email" {...register("email")} />
         <label>Votre adresse de travail</label>
         <input id="adress" type="text" {...register("adress")} />
-        <label>Ville</label>
+        {errors.adress?.message}
+        <label>Votre ville</label>
         <input id="city" type="text" {...register("city")} />
-        <label>Code postal</label>
-        <input id="city" type="text" {...register("zipcode")} />
-        <label>Pays</label>
-        <input id="city" type="text" {...register("country")} />
+        {errors.city?.message}
+        <label>Votre code postal</label>
+        <input id="zipcode" type="text" {...register("zipcode")} />
+        {errors.zipcode?.message}
+        <label>Votre paysl</label>
+        <input id="country" type="text" {...register("country")} />
+        {errors.country?.message}
+        <label>Votre email</label>
+        <input id="email" type="email" {...register("email")} />
+        {errors.email?.message}
         <label>Votre numéro de téléphone</label>
         <input id="phone" type="text" {...register("phone")} />
+        <p>{errors.phone?.message}</p>
         <label>Url de votre avatar</label>
-        <input id="phone" type="text" {...register("avatarUrl")} />
+        <input id="avatar" type="text" {...register("avatarUrl")} />
         {errors.email?.message}
         <input type="submit" value={"Créer la carte"} />
       </form>
@@ -175,17 +126,3 @@ const CreateCard = () => {
 };
 
 export default CreateCard;
-// function createUserDocument(
-//   arg0: string,
-//   arg1: {
-//     firstname: string | undefined;
-//     lastname: string;
-//     compagny: string | undefined;
-//     adress: string | undefined;
-//     email: string | undefined;
-//     phone: string | undefined;
-//     avatarUrl: string | undefined;
-//   }
-// ) {
-//   throw new Error("Function not implemented.");
-// }

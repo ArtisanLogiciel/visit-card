@@ -38,14 +38,18 @@ export const PreviewCard = () => {
       {card &&
         card.map((item) => {
           return (
-            <div key={item.id}>
+            <div className="flex flex-col gap-3" key={item.id}>
               <h2 className="my-3">
                 {item.data().firstname} {item.data().lastname}
-                <img
-                  className="rounded-full"
-                  src={item.data().avatarUrl}
-                  alt="avatar"
-                />
+                <div>
+                  {item.data().avatarUrl && (
+                    <img
+                      src={item.data().avatarUrl}
+                      alt="avatar"
+                      className="w-20 h-20 rounded-full"
+                    />
+                  )}
+                </div>
               </h2>
               <p className="my-3">Entreprise : {item.data().compagny}</p>
               <p className="my-3">Lieux de travail : {item.data().adress}</p>

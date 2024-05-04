@@ -14,7 +14,9 @@ export type UserContextProvider = {
 //   errorFirebaseUser: string | null; // Add 'errorFirebaseUser' property
 //   authUser: firebase.User | null;
 // };
-const UserContext = React.createContext<UserContextProvider | null>(null);
+export const UserContext = React.createContext<UserContextProvider | null>(
+  null
+);
 const UserProvider = ({ children }: { children: React.ReactNode }) => {
   const { authUser, loginUser, registerUser, logoutUser, errorFirebaseUser } =
     useAuthUser();
@@ -38,4 +40,3 @@ const UserProvider = ({ children }: { children: React.ReactNode }) => {
 };
 
 export default UserProvider;
-export { UserContext };
