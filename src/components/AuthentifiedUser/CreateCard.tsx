@@ -157,6 +157,12 @@ const CreateCard = () => {
         <input id="email" type="email" {...register("email")} />
         <label>Votre adresse de travail</label>
         <input id="adress" type="text" {...register("adress")} />
+        <label>Ville</label>
+        <input id="city" type="text" {...register("city")} />
+        <label>Code postal</label>
+        <input id="city" type="text" {...register("zipcode")} />
+        <label>Pays</label>
+        <input id="city" type="text" {...register("country")} />
         <label>Votre numéro de téléphone</label>
         <input id="phone" type="text" {...register("phone")} />
         <label>Url de votre avatar</label>
