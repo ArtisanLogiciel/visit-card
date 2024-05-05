@@ -1,5 +1,6 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
+import { initializeAppCheck, ReCaptchaV3Provider } from "firebase/app-check";
 // import { getAnalytics } from "firebase/analytics";
 import { getAuth } from "firebase/auth";
 // import { getFormSubmissionInfo } from "react-router-dom/dist/dom";
@@ -24,3 +25,10 @@ const app = initializeApp(firebaseConfig);
 // const analytics = getAnalytics(app);
 export const auth = getAuth(app);
 export const database = getFirestore(app);
+export const appCheck = initializeAppCheck(app, {
+  provider: new ReCaptchaV3Provider("gptqbcopidqkc"),
+
+  // Optional argument. If true, the SDK automatically refreshes App Check
+  // tokens as needed.
+  isTokenAutoRefreshEnabled: true,
+});

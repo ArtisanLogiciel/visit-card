@@ -25,6 +25,8 @@ type Inputs = {
   email?: string;
   avatarUrl?: string;
   phone?: string;
+  bgColor?: string;
+  textColor?: string;
 };
 
 const CreateCard = () => {
@@ -59,6 +61,8 @@ const CreateCard = () => {
     email,
     phone,
     avatarUrl,
+    bgColor,
+    textColor,
   }) => {
     console.log(firstname, lastname, compagny, adress, email, phone, avatarUrl);
     if (firebase && firebase.authUser) {
@@ -73,6 +77,8 @@ const CreateCard = () => {
         email: email,
         phone: phone,
         avatarUrl: avatarUrl,
+        bgColor: bgColor,
+        textColor: textColor,
       });
       navigate("/created-card");
     }
@@ -82,10 +88,16 @@ const CreateCard = () => {
     <div className="animate-fade-in">
       <form className="flex flex-col" onSubmit={handleSubmit(handleCreateCard)}>
         <label>Votre prénom</label>
-        <input id="firstname" type="text" {...register("firstname")} />
+        <input
+          className="mb-3 text-black bg-gray-300 border-2 border-slate-700"
+          id="firstname"
+          type="text"
+          {...register("firstname")}
+        />
         {errors.firstname?.message}
         <label>Votre nom</label>
         <input
+          className="mb-3 text-black bg-gray-300 border-2 border-slate-700"
           id="lastname"
           type="text"
           {...register("lastname", {
@@ -96,30 +108,99 @@ const CreateCard = () => {
         />
         <p>{errors.lastname?.message}</p>
         <label>Nom de votre entreprise</label>
-        <input id="company" type="text" {...register("compagny")} />
+        <input
+          className="mb-3 text-black bg-gray-300 border-2 border-slate-700"
+          id="company"
+          type="text"
+          {...register("compagny")}
+        />
         {errors.compagny?.message}
         <label>Votre adresse de travail</label>
-        <input id="adress" type="text" {...register("adress")} />
+        <input
+          className="mb-3 text-black bg-gray-300 border-2 border-slate-700"
+          id="adress"
+          type="text"
+          {...register("adress")}
+        />
         {errors.adress?.message}
         <label>Votre ville</label>
-        <input id="city" type="text" {...register("city")} />
+        <input
+          className="mb-3 text-black bg-gray-300 border-2 border-slate-700"
+          id="city"
+          type="text"
+          {...register("city")}
+        />
         {errors.city?.message}
         <label>Votre code postal</label>
-        <input id="zipcode" type="text" {...register("zipcode")} />
+        <input
+          className="mb-3 text-black bg-gray-300 border-2 border-slate-700"
+          id="zipcode"
+          type="text"
+          {...register("zipcode")}
+        />
         {errors.zipcode?.message}
-        <label>Votre paysl</label>
-        <input id="country" type="text" {...register("country")} />
+        <label>Votre pays</label>
+        <input
+          className="mb-3 text-black bg-gray-300 border-2 border-slate-700"
+          id="country"
+          type="text"
+          {...register("country")}
+        />
         {errors.country?.message}
         <label>Votre email</label>
-        <input id="email" type="email" {...register("email")} />
+        <input
+          className="mb-3 text-black bg-gray-300 border-2 border-slate-700"
+          id="email"
+          type="email"
+          {...register("email")}
+        />
         {errors.email?.message}
         <label>Votre numéro de téléphone</label>
-        <input id="phone" type="text" {...register("phone")} />
+        <input
+          className="mb-3 text-black bg-gray-300 border-2 border-slate-700"
+          id="phone"
+          type="text"
+          {...register("phone")}
+        />
         <p>{errors.phone?.message}</p>
         <label>Url de votre avatar</label>
-        <input id="avatar" type="text" {...register("avatarUrl")} />
+        <input
+          className="mb-3 text-black bg-gray-300 border-2 border-slate-700"
+          id="avatar"
+          type="text"
+          {...register("avatarUrl")}
+        />
         {errors.email?.message}
-        <input type="submit" value={"Créer la carte"} />
+        <div className="fmex fmew-col justify-items-center">
+          <input
+            type="radio"
+            id="bgColor"
+            value={"fff"}
+            {...register("bgColor")}
+          />
+          <div
+            style={{ backgroundColor: "#fff" }}
+            className="w-3 h-3 rounded-full"
+          ></div>
+          <div className="flex flex-row">
+            <input
+              type="radio"
+              id="bgColor"
+              value={"33f"}
+              {...register("bgColor")}
+            />
+            <p>Fond bleu</p>
+            <div
+              style={{ backgroundColor: "#33f" }}
+              className="w-3 h-3 rounded-full"
+            ></div>
+          </div>
+        </div>
+        <input
+          className="bg-green-600 text-black rounded-lg hover:bg-white transition-all duration-500"
+          type="submit"
+          value={"Créer la carte"}
+        />
       </form>
     </div>
   );
