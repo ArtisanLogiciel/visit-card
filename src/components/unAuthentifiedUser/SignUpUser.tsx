@@ -5,7 +5,9 @@ import {
   UserContextProvider,
 } from "../../Providers/usersProviders";
 
-const RegisterUser = () => {
+
+
+const SignUpUser = () => {
   const { registerUser, errorFirebaseUser } =
     React.useContext<UserContextProvider | null>(
       UserContext
@@ -24,8 +26,8 @@ const RegisterUser = () => {
   };
 
   return (
-    <div className="animate-fade-in flex flex-col justify-center items-center min-h-screen">
-      <h1 className="text-2xl">Inscription</h1>
+    <div className="flex flex-col items-center justify-center min-h-screen animate-fade-in">
+      <h1 className="text-2xl">Créer un compte gratuit</h1>
       <form className="flex flex-col" onSubmit={handleSubmit} ref={formRef}>
         <label className="mt-3" htmlFor="email">
           Mail
@@ -34,7 +36,7 @@ const RegisterUser = () => {
           type="email"
           name="email"
           id="email"
-          placeholder="enter you email"
+          placeholder="Votre email"
           required
         />
         <label className="mt-3" htmlFor="password">
@@ -45,11 +47,11 @@ const RegisterUser = () => {
           name="password"
           id="password"
           required
-          placeholder="enter your password"
+          placeholder="Votre mot de passe"
           minLength={6}
         />
         <input
-          className=" bg-slate-400 border-2 border-black hover:bg-white transition-all duration-300 hover:text-slate-500 rounded-md my-3"
+          className="my-3 transition-all duration-300 border-2 border-black rounded-md bg-slate-400 hover:bg-white hover:text-slate-500"
           type="submit"
           value={"S'insrire"}
         />
@@ -59,4 +61,4 @@ const RegisterUser = () => {
   );
 };
 
-export default RegisterUser;
+export default SignUpUser;

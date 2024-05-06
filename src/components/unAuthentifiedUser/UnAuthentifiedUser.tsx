@@ -1,14 +1,14 @@
 import { Route, Routes } from "react-router-dom";
-import Home from "./Home";
 import LoginUser from "./LoginUser";
-import RegisterUser from "./RegisterUser";
+import SignUpUser from "./SignUpUser";
+import Home from "./home/Home";
 
 const UnAuthentifiedUser = () => {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/login" element={<LoginUser />} />
-      <Route path="/register" element={<RegisterUser />} />
+      <Route path="/register" element={<SignUpUser />} />
     </Routes>
   );
 };

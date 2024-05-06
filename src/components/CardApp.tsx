@@ -6,7 +6,7 @@ import UnAuthentifiedUser from "./unAuthentifiedUser/UnAuthentifiedUser";
 const CardApp = () => {
   const { authUser } = React.useContext(UserContext) as UserContextProvider;
   return (
-    <div className="flex justify-center mt-2">
+    <div className="">
       {authUser ? <AuthentifiedUser /> : <UnAuthentifiedUser />}
     </div>
   );
