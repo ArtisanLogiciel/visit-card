@@ -1,4 +1,3 @@
-import React from 'react'
 import { Link } from 'react-router-dom'
 
 const CallToAction = () => {
@@ -8,9 +7,10 @@ const CallToAction = () => {
       La carte de visite <br />
       <span className="text-red-800">des professionels</span>
     </h1>
+    <p>Nouveau ?</p>
     <Link
-      to="/register"
-      className="self-center p-2 text-white bg-red-700 rounded-md"
+      to="/sign-up"
+      className="self-center p-2 text-white bg-blue-600 rounded-md"
     >
       <button>Créer ma carte de visite</button>
     </Link>

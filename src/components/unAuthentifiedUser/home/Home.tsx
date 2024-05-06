@@ -1,26 +1,23 @@
-import { Link } from "react-router-dom";
-
 import Smartphone from "../../elements/Smartphone";
 import Banner from "../Banner";
-import CardVisitPresentation from "./CardVisitPresentation";
-import CardVisitShare from "./CardVisitShare";
 import CallToAction from "./CallToAction";
+import CardVisitInterface from "./CardVisitInterface";
+import CardVisitShare from "./CardVisitShare";
 
 const Home = () => {
   return (
     <div className="">
       <Banner />
-
       <div className="px-3">
-        <div className="flex justify-evenly bg-cyan-500 rounded-[50%] ">
+        <div className="flex justify-evenly bg-cyan-200 rounded-[50%] ">
           <Smartphone bgColor="bg-orange-500">
-            <CardVisitShare/>
+            <CardVisitShare />
           </Smartphone>
           <Smartphone bgColor="bg-purple-500 text-black">
-            <CardVisitPresentation />
+            <CardVisitInterface />
           </Smartphone>
         </div>
-        <CallToAction/>
+        <CallToAction />
       </div>
     </div>
   );
