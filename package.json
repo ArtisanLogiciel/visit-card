@@ -11,6 +11,7 @@
     "test": "jest"
   },
   "dependencies": {
+    "@hookform/resolvers": "^3.3.4",
     "firebase": "^10.11.1",
     "firebase-functions": ">=4.0.0",
     "lucide": "^0.378.0",
@@ -20,6 +21,7 @@
     "react-error-boundary": "^4.0.13",
     "react-hook-form": "^7.51.3",
     "react-router-dom": "^6.23.0",
+    "zod": "^3.23.6",
     "zustand": "^4.5.2"
   },
   "devDependencies": {
