@@ -85,8 +85,8 @@ const CreateCard = () => {
   };
 
   return (
-    <div className="animate-fade-in">
-      <form className="flex flex-col" onSubmit={handleSubmit(handleCreateCard)}>
+    <div className="">
+      <form className="flex flex-col items-center" onSubmit={handleSubmit(handleCreateCard)}>
         <label>Votre prénom</label>
         <input
           className="mb-3 text-black bg-gray-300 border-2 border-slate-700"
@@ -197,7 +197,7 @@ const CreateCard = () => {
           </div>
         </div>
         <input
-          className="bg-green-600 text-black rounded-lg hover:bg-white transition-all duration-500"
+          className="text-black transition-all duration-500 bg-green-600 rounded-lg hover:bg-white"
           type="submit"
           value={"Créer la carte"}
         />

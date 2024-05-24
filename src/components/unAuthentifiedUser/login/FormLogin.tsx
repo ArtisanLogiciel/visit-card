@@ -14,21 +14,21 @@ type Inputs = z.infer<typeof InputsSchema>
 
 const FormLogin = () => {
 
-  const { registerUser, errorFirebaseUser } =
+  const { loginUser, errorFirebaseUser } =
   React.useContext<UserContextProvider | null>(
     UserContext
   ) as UserContextProvider;
 
   const navigate = useNavigate()
   const signupUpser = ({mail,password}:Inputs)=>{
-    registerUser(mail,password)
+    loginUser(mail,password)
     navigate("/")
   }
 
 
   const {register , handleSubmit , formState:{errors} }=useForm<Inputs>({resolver:zodResolver(InputsSchema)})
   return (
-    <form className="flex flex-col w-5/6 space-y-1" onSubmit={handleSubmit(signupUpser)} >
+    <form className="flex flex-col w-5/6 space-y-1 sm:w-1/4" onSubmit={handleSubmit(signupUpser)} >
         <label className="mt-3" htmlFor="email">
           Mail
         </label>
