@@ -8,7 +8,6 @@ import {
 } from "@/types/card";
 import { UserCredential } from "firebase/auth";
 import { doc, getDoc, setDoc } from "firebase/firestore";
-import { useState } from "react";
 import { database } from "./../firebase/firebase.config";
 
 const useFirestore = (user: UserCredential | null) => {
@@ -27,7 +26,6 @@ const useFirestore = (user: UserCredential | null) => {
     bgColor: "",
     textColor: "",
   };
-  const [isCardCreated, setIsCardCreated] = useState(false);
 
   const COLLECTION_CARDS_FIRESTORE = "cards";
 
@@ -44,7 +42,7 @@ const useFirestore = (user: UserCredential | null) => {
     if (!user?.user.email) return;
     const docRef = doc(database, COLLECTION_CARDS_FIRESTORE, user?.user.email);
     const docSnap = await getDoc(docRef);
-    return setIsCardCreated(docSnap.exists());
+    return docSnap.exists();
   };
 
   const updateCard = async (
@@ -68,15 +66,12 @@ const useFirestore = (user: UserCredential | null) => {
     }
   };
 
-
-
   return {
     createEmptyCard,
-    isCardCreated,
+
     checkCardCreated,
     updateCard,
     getCard,
-  
   };
 };
 

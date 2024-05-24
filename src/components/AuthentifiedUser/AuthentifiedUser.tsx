@@ -5,7 +5,9 @@ import { PreviewCard } from "./PreviewCard";
 import StepperTest from "./Stepper";
 import Header from "./createCard/header/Header";
 
+
 const AuthentifiedUser = () => {
+
   return (
     <div className="flex flex-col">
       <Header />
