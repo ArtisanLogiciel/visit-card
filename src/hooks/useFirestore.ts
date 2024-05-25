@@ -1,8 +1,7 @@
-
 import {
   Card,
-  CardContact,
   CardCompagny,
+  CardContact,
   CardDesign,
   CardGeneral,
   CardSchemaFirebase,
@@ -31,7 +30,6 @@ const useFirestore = (user: UserCredential | null) => {
   const COLLECTION_CARDS_FIRESTORE = "cards";
 
   const createEmptyCard = async () => {
-    console.log(user?.user.email);
     if (!user?.user.email) return;
     await setDoc(
       doc(database, COLLECTION_CARDS_FIRESTORE, user?.user.email),
@@ -45,6 +43,7 @@ const useFirestore = (user: UserCredential | null) => {
     const docSnap = await getDoc(docRef);
     return docSnap.exists();
   };
+
   const updateCard = async (
     data: CardCompagny | CardDesign | CardGeneral | CardContact
   ) => {
