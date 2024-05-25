@@ -1,0 +1,31 @@
+.container {
+  @apply flex flex-col items-center space-y-8 mt-7
+}
+
+h1 {
+  @apply text-center font-extrabold text-red-600
+}
+
+p {
+  @apply text-center
+}
+
+form {
+  @apply flex flex-col items-center space-y-1
+}
+
+input {
+  @apply border-black border-2
+}
+
+form button{
+  @apply bg-red-600 p-2 rounded-md mt-4
+}
+
+form input {
+  @apply p-2
+}
+
+.container-buttons {
+  @apply flex space-x-3 mt-5
+}

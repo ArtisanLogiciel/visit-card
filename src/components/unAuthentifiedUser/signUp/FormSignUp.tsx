@@ -38,7 +38,7 @@ const signUpUser = ({ email, password }: Inputs) => {
   navigate("/");
 };
   return (
-    <form className="flex flex-col w-5/6 space-y-1" onSubmit={handleSubmit(signUpUser)} >
+    <form className="flex flex-col w-5/6 space-y-1 sm:w-1/4" onSubmit={handleSubmit(signUpUser)} >
     <label className="mt-3" htmlFor="email">
       Mail
     </label>
