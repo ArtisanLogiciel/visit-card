@@ -2,7 +2,7 @@ import { Route, Routes } from "react-router-dom";
 import { CreatedCard } from "./CreatedCard";
 import Home from "./Home";
 import { PreviewCard } from "./PreviewCard";
-import StepperForm from "./Stepper";
+import StepperForm from "./StepperForm";
 import Header from "./createCard/header/Header";
 
 const AuthentifiedUser = () => {
