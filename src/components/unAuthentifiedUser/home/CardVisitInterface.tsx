@@ -9,7 +9,7 @@ const CardVisitInterface = () => {
       <form className="ml-2 space-x-1 space-y-1 text-xs ">
         <input type="radio" id="PDF" />
         <label>PDF</label>
-        <input type="radio" id="image" checked />
+        <input type="radio" id="image" defaultChecked />
         <label>Image</label>
 
         <input
