@@ -1,7 +1,8 @@
 import { UserContext, UserContextProvider } from "@/Providers/usersProviders";
 import { CardGeneral, CardGeneralSchema } from "@/types/card";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useContext, useEffect } from "react";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useContext } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import useFirestore from "../../../hooks/useFirestore";
 import "./form.css";
@@ -10,13 +11,21 @@ const FormGeneral = ({ handleNext }: { handleNext: () => void }) => {
   const { authUser } = useContext<UserContextProvider | null>(
     UserContext
   ) as UserContextProvider;
-  const { updateCard } = useFirestore(authUser);
+  const { updateCard, getCard } = useFirestore(authUser);
+  const queryClient = useQueryClient();
 
-  useEffect(() => {
-    const fetchCard = async () => {};
+  const { data: card, isLoading } = useQuery({
+    queryKey: ["card"],
+    queryFn: getCard,
+  });
 
-    fetchCard();
-  }, []);
+  const mutation = useMutation({
+    mutationKey: ["card"],
+    mutationFn: updateCard,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["card"] });
+    },
+  });
 
   const {
     register,
@@ -24,15 +33,22 @@ const FormGeneral = ({ handleNext }: { handleNext: () => void }) => {
     formState: { errors },
   } = useForm<CardGeneral>({
     resolver: zodResolver(CardGeneralSchema),
+    defaultValues: {
+      firstname: card?.firstname,
+      lastname: card?.lastname,
+      avatarUrl: card?.avatarUrl,
+    },
   });
 
   const onSubmit: SubmitHandler<CardGeneral> = async ({
     firstname,
     lastname,
+    avatarUrl,
   }) => {
-    await updateCard({ firstname, lastname });
+    mutation.mutate({ firstname, lastname, avatarUrl });
     handleNext();
   };
+  if (isLoading) return <p>Loading...</p>;
 
   return (
     <div className="container">

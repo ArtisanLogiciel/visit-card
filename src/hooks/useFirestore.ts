@@ -1,14 +1,14 @@
+
 import {
   Card,
-  CardCompagny,
   CardContact,
+  CardCompagny,
   CardDesign,
   CardGeneral,
-  CardSchema,
+  CardSchemaFirebase,
 } from "@/types/card";
 import { UserCredential } from "firebase/auth";
 import { doc, getDoc, setDoc } from "firebase/firestore";
-import { useState } from "react";
 import { database } from "./../firebase/firebase.config";
 
 const useFirestore = (user: UserCredential | null) => {
@@ -27,7 +27,6 @@ const useFirestore = (user: UserCredential | null) => {
     bgColor: "",
     textColor: "",
   };
-  const [isCardCreated, setIsCardCreated] = useState(false);
 
   const COLLECTION_CARDS_FIRESTORE = "cards";
 
@@ -44,9 +43,8 @@ const useFirestore = (user: UserCredential | null) => {
     if (!user?.user.email) return;
     const docRef = doc(database, COLLECTION_CARDS_FIRESTORE, user?.user.email);
     const docSnap = await getDoc(docRef);
-    return setIsCardCreated(docSnap.exists());
+    return docSnap.exists();
   };
-
   const updateCard = async (
     data: CardCompagny | CardDesign | CardGeneral | CardContact
   ) => {
@@ -55,28 +53,25 @@ const useFirestore = (user: UserCredential | null) => {
     await setDoc(docRef, data, { merge: true });
   };
 
-  const getCard = async (): Promise<Card | undefined> => {
+  const getCard = async () => {
     if (!user?.user.email) return;
     const docRef = doc(database, COLLECTION_CARDS_FIRESTORE, user?.user.email);
     const docSnap = await getDoc(docRef);
     if (docSnap.exists()) {
-      const data = CardSchema.parse(docSnap.data());
-      console.log("getCard", data);
+      const data = CardSchemaFirebase.parse(docSnap.data());
+
       return data;
     } else {
       throw new Error("la carte n'existe pas");
     }
   };
 
-
-
   return {
     createEmptyCard,
-    isCardCreated,
+
     checkCardCreated,
     updateCard,
     getCard,
-  
   };
 };
 

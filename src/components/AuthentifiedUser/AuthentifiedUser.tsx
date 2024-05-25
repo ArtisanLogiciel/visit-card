@@ -2,7 +2,7 @@ import { Route, Routes } from "react-router-dom";
 import { CreatedCard } from "./CreatedCard";
 import Home from "./Home";
 import { PreviewCard } from "./PreviewCard";
-import StepperTest from "./Stepper";
+import StepperForm from "./Stepper";
 import Header from "./createCard/header/Header";
 
 const AuthentifiedUser = () => {
@@ -11,7 +11,7 @@ const AuthentifiedUser = () => {
       <Header />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/create-card" element={<StepperTest />} />
+        <Route path="/create-card" element={<StepperForm />} />
         <Route path="/created-card" element={<CreatedCard />} />
         <Route path="/preview-card" element={<PreviewCard />} />
       </Routes>

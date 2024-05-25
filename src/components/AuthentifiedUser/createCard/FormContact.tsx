@@ -1,11 +1,12 @@
 import { UserContext, UserContextProvider } from "@/Providers/usersProviders";
 import useFirestore from "@/hooks/useFirestore";
-import { CardContact, CardContactSchema } from "@/types/card";
+import { CardContact, CardContactFormSchema } from "@/types/card";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useContext } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import "./form.css";
+import { QueryClient, useMutation, useQuery } from "@tanstack/react-query";
 
 const FormContact = ({ handleBack }: { handleBack: () => void }) => {
   const navigate = useNavigate();
@@ -14,19 +15,37 @@ const FormContact = ({ handleBack }: { handleBack: () => void }) => {
   ) as UserContextProvider;
   const { updateCard } = useFirestore(authUser);
 
-  const onSubmit: SubmitHandler<CardContact> = async (data) => {
-    await updateCard(data);
-    navigate("/");
-  };
 
+
+  const { getCard } = useFirestore(authUser);
+
+  const query = new QueryClient();
+  const { data: card , isLoading } = useQuery({ queryKey: ["card"], queryFn: getCard });
+  const mutation = useMutation({
+    mutationKey: ["card"],
+    mutationFn: updateCard,
+    onSuccess: () => {
+      query.invalidateQueries({ queryKey: ["card"] });
+    },
+  });
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<CardContact>({
-    resolver: zodResolver(CardContactSchema),
+    resolver: zodResolver(CardContactFormSchema),
+    defaultValues:{
+      email:card?.email,
+      phoneDesktop:card?.phoneDesktop,
+      phoneMobile:card?.phoneMobile
+    }
   });
 
+  const onSubmit: SubmitHandler<CardContact> = async (data) => {
+    mutation.mutate(data);
+    navigate("/");
+  };
+  if(isLoading) return <p>Loading...</p>
   return (
     <div>
       <h1>Vos coordonnées</h1>

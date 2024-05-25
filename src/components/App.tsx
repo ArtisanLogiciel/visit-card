@@ -1,10 +1,19 @@
 import CardApp from "./CardApp";
 import UserProvider from "../Providers/usersProviders";
+import {
+
+  QueryClient,
+  QueryClientProvider,
+} from '@tanstack/react-query'
 
 function App() {
+  const queryClient = new QueryClient();
+
   return (
     <UserProvider>
-      <CardApp />
+      <QueryClientProvider client={queryClient}>
+        <CardApp />
+      </QueryClientProvider>
     </UserProvider>
   );
 }

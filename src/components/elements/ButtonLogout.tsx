@@ -12,7 +12,14 @@ const ButtonLogout = () => {
     logoutUser();
     navigate("/");
   };
-  return <button onClick={handleLogout}>Déconnexion</button>;
+  return (
+    <button
+      onClick={handleLogout}
+      className="px-3 py-2 bg-green-400 rounded-sm "
+    >
+      Déconnexion
+    </button>
+  );
 };
 
 export default ButtonLogout;

@@ -1,10 +1,11 @@
 import { UserContext, UserContextProvider } from "@/Providers/usersProviders";
 import useFirestore from "@/hooks/useFirestore";
-import { CardCompagny, CardCompagnySchema } from "@/types/card";
+import { CardCompagny, CardCompagnyFormSchema } from "@/types/card";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useContext } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import "./form.css";
+import { QueryClient, useMutation, useQuery } from "@tanstack/react-query";
 
 const FormCompagny = ({
   handleNext,
@@ -18,8 +19,23 @@ const FormCompagny = ({
   ) as UserContextProvider;
   const { updateCard } = useFirestore(authUser);
 
+
+
+  const {getCard}=useFirestore(authUser)
+
+  const query = new QueryClient()
+  const {data:card , isLoading}=useQuery({queryKey:["card"],queryFn:getCard})
+
+  const mutation = useMutation({
+    mutationKey:["card"],
+    mutationFn:updateCard,
+    onSuccess:()=>{
+      query.invalidateQueries({queryKey:["card"]})
+    }
+  })
+
   const onSubmit: SubmitHandler<CardCompagny> = async (data) => {
-    await updateCard(data);
+    mutation.mutate(data)
     handleNext();
   };
 
@@ -28,9 +44,16 @@ const FormCompagny = ({
     handleSubmit,
     formState: { errors },
   } = useForm<CardCompagny>({
-    resolver: zodResolver(CardCompagnySchema),
+    resolver: zodResolver(CardCompagnyFormSchema),
+    defaultValues:{
+      compagny:card?.compagny,
+      country:card?.country,
+      city:card?.city,
+      address:card?.address,
+      zipcode:card?.zipcode,
+    }
   });
-
+  if(isLoading) return <p>Loading...</p>
   return (
     <div>
       <h1>Informations de l'entreprise</h1>
