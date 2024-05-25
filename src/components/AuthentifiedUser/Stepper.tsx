@@ -2,15 +2,12 @@ import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
 import Stepper from "@mui/material/Stepper";
 import useSteps from "../../hooks/useStep";
-import FormGeneral from "./createCard/FormGeneral";
 import FormCompagny from "./createCard/FormCompagny";
 import FormContact from "./createCard/FormContact";
+import FormGeneral from "./createCard/FormGeneral";
 
-const StepperTest = () => {
-  const { steps, activeStep, handleNext , handleBack} = useSteps();
-
-
-
+const StepperForm = () => {
+  const { steps, activeStep, handleNext, handleBack } = useSteps();
 
   return (
     <div className="flex flex-col mt-4">
@@ -23,19 +20,18 @@ const StepperTest = () => {
           );
         })}
       </Stepper>
-     
+
       {activeStep === steps.length - steps.length ? (
-        <FormGeneral handleNext = {handleNext}/>
-     
+        <FormGeneral handleNext={handleNext} />
       ) : null}
-      {activeStep === steps.length - (steps.length-1) ? (
-        <FormCompagny handleNext={handleNext} handleBack = {handleBack}/>
+      {activeStep === steps.length - (steps.length - 1) ? (
+        <FormCompagny handleNext={handleNext} handleBack={handleBack} />
       ) : null}
-      {activeStep === steps.length - (steps.length-2) ? (
-        <FormContact  handleBack = {handleBack} />
+      {activeStep === steps.length - (steps.length - 2) ? (
+        <FormContact handleBack={handleBack} />
       ) : null}
     </div>
   );
 };
 
-export default StepperTest;
+export default StepperForm;
