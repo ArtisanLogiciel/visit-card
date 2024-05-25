@@ -178,6 +178,7 @@ const CreateCard = () => {
             value={"fff"}
             {...register("bgColor")}
           />
+          <p>Fond blanc</p>
           <div
             style={{ backgroundColor: "#fff" }}
             className="w-3 h-3 rounded-full"
@@ -192,6 +193,32 @@ const CreateCard = () => {
             <p>Fond bleu</p>
             <div
               style={{ backgroundColor: "#33f" }}
+              className="w-3 h-3 rounded-full"
+            ></div>
+          </div>
+        </div>
+        <div className="fmex fmew-col justify-items-center">
+          <input
+            type="radio"
+            id="textColor"
+            value={"000"}
+            {...register("textColor")}
+          />
+          <p>Texte noir</p>
+          <div
+            style={{ backgroundColor: "#000" }}
+            className="w-3 h-3 rounded-full"
+          ></div>
+          <div className="flex flex-row">
+            <input
+              type="radio"
+              id="textColor"
+              value={"fff"}
+              {...register("textColor")}
+            />
+            <p>Texte blanc</p>
+            <div
+              style={{ backgroundColor: "#fff" }}
               className="w-3 h-3 rounded-full"
             ></div>
           </div>
