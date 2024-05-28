@@ -6,11 +6,11 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useNavigate } from 'react-router-dom';
 
 const InputsSchema = z.object({
-  mail:z.string().email(),
-  password:z.string().min(6)
-})
+  mail: z.string().email(),
+  password: z.string().min(6),
+});
 
-type Inputs = z.infer<typeof InputsSchema>
+type Inputs = z.infer<typeof InputsSchema>;
 
 const FormLogin = () => {
 
@@ -62,8 +62,8 @@ const FormLogin = () => {
           value={"Connexion"}
         />
       {errorFirebaseUser && <p>{errorFirebaseUser}</p>}
-      </form>
-  )
-}
+    </form>
+  );
+};
 
-export default FormLogin
+export default FormLogin;
