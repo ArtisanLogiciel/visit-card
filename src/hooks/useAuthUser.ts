@@ -1,10 +1,10 @@
-import React from "react";
 import {
   UserCredential,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signOut,
 } from "firebase/auth";
+import React from "react";
 import { auth } from "../firebase/firebase.config";
 import useDatabase from "./useDatabase";
 
@@ -13,14 +13,35 @@ const useAuthUser = () => {
   const [errorFirebaseUser, setErrorFirebaseUser] = React.useState("");
   const { createUserDocument } = useDatabase();
 
-  const loginUser = async (email: string, password: string) => {
-    await signInWithEmailAndPassword(auth, email, password)
+  const loginUser = async (
+    email: string,
+    password: string
+  ): Promise<void | { error: boolean }> => {
+    const authentification = await signInWithEmailAndPassword(
+      auth,
+      email,
+      password
+    )
       .then((userCredential) => setAuthUser(userCredential))
-      .catch((error) => setErrorFirebaseUser(error.message));
+      .then(() => setErrorFirebaseUser(""))
+      .catch((error) => {
+        setErrorFirebaseUser(error.message);
+        return { error: true };
+      });
+    return authentification;
   };
 
-  const registerUser = async (email: string, password: string) => {
-    await createUserWithEmailAndPassword(auth, email, password)
+  const registerUser = async (
+    email: string,
+    password: string
+  ): Promise<void | {
+    error: boolean;
+  }> => {
+    const signupUser = await createUserWithEmailAndPassword(
+      auth,
+      email,
+      password
+    )
       .then((userCredential) => {
         setAuthUser(userCredential);
         createUserDocument(userCredential.user.uid, {
@@ -28,7 +49,11 @@ const useAuthUser = () => {
         });
       })
       .then(() => setErrorFirebaseUser(""))
-      .catch((error) => setErrorFirebaseUser(error.message));
+      .catch((error) => {
+        setErrorFirebaseUser(error.message);
+        return { error: true };
+      });
+    return signupUser;
   };
 
   const logoutUser = async () => {

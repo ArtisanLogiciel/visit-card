@@ -13,6 +13,7 @@ const AuthentifiedUser = () => {
         <Route path="/create-card" element={<StepperForm />} />
         <Route path="/created-card" element={<ViewCard />} />
         <Route path="/view-card" element={<ViewCard />} />
+       
       </Routes>
     </div>
   );
