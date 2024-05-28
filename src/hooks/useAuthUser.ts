@@ -13,25 +13,26 @@ const useAuthUser = () => {
   const [errorFirebaseUser, setErrorFirebaseUser] = React.useState("");
   const { createUserDocument } = useDatabase();
 
-  const loginUser = (email: string, password: string) => {
-    signInWithEmailAndPassword(auth, email, password)
+  const loginUser = async (email: string, password: string) => {
+    await signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => setAuthUser(userCredential))
       .catch((error) => setErrorFirebaseUser(error.message));
   };
 
-  const registerUser = (email: string, password: string) => {
-    createUserWithEmailAndPassword(auth, email, password)
+  const registerUser = async (email: string, password: string) => {
+    await createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         setAuthUser(userCredential);
         createUserDocument(userCredential.user.uid, {
           mailSignIn: userCredential.user.email,
         });
       })
+      .then(() => setErrorFirebaseUser(""))
       .catch((error) => setErrorFirebaseUser(error.message));
   };
 
-  const logoutUser = () => {
-    signOut(auth)
+  const logoutUser = async () => {
+    await signOut(auth)
       .then(() => {
         setAuthUser(null);
         setErrorFirebaseUser("");
