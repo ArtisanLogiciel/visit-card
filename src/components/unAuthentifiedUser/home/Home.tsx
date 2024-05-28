@@ -9,11 +9,11 @@ const Home = () => {
     <div className="">
       <Banner />
       <div className="px-3">
-        <div className="flex justify-evenly bg-cyan-200 rounded-[50%] ">
-          <Smartphone bgColor="bg-orange-500">
+        <div className="flex justify-evenly bg-cyan-200 rounded-[50%] shadow-2xl">
+          <Smartphone bgColor="bg-orange-500 shadow-2xl shadow-current">
             <CardVisitShare />
           </Smartphone>
-          <Smartphone bgColor="bg-purple-500 text-black">
+          <Smartphone bgColor="bg-purple-500 text-black shadow-2xl shadow-current">
             <CardVisitInterface />
           </Smartphone>
         </div>

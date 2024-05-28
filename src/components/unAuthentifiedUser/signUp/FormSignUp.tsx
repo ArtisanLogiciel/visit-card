@@ -30,9 +30,11 @@ const FormSignUp = () => {
 
   const navigate = useNavigate();
 
-  const signUpUser = ({ email, password }: Inputs) => {
-    registerUser(email, password);
+  const signUpUser = async({ email, password }: Inputs) => {
+   const signupUser= await registerUser(email, password) as undefined | {error:boolean};
+   if (!signupUser?.error) {
     navigate("/");
+   } 
   };
   return (
     <form
@@ -63,7 +65,7 @@ const FormSignUp = () => {
       {errors.password?.message && <p>{errors.password.message}</p>}
       <br />
       <input
-        className="p-4 my-3 text-2xl text-white bg-blue-600 border-2 rounded-md border-white/65 hover:text-slate-500 hover:bg-blue-300 transition-all duration-300 ease-in-out"
+        className="p-4 my-3 text-2xl text-white transition-all duration-300 ease-in-out bg-blue-600 border-2 rounded-md border-white/65 hover:text-slate-500 hover:bg-blue-300"
         type="submit"
         value={"Je m'inscris"}
       />
