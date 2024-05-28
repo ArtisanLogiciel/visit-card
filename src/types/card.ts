@@ -1,49 +1,38 @@
 import { z } from "zod";
 
-
-
 const CardSchemaFirebase = z.object({
- 
-    firstname: z.string(),
-  
-    lastname: z
-      .string(),
-  
-    compagny: z
-      .string(),
-     
-    address: z.string(),
-    city: z.string(),
-    zipcode: z.string(),
-    country: z.string(),
-    email: z.string().email().or(z.literal("")),
-    phoneMobile: z.string(),
-    phoneDesktop: z.string(),
-    avatarUrl: z.string(),
-    bgColor: z.string(),
-    textColor: z.string(),
-  });
+  firstname: z.string(),
+  lastname: z.string(),
+  compagny: z.string(),
+  address: z.string(),
+  city: z.string(),
+  zipcode: z.string(),
+  country: z.string(),
+  email: z.string().email().or(z.literal("")),
+  phoneMobile: z.string(),
+  phoneDesktop: z.string(),
+  avatarUrl: z.string(),
+  bgColor: z.string(),
+  textColor: z.string(),
+});
 
-  const CardFormSchema = CardSchemaFirebase.extend({
-    firstname: z.string()
-    .min(2, { message: "Doit contenir au moins 2 caractères" }),
-   lastname: z
-     .string()
-     .min(1, { message: "Doit contenir au moins 1 catactère" }),
-   compagny: z
-     .string()
-     .min(1, { message: "Doit contenir au moins 1 caractère" }),
-   address: z.string().optional(),
-   city: z.string().optional(),
-   zipcode: z.string().optional(),
-   country: z.string().optional(),
-   email: z.string().email({ message: "L'email est requis" }),
-   phoneMobile: z.string().optional(),
-   phoneDesktop: z.string().optional(),
-   avatarUrl: z.string().optional(),
-  });
-
-
+const CardFormSchema = CardSchemaFirebase.extend({
+  firstname: z.string(),
+  lastname: z
+    .string()
+    .min(1, { message: "Doit contenir au moins 1 catactère" }),
+  compagny: z
+    .string()
+    .min(1, { message: "Doit contenir au moins 1 caractère" }),
+  address: z.string().optional(),
+  city: z.string().optional(),
+  zipcode: z.string().optional(),
+  country: z.string().optional(),
+  email: z.string().email({ message: "L'email est requis" }),
+  phoneMobile: z.string().optional(),
+  phoneDesktop: z.string().optional(),
+  avatarUrl: z.string().optional(),
+});
 
 const CardGeneralSchema = CardFormSchema.pick({
   firstname: true,
@@ -75,15 +64,21 @@ type CardGeneral = z.infer<typeof CardGeneralSchema>;
 type CardCompagny = z.infer<typeof CardCompagnyFormSchema>;
 type CardContact = z.infer<typeof CardContactFormSchema>;
 type CardDesign = z.infer<typeof CardDesignFormSchema>;
-type CardFirebase = z.infer<typeof CardSchemaFirebase>
-
+type CardFirebase = z.infer<typeof CardSchemaFirebase>;
 
 export {
-  CardCompagnyFormSchema ,
-  CardContactFormSchema ,
-  CardDesignFormSchema ,
-  CardGeneralSchema,
+  CardCompagnyFormSchema,
+  CardContactFormSchema,
+  CardDesignFormSchema,
   CardFormSchema,
-  CardSchemaFirebase
+  CardGeneralSchema,
+  CardSchemaFirebase,
 };
-export type { Card, CardCompagny, CardContact, CardDesign, CardGeneral , CardFirebase };
+export type {
+  Card,
+  CardCompagny,
+  CardContact,
+  CardDesign,
+  CardFirebase,
+  CardGeneral,
+};
