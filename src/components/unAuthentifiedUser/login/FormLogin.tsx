@@ -16,12 +16,15 @@ const InputsSchema = z.object({
 type Inputs = z.infer<typeof InputsSchema>;
 
 const FormLogin = () => {
+
   const { loginUser, errorFirebaseUser } =
+
     React.useContext<UserContextProvider | null>(
       UserContext
     ) as UserContextProvider;
 
   const navigate = useNavigate();
+
   const handleLogin = async ({ mail, password }: Inputs) => {
     const authentification = await loginUser(mail, password) as undefined | {error:boolean};
 
@@ -33,6 +36,7 @@ const FormLogin = () => {
 
 
 
+
   const {
     register,
     handleSubmit,
@@ -41,7 +45,9 @@ const FormLogin = () => {
   return (
     <form
       className="flex flex-col w-5/6 space-y-1 sm:w-1/4"
+
       onSubmit={handleSubmit(handleLogin)}
+
     >
       <label className="mt-3" htmlFor="email">
         Mail
@@ -69,7 +75,9 @@ const FormLogin = () => {
       <br />
       <input
         type="submit"
+
         className="p-4 text-xl text-white bg-blue-600 border-2 border-white rounded-md my-9 hover:cursor"
+
         value={"Connexion"}
       />
       {errorFirebaseUser && <p>{errorFirebaseUser}</p>}
