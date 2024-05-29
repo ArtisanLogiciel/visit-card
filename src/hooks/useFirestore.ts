@@ -6,11 +6,11 @@ import {
   CardGeneral,
   CardSchemaFirebase,
 } from "@/types/card";
-import { UserCredential } from "firebase/auth";
+import { User, UserCredential } from "firebase/auth";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { database } from "./../firebase/firebase.config";
 
-const useFirestore = (user: UserCredential | null) => {
+const useFirestore = (user: User | null) => {
   const initialCard: Card = {
     firstname: "",
     lastname: "",
@@ -30,16 +30,16 @@ const useFirestore = (user: UserCredential | null) => {
   const COLLECTION_CARDS_FIRESTORE = "cards";
 
   const createEmptyCard = async () => {
-    if (!user?.user.email) return;
+    if (!user?.email) return;
     await setDoc(
-      doc(database, COLLECTION_CARDS_FIRESTORE, user?.user.email),
+      doc(database, COLLECTION_CARDS_FIRESTORE, user?.email),
       initialCard
     );
   };
 
   const checkCardCreated = async () => {
-    if (!user?.user.email) return;
-    const docRef = doc(database, COLLECTION_CARDS_FIRESTORE, user?.user.email);
+    if (!user?.email) return;
+    const docRef = doc(database, COLLECTION_CARDS_FIRESTORE, user?.email);
     const docSnap = await getDoc(docRef);
     return docSnap.exists();
   };
@@ -47,14 +47,14 @@ const useFirestore = (user: UserCredential | null) => {
   const updateCard = async (
     data: CardCompagny | CardDesign | CardGeneral | CardContact
   ) => {
-    if (!user?.user.email) return;
-    const docRef = doc(database, COLLECTION_CARDS_FIRESTORE, user.user.email);
+    if (!user?.email) return;
+    const docRef = doc(database, COLLECTION_CARDS_FIRESTORE, user.email);
     await setDoc(docRef, data, { merge: true });
   };
 
   const getCard = async () => {
-    if (!user?.user.email) return;
-    const docRef = doc(database, COLLECTION_CARDS_FIRESTORE, user?.user.email);
+    if (!user?.email) return;
+    const docRef = doc(database, COLLECTION_CARDS_FIRESTORE, user?.email);
     const docSnap = await getDoc(docRef);
     if (docSnap.exists()) {
       const data = CardSchemaFirebase.parse(docSnap.data());

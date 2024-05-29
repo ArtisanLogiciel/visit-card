@@ -17,6 +17,8 @@ const EditCardButton = () => {
     isError,
     isLoading,
     isSuccess,
+    error
+    
   } = useQuery({ queryKey: ["isCardCreated"], queryFn: checkCardCreated });
 
   const mutation = useMutation({
@@ -51,7 +53,7 @@ const EditCardButton = () => {
 
   return (
     <div>
-      {isError && <p>Une erreur est survenue</p>}
+      {isError && <p>Une erreur est survenue {import.meta.env.DEV?error.message:null}</p>}
       {isLoading && <p>Chargement...</p>}
       {isSuccess && displayEditCardButton}
     </div>

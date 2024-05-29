@@ -28,13 +28,14 @@ const FormLogin = () => {
   const handleLogin = async ({ mail, password }: Inputs) => {
     const authentification = await loginUser(mail, password) as undefined | {error:boolean};
 
-
+    
     if ( !authentification?.error) {
       navigate("/");
     }
   };
-
-
+  
+  
+  const TEST_USER = {email:"test50@test.fr",password:"testtest"}
 
 
   const {
@@ -55,6 +56,7 @@ const FormLogin = () => {
       <input
         type="email"
         className="p-2 border-2 border-gray-500/35"
+        defaultValue={TEST_USER.email}
         placeholder="Votre email"
         {...register("mail")}
       />
@@ -62,14 +64,15 @@ const FormLogin = () => {
 
       <label className="" htmlFor="password">
         Mot de passe
-      </label>
+        </label>
       <input
         type="password"
         className="p-2 border-2 border-gray-500/35"
+        defaultValue={TEST_USER.password}
         required
         placeholder="Mot de passe"
         minLength={6}
-        {...register("password")}
+        {...register("password",)}
       />
       {errors.password?.message && <p>errors.mail.message</p>}
       <br />

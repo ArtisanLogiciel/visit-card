@@ -1,9 +1,9 @@
-import { UserCredential } from "firebase/auth";
+import { User } from "firebase/auth";
 import React from "react";
 import useAuthUser from "../hooks/useAuthUser";
 
 export type UserContextProvider = {
-  authUser: UserCredential | null;
+  authUser: User | null;
   loginUser: (email: string, password: string) => void;
   registerUser: (email: string, password: string) => void;
   logoutUser: () => void;
@@ -22,6 +22,7 @@ const UserProvider = ({ children }: { children: React.ReactNode }) => {
     useAuthUser();
 
   return (
+
     <UserContext.Provider
       value={React.useMemo(
         () => ({

@@ -1,4 +1,5 @@
 import {
+  User,
   UserCredential,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -9,7 +10,7 @@ import { auth } from "../firebase/firebase.config";
 import useDatabase from "./useDatabase";
 
 const useAuthUser = () => {
-  const [authUser, setAuthUser] = React.useState<UserCredential | null>(null);
+  const [authUser, setAuthUser] = React.useState<User | null>(null);
   const [errorFirebaseUser, setErrorFirebaseUser] = React.useState("");
   const { createUserDocument } = useDatabase();
 
@@ -22,7 +23,7 @@ const useAuthUser = () => {
       email,
       password
     )
-      .then((userCredential) => setAuthUser(userCredential))
+      .then((userCredential) => setAuthUser(userCredential.user))
       .then(() => setErrorFirebaseUser(""))
       .catch((error) => {
         setErrorFirebaseUser(error.message);
@@ -43,7 +44,7 @@ const useAuthUser = () => {
       password
     )
       .then((userCredential) => {
-        setAuthUser(userCredential);
+        setAuthUser(userCredential.user);
         createUserDocument(userCredential.user.uid, {
           mailSignIn: userCredential.user.email,
         });
