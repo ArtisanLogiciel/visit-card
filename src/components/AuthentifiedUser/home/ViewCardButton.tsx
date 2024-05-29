@@ -16,6 +16,7 @@ const ViewCardButton = () => {
     isError,
     isLoading,
     isSuccess,
+    error
   } = useQuery({ queryKey: ["isCardCreated"], queryFn: checkCardCreated });
 
   const displayViewCardButton = isCardCreated ? (
@@ -28,7 +29,7 @@ const ViewCardButton = () => {
 
   return (
     <div>
-      {isError && <p>Une erreur est survenue</p>}
+      {isError && <p>Une erreur est survenue {import.meta.env.DEV?error.message:null}</p>}
       {isLoading && <p>Chargement en cours ...</p>}
       {isSuccess && displayViewCardButton}
     </div>

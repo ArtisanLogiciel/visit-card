@@ -66,7 +66,7 @@ const CreateCard = () => {
   }) => {
     console.log(firstname, lastname, compagny, adress, email, phone, avatarUrl);
     if (firebase && firebase.authUser) {
-      await setDoc(doc(cardsRef, authUser?.user.email as string), {
+      await setDoc(doc(cardsRef, authUser?.email as string), {
         firstname: firstname,
         lastname: lastname,
         compagny: compagny,

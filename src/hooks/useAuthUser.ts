@@ -1,15 +1,18 @@
 import {
-  UserCredential,
+  User,
+  browserSessionPersistence,
   createUserWithEmailAndPassword,
+  onAuthStateChanged,
+  setPersistence,
   signInWithEmailAndPassword,
   signOut,
 } from "firebase/auth";
-import React from "react";
+import React, { useEffect } from "react";
 import { auth } from "../firebase/firebase.config";
 import useDatabase from "./useDatabase";
 
 const useAuthUser = () => {
-  const [authUser, setAuthUser] = React.useState<UserCredential | null>(null);
+  const [authUser, setAuthUser] = React.useState<User | null>(null);
   const [errorFirebaseUser, setErrorFirebaseUser] = React.useState("");
   const { createUserDocument } = useDatabase();
 
@@ -17,19 +20,34 @@ const useAuthUser = () => {
     email: string,
     password: string
   ): Promise<void | { error: boolean }> => {
-    const authentification = await signInWithEmailAndPassword(
+    const authentification = await setPersistence(
       auth,
-      email,
-      password
+      browserSessionPersistence
     )
-      .then((userCredential) => setAuthUser(userCredential))
-      .then(() => setErrorFirebaseUser(""))
+      .then(async () => {
+        return await signInWithEmailAndPassword(auth, email, password)
+          .then((userCredential) => setAuthUser(userCredential.user))
+          .then(() => setErrorFirebaseUser(""));
+      })
       .catch((error) => {
         setErrorFirebaseUser(error.message);
         return { error: true };
       });
+
     return authentification;
   };
+
+  useEffect(() => {
+    onAuthStateChanged(auth,async (user)=>{
+      if (user){
+         setAuthUser(user)
+      }
+      else {
+        setAuthUser(null)
+      }
+    })
+  },[]
+  )
 
   const registerUser = async (
     email: string,
@@ -43,7 +61,7 @@ const useAuthUser = () => {
       password
     )
       .then((userCredential) => {
-        setAuthUser(userCredential);
+        setAuthUser(userCredential.user);
         createUserDocument(userCredential.user.uid, {
           mailSignIn: userCredential.user.email,
         });
