@@ -26,6 +26,7 @@ const Home = () => {
       <EditCardButton/>
 
       <ViewCardButton/>
+      <button onClick={()=>{throw new Error ("erreur fictif")}}>Lever une erreur</button>
       
 
       <br />
