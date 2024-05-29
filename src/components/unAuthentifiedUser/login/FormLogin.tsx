@@ -56,7 +56,7 @@ const FormLogin = () => {
       <input
         type="email"
         className="p-2 border-2 border-gray-500/35"
-        defaultValue={TEST_USER.email}
+        defaultValue={import.meta.env.DEV?TEST_USER.email:""}
         placeholder="Votre email"
         {...register("mail")}
       />
@@ -68,7 +68,7 @@ const FormLogin = () => {
       <input
         type="password"
         className="p-2 border-2 border-gray-500/35"
-        defaultValue={TEST_USER.password}
+        defaultValue={import.meta.env.DEV?TEST_USER.password:""}
         required
         placeholder="Mot de passe"
         minLength={6}

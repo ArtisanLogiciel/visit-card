@@ -6,7 +6,7 @@ import {
   CardGeneral,
   CardSchemaFirebase,
 } from "@/types/card";
-import { User, UserCredential } from "firebase/auth";
+import { User} from "firebase/auth";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { database } from "./../firebase/firebase.config";
 

@@ -1,11 +1,13 @@
 import {
   User,
-  UserCredential,
+  browserSessionPersistence,
   createUserWithEmailAndPassword,
+  onAuthStateChanged,
+  setPersistence,
   signInWithEmailAndPassword,
   signOut,
 } from "firebase/auth";
-import React from "react";
+import React, { useEffect } from "react";
 import { auth } from "../firebase/firebase.config";
 import useDatabase from "./useDatabase";
 
@@ -18,19 +20,34 @@ const useAuthUser = () => {
     email: string,
     password: string
   ): Promise<void | { error: boolean }> => {
-    const authentification = await signInWithEmailAndPassword(
+    const authentification = await setPersistence(
       auth,
-      email,
-      password
+      browserSessionPersistence
     )
-      .then((userCredential) => setAuthUser(userCredential.user))
-      .then(() => setErrorFirebaseUser(""))
+      .then(async () => {
+        return await signInWithEmailAndPassword(auth, email, password)
+          .then((userCredential) => setAuthUser(userCredential.user))
+          .then(() => setErrorFirebaseUser(""));
+      })
       .catch((error) => {
         setErrorFirebaseUser(error.message);
         return { error: true };
       });
+
     return authentification;
   };
+
+  useEffect(() => {
+    onAuthStateChanged(auth,async (user)=>{
+      if (user){
+         setAuthUser(user)
+      }
+      else {
+        setAuthUser(null)
+      }
+    })
+  },[]
+  )
 
   const registerUser = async (
     email: string,
