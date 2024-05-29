@@ -3,6 +3,7 @@ import StepperForm from "./StepperForm";
 import { ViewCard } from "./ViewCard";
 import Header from "./createCard/header/Header";
 import Home from "./home/Home";
+import PageNotFound from "../PageNotFound";
 
 const AuthentifiedUser = () => {
   return (
@@ -13,6 +14,7 @@ const AuthentifiedUser = () => {
         <Route path="/create-card" element={<StepperForm />} />
         <Route path="/created-card" element={<ViewCard />} />
         <Route path="/view-card" element={<ViewCard />} />
+        <Route path="*" element={<PageNotFound />} />
        
       </Routes>
     </div>
