@@ -6,7 +6,6 @@ import EditCardButton from "./EditCardButton";
 import ViewCardButton from "./ViewCardButton";
 
 const Home = () => {
- 
   const { authUser } = useContext<UserContextProvider | null>(
     UserContext
   ) as UserContextProvider;
@@ -18,15 +17,14 @@ const Home = () => {
       await queryClient.prefetchQuery({ queryKey: ["card"], queryFn: getCard });
     };
     prefetchCard();
-  }, [ getCard]);
+  }, [getCard]);
 
   return (
     <div className="flex flex-col items-center min-h-screen space-y-3 align-middle">
-      <p>Utilisateur connecté {authUser?.user.email}</p>
-      <EditCardButton/>
+      <p>Utilisateur connecté {authUser?.email}</p>
+      <EditCardButton />
 
-      <ViewCardButton/>
-      
+      <ViewCardButton />
 
       <br />
     </div>
