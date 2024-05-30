@@ -14,6 +14,7 @@ import {
   UserContext,
   UserContextProvider,
 } from "../../Providers/usersProviders";
+// import UploadImage from "./UploadImage";
 type Inputs = {
   firstname?: string;
   lastname: string;
@@ -106,6 +107,7 @@ const CreateCard = () => {
             minLength: 2,
           })}
         />
+        {/* <UploadImage /> */}
         <p>{errors.lastname?.message}</p>
         <label>Nom de votre entreprise</label>
         <input

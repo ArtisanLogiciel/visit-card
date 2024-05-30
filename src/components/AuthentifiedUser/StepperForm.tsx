@@ -22,7 +22,9 @@ const StepperForm = () => {
       </Stepper>
 
       {activeStep === steps.length - steps.length ? (
-        <FormGeneral handleNext={handleNext} />
+        <>
+          <FormGeneral handleNext={handleNext} />
+        </>
       ) : null}
       {activeStep === steps.length - (steps.length - 1) ? (
         <FormCompagny handleNext={handleNext} handleBack={handleBack} />

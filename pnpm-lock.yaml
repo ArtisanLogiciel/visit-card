@@ -14,6 +14,9 @@ importers:
       '@emotion/styled':
         specifier: ^11.11.5
         version: 11.11.5(@emotion/react@11.11.4(@types/react@18.3.1)(react@18.3.1))(@types/react@18.3.1)(react@18.3.1)
+      '@firebase/storage':
+        specifier: ^0.12.5
+        version: 0.12.5(@firebase/app@0.10.2)
       '@hookform/resolvers':
         specifier: ^3.3.4
         version: 3.3.4(react-hook-form@7.51.3(react@18.3.1))
@@ -1071,6 +1074,9 @@ packages:
   '@firebase/component@0.6.6':
     resolution: {integrity: sha512-pp7sWqHmAAlA3os6ERgoM3k5Cxff510M9RLXZ9Mc8KFKMBc2ct3RkZTWUF7ixJNvMiK/iNgRLPDrLR2gtRJ9iQ==}
 
+  '@firebase/component@0.6.7':
+    resolution: {integrity: sha512-baH1AA5zxfaz4O8w0vDwETByrKTQqB5CDjRls79Sa4eAGAoERw4Tnung7XbMl3jbJ4B/dmmtsMrdki0KikwDYA==}
+
   '@firebase/database-compat@1.0.4':
     resolution: {integrity: sha512-GEEDAvsSMAkqy0BIFSVtFzoOIIcKHFfDM4aXHtWL/JCaNn4OOjH7td73jDfN3ALvpIN4hQki0FcxQ89XjqaTjQ==}
 
@@ -1183,8 +1189,16 @@ packages:
     peerDependencies:
       '@firebase/app': 0.x
 
+  '@firebase/storage@0.12.5':
+    resolution: {integrity: sha512-nGWBOGFNr10j0LA4NJ3/Yh3us/lb0Q1xSIKZ38N6FcS+vY54nqJ7k3zE3PENregHC8+8txRow++A568G3v8hOA==}
+    peerDependencies:
+      '@firebase/app': 0.x
+
   '@firebase/util@1.9.5':
     resolution: {integrity: sha512-PP4pAFISDxsf70l3pEy34Mf3GkkUcVQ3MdKp6aSVb7tcpfUQxnsdV7twDd8EkfB6zZylH6wpUAoangQDmCUMqw==}
+
+  '@firebase/util@1.9.6':
+    resolution: {integrity: sha512-IBr1MZbp4d5MjBCXL3TW1dK/PDXX4yOGbiwRNh1oAbE/+ci5Uuvy9KIrsFYY80as1I0iOaD5oOMA9Q8j4TJWcw==}
 
   '@firebase/webchannel-wrapper@0.10.6':
     resolution: {integrity: sha512-EnfRJvrnzkHwN3BPMCayCFT5lCqInzg3RdlRsDjDvB1EJli6Usj26T6lJ67BU2UcYXBS5xcp1Wj4+zRzj2NaZg==}
@@ -5154,6 +5168,11 @@ snapshots:
       '@firebase/util': 1.9.5
       tslib: 2.6.2
 
+  '@firebase/component@0.6.7':
+    dependencies:
+      '@firebase/util': 1.9.6
+      tslib: 2.6.2
+
   '@firebase/database-compat@1.0.4':
     dependencies:
       '@firebase/component': 0.6.6
@@ -5352,7 +5371,19 @@ snapshots:
       tslib: 2.6.2
       undici: 5.28.4
 
+  '@firebase/storage@0.12.5(@firebase/app@0.10.2)':
+    dependencies:
+      '@firebase/app': 0.10.2
+      '@firebase/component': 0.6.7
+      '@firebase/util': 1.9.6
+      tslib: 2.6.2
+      undici: 5.28.4
+
   '@firebase/util@1.9.5':
+    dependencies:
+      tslib: 2.6.2
+
+  '@firebase/util@1.9.6':
     dependencies:
       tslib: 2.6.2
 

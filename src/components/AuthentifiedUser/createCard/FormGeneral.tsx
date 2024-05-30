@@ -1,10 +1,12 @@
 import { UserContext, UserContextProvider } from "@/Providers/usersProviders";
 import { CardGeneral, CardGeneralSchema } from "@/types/card";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Skeleton } from "@mui/material";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useContext } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import useFirestore from "../../../hooks/useFirestore";
+// import UploadImage from "../UploadImage";
 import "./form.css";
 
 const FormGeneral = ({ handleNext }: { handleNext: () => void }) => {
@@ -48,12 +50,13 @@ const FormGeneral = ({ handleNext }: { handleNext: () => void }) => {
     mutation.mutate({ firstname, lastname, avatarUrl });
     handleNext();
   };
-  if (isLoading) return <p>Loading...</p>;
+  if (isLoading) return <Skeleton />;
 
   return (
     <div className="container">
       <h1 className="">Informations générales</h1>
       <p>* : Saisie obligatoire</p>
+      {/* <UploadImage /> */}
       <form onSubmit={handleSubmit(onSubmit)}>
         <label htmlFor="firstname">Prénom *</label>
         <input id="firstname" {...register("firstname", { required: true })} />
