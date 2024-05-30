@@ -6,7 +6,7 @@ import {
   CardGeneral,
   CardSchemaFirebase,
 } from "@/types/card";
-import { User} from "firebase/auth";
+import { User } from "firebase/auth";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { database } from "./../firebase/firebase.config";
 
@@ -64,10 +64,22 @@ const useFirestore = (user: User | null) => {
       throw new Error("la carte n'existe pas");
     }
   };
+  const displayCard = async () => {
+    if (!user?.email) return;
+    const docRef = doc(database, COLLECTION_CARDS_FIRESTORE, user?.email);
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+      const data = CardSchemaFirebase.parse(docSnap.data());
+
+      return data;
+    } else {
+      throw new Error("la carte n'existe pas");
+    }
+  };
 
   return {
     createEmptyCard,
-
+    displayCard,
     checkCardCreated,
     updateCard,
     getCard,
