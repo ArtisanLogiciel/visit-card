@@ -7,6 +7,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import "./form.css";
 import { QueryClient, useMutation, useQuery } from "@tanstack/react-query";
+import { Skeleton } from "@mui/material";
 
 const FormContact = ({ handleBack }: { handleBack: () => void }) => {
   const navigate = useNavigate();
@@ -45,7 +46,7 @@ const FormContact = ({ handleBack }: { handleBack: () => void }) => {
     mutation.mutate(data);
     navigate("/");
   };
-  if(isLoading) return <p>Loading...</p>
+  if(isLoading) return <Skeleton/>
   return (
     <div>
       <h1>Vos coordonnées</h1>

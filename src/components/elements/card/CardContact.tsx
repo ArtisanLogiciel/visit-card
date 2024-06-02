@@ -2,7 +2,7 @@ import { CardContact as CardContactType } from "@/types/card";
 import EmailIcon from "@mui/icons-material/Email";
 import PhoneIcon from "@mui/icons-material/Phone";
 import SmartphoneIcon from "@mui/icons-material/Smartphone";
-import CardContainer from "./CardContainer";
+import CardContainerTab from "./CardContainerTab";
 
 type CardContactPartial = Partial<CardContactType>;
 
@@ -13,7 +13,7 @@ const CardContact = ({
 }: CardContactPartial) => {
   return (
     <div>
-      <CardContainer>
+      <CardContainerTab>
         <p>
           <EmailIcon />
           {email}
@@ -26,7 +26,7 @@ const CardContact = ({
           <SmartphoneIcon />
           {phoneMobile ?? ""}
         </p>
-      </CardContainer>
+      </CardContainerTab>
     </div>
   );
 };

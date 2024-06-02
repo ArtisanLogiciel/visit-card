@@ -20,7 +20,7 @@ const ViewCardButton = () => {
   } = useQuery({ queryKey: ["isCardCreated"], queryFn: checkCardCreated });
 
   const displayViewCardButton = isCardCreated ? (
-    <Link to={"/view-card"}>
+    <Link to={"/display-my-card"}>
       <button className="p-2 bg-red-600 rounded-sm">
         Afficher la carte de visite
       </button>
