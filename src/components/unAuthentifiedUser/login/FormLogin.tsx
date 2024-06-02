@@ -44,6 +44,7 @@ const FormLogin = () => {
         type="email"
         className="p-2 border-2 border-gray-500/35"
         placeholder="Votre email"
+        defaultValue={import.meta.env.DEV?"test@test.fr":""}
         {...register("mail")}
       />
       {errors.mail?.message && <p>{errors.mail.message}</p>}
@@ -57,6 +58,8 @@ const FormLogin = () => {
         required
         placeholder="Mot de passe"
         minLength={6}
+        defaultValue={import.meta.env.DEV?"testtest":""}
+       
         {...register("password")}
       />
       {errors.password?.message && <p>errors.mail.message</p>}
@@ -65,6 +68,7 @@ const FormLogin = () => {
         type="submit"
         className="p-4 text-xl text-white bg-blue-600 border-2 border-white rounded-md my-9 "
         value={"Connexion"}
+      
       />
       {errorFirebaseUser && <p>{errorFirebaseUser}</p>}
     </form>

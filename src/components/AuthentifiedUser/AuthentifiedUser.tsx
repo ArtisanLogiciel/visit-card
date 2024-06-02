@@ -4,6 +4,7 @@ import { ViewCard } from "./ViewCard";
 import Header from "./createCard/header/Header";
 import Home from "./home/Home";
 import PageNotFound from "../PageNotFound";
+import DisplayCardByEmail from "../DisplayCardByEmail";
 
 const AuthentifiedUser = () => {
   return (
@@ -14,6 +15,7 @@ const AuthentifiedUser = () => {
         <Route path="/create-card" element={<StepperForm />} />
         <Route path="/created-card" element={<ViewCard />} />
         <Route path="/view-card" element={<ViewCard />} />
+        <Route path="/display-card/:email" element={<DisplayCardByEmail />} />
         <Route path="*" element={<PageNotFound />} />
        
       </Routes>

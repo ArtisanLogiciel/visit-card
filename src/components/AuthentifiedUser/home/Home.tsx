@@ -23,7 +23,6 @@ const Home = () => {
     <div className="flex flex-col items-center min-h-screen space-y-3 align-middle">
       <p>Utilisateur connecté {authUser?.email}</p>
       <EditCardButton />
-
       <ViewCardButton />
 
       <br />

@@ -1,37 +1,49 @@
-import { Skeleton } from "@mui/material";
-import { QueryClient, QueryClientProvider, useQuery } from "react-query";
+import useFirestore from "@/hooks/useFirestore";
+import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
-import displayCard from "../hooks/useFirestore";
 
 const DisplayCardByEmail = () => {
   const { email } = useParams();
-  const queryClient = new QueryClient();
-  const { data, error, isLoading } = useQuery({
-    queryKey: ["card by email"],
-    queryFn: () => (email ? displayCard(email) : Promise.resolve(null)),
-  });
+
+  const emailQuery = email ?? "";
+
+  const { displayCardByEmail } = useFirestore(null);
+
+  const handleQueryCard = async () => {
+    return await displayCardByEmail(emailQuery);
+  };
+
+  const {
+    data: card,
+    isLoading,
+    isError,
+    error,
+  } = useQuery({ queryKey: [`card/${emailQuery}`], queryFn: handleQueryCard });
 
   if (isLoading) {
-    return <Skeleton />;
+    return <p>chargement</p>;
   }
 
-  if (error) {
-    return <div>Une erreur est survenue</div>;
+  if (isError) {
+    return (
+      <p>
+        Une erreur est survenue {import.meta.env.DEV ? error.message : null}
+      </p>
+    );
   }
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <div className="flex flex-col">
-        {email && email}
-        {data && (
-          <div>
-            <h2>
-              {data.firstname} {data.lastname}
-            </h2>
-          </div>
-        )}
-      </div>
-    </QueryClientProvider>
+    <div className="flex flex-col">
+      {card?.firstname ?? "Bonjour"}
+
+      {card && (
+        <div>
+          <h2>
+            {card.firstname} {card.lastname}
+          </h2>
+        </div>
+      )}
+    </div>
   );
 };
 export default DisplayCardByEmail;

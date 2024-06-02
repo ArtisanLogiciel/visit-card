@@ -36,7 +36,7 @@ const CustomTabPanel = (props: TabPanelProps) => {
 const CardTabs = () => {
   const [value, setValue] = useState(0);
 
-  const handleChange = ( _event:SyntheticEvent,newValue: number) => {
+  const handleChangeTabs = ( _event:SyntheticEvent,newValue: number) => {
     setValue(newValue);
   };
 
@@ -49,6 +49,7 @@ const CardTabs = () => {
     isLoading,
     isError,
   } = useQuery({ queryKey: ["card"], queryFn: getCard });
+  
   const steps = {
     general: "Général",
     compagny: "Entreprise",
@@ -62,7 +63,7 @@ const CardTabs = () => {
       <div className="sm:text-2xl">
         <Tabs
           value={value}
-          onChange={handleChange}
+          onChange={handleChangeTabs}
           aria-label="basic tabs exemple"
         >
           <Tab label={steps.general} />
