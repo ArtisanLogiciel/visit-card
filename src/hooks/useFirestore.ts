@@ -64,10 +64,20 @@ const useFirestore = (user: User | null) => {
       throw new Error("la carte n'existe pas");
     }
   };
+  const getCardByEmail = async (email: string) => {
+    const docRef = doc(database, COLLECTION_CARDS_FIRESTORE, email);
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+      const data = CardSchemaFirebase.parse(docSnap.data());
+      return data;
+    } else {
+      throw new Error("la carte n'existe pas");
+    }
+  };
 
   return {
     createEmptyCard,
-
+     getCardByEmail,
     checkCardCreated,
     updateCard,
     getCard,

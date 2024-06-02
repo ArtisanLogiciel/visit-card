@@ -8,8 +8,8 @@ import {
 const ButtonLogout = () => {
   const { logoutUser } = React.useContext(UserContext) as UserContextProvider;
   const navigate = useNavigate();
-  const handleLogout = () => {
-    logoutUser();
+  const handleLogout = async () => {
+    await logoutUser();
     navigate("/");
   };
   return (

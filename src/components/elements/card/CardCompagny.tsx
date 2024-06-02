@@ -1,7 +1,7 @@
 import { CardCompagny as CardCompagnyType } from "@/types/card";
 import BusinessIcon from "@mui/icons-material/Business";
 
-import CardContainer from "./CardContainer";
+import CardContainerTab from "./CardContainerTab";
 
 type CardCompagyPartial = Partial<CardCompagnyType>;
 
@@ -13,15 +13,13 @@ const CardCompagny = ({
   zipcode,
 }: CardCompagyPartial) => {
   return (
-    <CardContainer>
+    <CardContainerTab>
       <p>
         <BusinessIcon />
         {compagny}
       </p>
       {address || city || country || zipcode ? (
         <div className="">
-          
-
           {city && <p>Ville : {city}</p>}
           {country && <p>Pays : {country}</p>}
           {zipcode && <p>Code postal : {zipcode}</p>}
@@ -29,7 +27,7 @@ const CardCompagny = ({
       ) : null}
       <p></p>
       {address && <p>Adresse : {address}</p>}
-    </CardContainer>
+    </CardContainerTab>
   );
 };
 

@@ -50,6 +50,7 @@ const FormSignUp = () => {
         placeholder="Votre email"
         {...register("email")}
         className="p-2 border-2 border-gray-500/35"
+        defaultValue={import.meta.env.DEV?"test@test.fr":""}
       />
       {errors.email?.message && <p>{errors.email.message}</p>}
       <label className="mt-3" htmlFor="password">
@@ -60,6 +61,7 @@ const FormSignUp = () => {
         id="password"
         placeholder="Votre mot de passe"
         className="p-2 border-2 border-gray-500/35"
+        defaultValue={import.meta.env.DEV?"testtest":""}
         {...register("password")}
       />
       {errors.password?.message && <p>{errors.password.message}</p>}
