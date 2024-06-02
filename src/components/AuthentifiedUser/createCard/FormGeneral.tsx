@@ -25,6 +25,7 @@ const FormGeneral = ({ handleNext }: { handleNext: () => void }) => {
     mutationKey: ["card"],
     mutationFn: updateCard,
     onSuccess: () => {
+     
       queryClient.invalidateQueries({ queryKey: ["card"] });
     },
   });
@@ -42,12 +43,8 @@ const FormGeneral = ({ handleNext }: { handleNext: () => void }) => {
     },
   });
 
-  const onSubmit: SubmitHandler<CardGeneral> = async ({
-    firstname,
-    lastname,
-    avatarUrl,
-  }) => {
-    mutation.mutate({ firstname, lastname, avatarUrl });
+  const onSubmit: SubmitHandler<CardGeneral> = async (data) => {
+    mutation.mutate(data);
     handleNext();
   };
   if (isLoading) return <Skeleton />;

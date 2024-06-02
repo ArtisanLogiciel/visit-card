@@ -16,14 +16,14 @@ const InputsSchema = z.object({
 type Inputs = z.infer<typeof InputsSchema>;
 
 const FormLogin = () => {
-  const { registerUser, errorFirebaseUser } =
+  const { loginUser, errorFirebaseUser } =
     React.useContext<UserContextProvider | null>(
       UserContext
     ) as UserContextProvider;
 
   const navigate = useNavigate();
   const signupUpser = ({ mail, password }: Inputs) => {
-    registerUser(mail, password);
+    loginUser(mail, password);
     navigate("/");
   };
 
