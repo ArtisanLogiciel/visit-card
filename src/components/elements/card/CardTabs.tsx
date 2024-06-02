@@ -1,8 +1,6 @@
-import { UserContext, UserContextProvider } from "@/Providers/usersProviders";
-import useFirestore from "@/hooks/useFirestore";
+import { Card } from "@/types/card";
 import { Box, Tab, Tabs, Typography } from "@mui/material";
-import { useQuery } from "@tanstack/react-query";
-import { SyntheticEvent, useContext, useState } from "react";
+import { SyntheticEvent, useState } from "react";
 import CardCompagny from "./CardCompagny";
 import CardContact from "./CardContact";
 import CardCGeneral from "./cardCGeneral";
@@ -33,59 +31,59 @@ const CustomTabPanel = (props: TabPanelProps) => {
   );
 };
 
-const CardTabs = () => {
+const CardTabs = ({
+  card,
+  isLoading,
+  isError,
+}: {
+  card: Card;
+  isLoading: boolean;
+  isError: boolean;
+}) => {
   const [value, setValue] = useState(0);
 
-  const handleChangeTabs = ( _event:SyntheticEvent,newValue: number) => {
+  const handleChangeTabs = (_event: SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
 
-  const { authUser } = useContext<UserContextProvider | null>(
-    UserContext
-  ) as UserContextProvider;
-  const { getCard } = useFirestore(authUser);
-  const {
-    data: card,
-    isLoading,
-    isError,
-  } = useQuery({ queryKey: ["card"], queryFn: getCard });
-  
   const steps = {
     general: "Général",
     compagny: "Entreprise",
     contact: "Contact",
   };
 
-  if (isLoading) return <p>Chargement</p>
-  if (isError) return <p>Une erreur est survenue</p>
+  if (isLoading) return <p>Chargement</p>;
+  if (isError) return <p>Une erreur est survenue</p>;
   return (
-   
-      <div className="sm:text-2xl">
-        <Tabs
-          value={value}
-          onChange={handleChangeTabs}
-          aria-label="basic tabs exemple"
-        >
-          <Tab label={steps.general} />
-          <Tab label={steps.compagny} />
-          <Tab label={steps.contact} />
-        </Tabs>
-        <CustomTabPanel index={0} value={value}>
-          <CardCGeneral firstname={card?.firstname} lastname={card?.lastname} />
-        </CustomTabPanel>
-        <CustomTabPanel index={1} value={value}>
-          <CardCompagny
-            address={card?.address}
-            city={card?.city}
-            compagny={card?.compagny}
-            country={card?.country}
-            zipcode={card?.zipcode}
-          />
-        </CustomTabPanel>
-        <CustomTabPanel index={2} value={value}>
-          <CardContact email={card?.email} phoneDesktop={card?.phoneDesktop} phoneMobile={card?.phoneMobile}  />
-        </CustomTabPanel>
-     
+    <div className="sm:text-2xl">
+      <Tabs
+        value={value}
+        onChange={handleChangeTabs}
+        aria-label="basic tabs exemple"
+      >
+        <Tab label={steps.general} />
+        <Tab label={steps.compagny} />
+        <Tab label={steps.contact} />
+      </Tabs>
+      <CustomTabPanel index={0} value={value}>
+        <CardCGeneral firstname={card?.firstname} lastname={card?.lastname} />
+      </CustomTabPanel>
+      <CustomTabPanel index={1} value={value}>
+        <CardCompagny
+          address={card?.address}
+          city={card?.city}
+          compagny={card?.compagny}
+          country={card?.country}
+          zipcode={card?.zipcode}
+        />
+      </CustomTabPanel>
+      <CustomTabPanel index={2} value={value}>
+        <CardContact
+          email={card?.email}
+          phoneDesktop={card?.phoneDesktop}
+          phoneMobile={card?.phoneMobile}
+        />
+      </CustomTabPanel>
     </div>
   );
 };
