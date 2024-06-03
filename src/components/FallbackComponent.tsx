@@ -15,7 +15,7 @@ const FallbackComponent = ({
       ) : null}
       <br/>
       <Link to={"/"} className="uppercase">
-        <button onClick={resetErrorBoundary} className="bg-red-700 rounded-sm p-2 uppercase">Retour à l'accueil</button>
+        <button onClick={resetErrorBoundary} className="p-2 uppercase bg-red-700 rounded-sm">Retour à l'accueil</button>
       </Link>
     </div>
   );
