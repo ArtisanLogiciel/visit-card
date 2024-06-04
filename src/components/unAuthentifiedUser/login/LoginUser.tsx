@@ -4,8 +4,6 @@ import Logo from "../../elements/Logo";
 
 const LoginUser = () => {
 
-
-
   return (
     <>
       <Logo/>

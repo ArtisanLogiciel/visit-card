@@ -7,13 +7,13 @@ import CardVisitShare from "./CardVisitShare";
 const Home = () => {
   return (
     <div className="">
-      <Banner />
+      <Banner  />
       <div className="px-3">
         <div className="flex justify-evenly bg-cyan-200 rounded-[50%] shadow-2xl">
-          <Smartphone bgColor="bg-orange-500 shadow-2xl shadow-current">
+          <Smartphone bgColor="bg-orange-500 shadow-2xl shadow-current" >
             <CardVisitShare />
           </Smartphone>
-          <Smartphone bgColor="bg-purple-500 text-black shadow-2xl shadow-current">
+          <Smartphone bgColor="bg-purple-500 text-black shadow-2xl shadow-current" >
             <CardVisitInterface />
           </Smartphone>
         </div>

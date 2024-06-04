@@ -16,9 +16,7 @@ vi.mock("react-router-dom", async (importOriginal) => {
 });
 
 describe("Logout Button", () => {
-  beforeEach(() => {
-  
-  });
+
   it("should contains 'Déconnexion'", () => {
     const logoutUserMock = vi.fn();
     const wrapper = ({ children }: { children: ReactNode }) => (
