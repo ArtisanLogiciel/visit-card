@@ -1,6 +1,6 @@
 const CardVisitInterface = () => {
   return (
-    <div className="flex flex-col space-y-3">
+    <div className="flex flex-col space-y-3" data-testid="card-visit-interface">
       <div className="p-2 bg-white">
         <h1>Jean Dupont</h1>
         <h2>Macon </h2>
