@@ -1,5 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 import PageNotFound from "../PageNotFound";
+import { DisplayQrCode } from "../elements/qrcode/DisplayQrCode";
 import StepperForm from "./StepperForm";
 import ViewCardUserByEmail from "./ViewCardUserByEmail";
 import ViewCardUserConnected from "./ViewCardUserConnected";
@@ -15,6 +16,7 @@ const AuthentifiedUser = () => {
         <Route path="/create-card" element={<StepperForm />} />
         <Route path="/display-my-card" element={<ViewCardUserConnected />} />
         <Route path="/display-card/:email" element={<ViewCardUserByEmail />} />
+        <Route path="/display-qrcode" element={<DisplayQrCode />} />
         <Route path="*" element={<PageNotFound />} />
       </Routes>
     </div>
