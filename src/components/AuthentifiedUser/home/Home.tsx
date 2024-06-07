@@ -24,8 +24,8 @@ const Home = () => {
     <div className="flex flex-col items-center min-h-screen space-y-3 align-middle">
       <p>Utilisateur connecté {authUser?.email}</p>
       <Link to="/display-qrcode">
-        <button className="bg-blue-600 text-white rounded-md shadow-xl hover:bg-blue-400 transition-all duration-300 ease-linear m- p-3">
-          Voir le Qrcode qui affichera votre carte
+        <button className="p-3 text-white transition-all duration-300 ease-linear bg-blue-600 rounded-md shadow-xl hover:bg-blue-400 m-">
+          Partager votre carte de visite
         </button>
       </Link>
       <EditCardButton />
