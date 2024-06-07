@@ -1,30 +1,19 @@
-import { getAuth, onAuthStateChanged, User } from "firebase/auth";
+import { UserContext, UserContextProvider } from "@/Providers/usersProviders";
 import QRCode from "qrcode.react";
-import { useEffect, useState } from "react";
+import { useContext } from "react";
 
 export const DisplayQrCode = () => {
-  const [user, setUser] = useState<User | null | string>(null);
-
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(getAuth(), (currentUser) => {
-      if (currentUser) {
-        setUser(currentUser?.email);
-      }
-      setUser(null);
-    });
-
-    return () => {
-      unsubscribe();
-    };
-  }, []);
+  const { authUser } = useContext<UserContextProvider | null>(
+    UserContext
+  ) as UserContextProvider;
   return (
-    <div className="flex flex-col justify-center items-center w-sreen h-screen overflow-hidden">
-      <h1 className="text-2xl mb-7 text-black font-extrabold">
+    <div className="flex flex-col items-center justify-center h-screen overflow-hidden w-sreen">
+      <h1 className="text-2xl font-extrabold text-black mb-7">
         {" "}
-        Votre Qrcode à partager
+        Votre carte de visite à partager
       </h1>
       <QRCode
-        value={`http://visit-card.online/display-card/${user}`}
+        value={`http://visit-card.online/display-card/${authUser?.email}`}
         renderAs="canvas"
       />
     </div>
