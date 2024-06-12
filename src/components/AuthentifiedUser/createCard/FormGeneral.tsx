@@ -7,6 +7,7 @@ import { useContext } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import useFirestore from "../../../hooks/useFirestore";
 // import UploadImage from "../UploadImage";
+import ImageUpload from "@/components/elements/card/ImageUpload";
 import "./form.css";
 
 const FormGeneral = ({ handleNext }: { handleNext: () => void }) => {
@@ -25,7 +26,6 @@ const FormGeneral = ({ handleNext }: { handleNext: () => void }) => {
     mutationKey: ["card"],
     mutationFn: updateCard,
     onSuccess: () => {
-     
       queryClient.invalidateQueries({ queryKey: ["card"] });
     },
   });
@@ -54,6 +54,9 @@ const FormGeneral = ({ handleNext }: { handleNext: () => void }) => {
       <h1 className="">Informations générales</h1>
       <p>* : Saisie obligatoire</p>
       {/* <UploadImage /> */}
+      <div className="mx-auto text-center">
+        <ImageUpload />
+      </div>
       <form onSubmit={handleSubmit(onSubmit)}>
         <label htmlFor="firstname">Prénom *</label>
         <input id="firstname" {...register("firstname", { required: true })} />
