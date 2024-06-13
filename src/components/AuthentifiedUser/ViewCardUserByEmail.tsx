@@ -1,4 +1,3 @@
-import useFirestore from "@/hooks/useFirestore";
 import Skeleton from "@mui/material/Skeleton";
 import { useQuery } from "@tanstack/react-query";
 import { Link, useParams } from "react-router-dom";
@@ -6,6 +5,7 @@ import CardTabs from "../elements/card/CardTabs";
 
 import { getStorage, list, ref } from "firebase/storage";
 import { useState } from "react";
+import useCard from "@/hooks/useCards";
 
 const ViewCardUserByEmail = () => {
   const { email } = useParams<{ email: string }>();
@@ -28,7 +28,7 @@ const ViewCardUserByEmail = () => {
     .catch((error) => {
       console.error("Erreur lors de l'affichage de l'image:", error);
     });
-  const { getCardByEmail } = useFirestore(null);
+  const { getCardByEmail } = useCard(null);
   const {
     data: card,
     isLoading,
@@ -47,7 +47,7 @@ const ViewCardUserByEmail = () => {
           {showImage && <img src={showImage as string} alt="User Image" />}
           <CardTabs card={card} isLoading={isLoading} isError={isError} />
         </div>
-        <Link to="/" className="bg-red-700 p-2 rounded-sm">
+        <Link to="/" className="p-2 bg-red-700 rounded-sm">
           Retour à l'accueil
         </Link>
       </div>
