@@ -1,30 +1,35 @@
+import { UserContext, UserContextProvider } from "@/Providers/usersProviders";
 import {
   getDownloadURL,
   getStorage,
   ref,
   uploadBytesResumable,
-} from "firebase/storage"; // Importez le service de stockage
+} from "firebase/storage";
 import React, { useState } from "react";
-const uploadImage = async (file: File) => {
-  const metadata = {
-    contentType: "image/jpeg",
-  };
-  const storage = getStorage();
-  const storageRef = ref(storage, "images/" + file.name);
-  const uploadTask = uploadBytesResumable(storageRef, file, metadata);
-  getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-    console.log("File available at", downloadURL);
-  });
-};
 
 const ImageUpload = () => {
   const [file, setFile] = useState<File | null>(null);
   const [isLoaded, setIsLoaded] = useState(false);
+  const { authUser } = React.useContext<UserContextProvider | null>(
+    UserContext
+  ) as UserContextProvider;
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       setFile(e.target.files[0]);
     }
+  };
+  const uploadImage = async (file: File) => {
+    UserContext;
+    const metadata = {
+      contentType: "image/jpeg",
+    };
+    const storage = getStorage();
+    const storageRef = ref(storage, `images/${authUser?.email}/` + file.name);
+    const uploadTask = uploadBytesResumable(storageRef, file, metadata);
+    getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+      console.log("File available at", downloadURL);
+    });
   };
 
   const handleUpload = async () => {

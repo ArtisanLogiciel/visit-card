@@ -4,10 +4,23 @@ import { useQuery } from "@tanstack/react-query";
 import { Link, useParams } from "react-router-dom";
 import CardTabs from "../elements/card/CardTabs";
 
+import { getStorage, list, ref } from "firebase/storage";
+
 const ViewCardUserByEmail = () => {
   const { email } = useParams<{ email: string }>();
   const emailQuery = email ?? "";
 
+  async function displayImage() {
+    // Create a reference under which you want to list
+    const storage = getStorage();
+    const listRef = ref(storage, `files/${emailQuery}/`);
+
+    // Fetch the first page of 100.
+    const image = await list(listRef, { maxResults: 1 });
+    return image;
+  }
+  const image = displayImage();
+  console.log(image);
   const { getCardByEmail } = useFirestore(null);
   const {
     data: card,
@@ -26,7 +39,9 @@ const ViewCardUserByEmail = () => {
         <div className="flex justify-center">
           <CardTabs card={card} isLoading={isLoading} isError={isError} />
         </div>
-          <Link to="/" className="bg-red-700 p-2 rounded-sm">Retour à l'accueil</Link>
+        <Link to="/" className="bg-red-700 p-2 rounded-sm">
+          Retour à l'accueil
+        </Link>
       </div>
     </div>
   );
