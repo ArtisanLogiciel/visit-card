@@ -1,4 +1,4 @@
-import useFirestore from "@/hooks/useFirestore";
+import useCard from "@/hooks/useCards";
 import Skeleton from "@mui/material/Skeleton";
 import { useQuery } from "@tanstack/react-query";
 import { Link, useParams } from "react-router-dom";
@@ -8,7 +8,7 @@ const ViewCardUserByEmail = () => {
   const { email } = useParams<{ email: string }>();
   const emailQuery = email ?? "";
 
-  const { getCardByEmail } = useFirestore(null);
+  const { getCardByEmail } = useCard(null);
   const {
     data: card,
     isLoading,
@@ -26,7 +26,9 @@ const ViewCardUserByEmail = () => {
         <div className="flex justify-center">
           <CardTabs card={card} isLoading={isLoading} isError={isError} />
         </div>
-          <Link to="/" className="bg-red-700 p-2 rounded-sm">Retour à l'accueil</Link>
+        <Link to="/" className="bg-red-700 p-2 rounded-sm">
+          Retour à l'accueil
+        </Link>
       </div>
     </div>
   );

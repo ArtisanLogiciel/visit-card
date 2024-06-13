@@ -5,7 +5,7 @@ import { Skeleton } from "@mui/material";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useContext } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import useFirestore from "../../../hooks/useFirestore";
+import useCard from "../../../hooks/useCards";
 // import UploadImage from "../UploadImage";
 import "./form.css";
 
@@ -13,7 +13,7 @@ const FormGeneral = ({ handleNext }: { handleNext: () => void }) => {
   const { authUser } = useContext<UserContextProvider | null>(
     UserContext
   ) as UserContextProvider;
-  const { updateCard, getCard } = useFirestore(authUser);
+  const { updateCard, getCard } = useCard(authUser);
   const queryClient = useQueryClient();
 
   const { data: card, isLoading } = useQuery({
@@ -25,7 +25,6 @@ const FormGeneral = ({ handleNext }: { handleNext: () => void }) => {
     mutationKey: ["card"],
     mutationFn: updateCard,
     onSuccess: () => {
-     
       queryClient.invalidateQueries({ queryKey: ["card"] });
     },
   });

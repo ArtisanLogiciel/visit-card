@@ -1,5 +1,5 @@
 import { UserContext, UserContextProvider } from "@/Providers/usersProviders";
-import useFirestore from "@/hooks/useFirestore";
+import useCard from "@/hooks/useCards";
 import { QueryClient } from "@tanstack/react-query";
 import { useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
@@ -10,7 +10,7 @@ const Home = () => {
   const { authUser } = useContext<UserContextProvider | null>(
     UserContext
   ) as UserContextProvider;
-  const { getCard } = useFirestore(authUser);
+  const { getCard } = useCard(authUser);
 
   useEffect(() => {
     const queryClient = new QueryClient();
