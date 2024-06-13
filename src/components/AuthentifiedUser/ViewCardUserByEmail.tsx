@@ -5,9 +5,11 @@ import { Link, useParams } from "react-router-dom";
 import CardTabs from "../elements/card/CardTabs";
 
 import { getStorage, list, ref } from "firebase/storage";
+import { useState } from "react";
 
 const ViewCardUserByEmail = () => {
   const { email } = useParams<{ email: string }>();
+  const [showImage, setShowImage] = useState<object | null | string>(null);
   const emailQuery = email ?? "";
 
   async function displayImage() {
@@ -19,8 +21,13 @@ const ViewCardUserByEmail = () => {
     const image = await list(listRef, { maxResults: 1 });
     return image;
   }
-  const image = displayImage();
-  console.log(image);
+  displayImage()
+    .then((image) => {
+      setShowImage(image);
+    })
+    .catch((error) => {
+      console.error("Erreur lors de l'affichage de l'image:", error);
+    });
   const { getCardByEmail } = useFirestore(null);
   const {
     data: card,
@@ -37,6 +44,7 @@ const ViewCardUserByEmail = () => {
       <div className="flex flex-col items-center justify-center text-center">
         <h1 className="text-4xl">Carte de visite </h1>
         <div className="flex justify-center">
+          {showImage && <img src={showImage as string} alt="User Image" />}
           <CardTabs card={card} isLoading={isLoading} isError={isError} />
         </div>
         <Link to="/" className="bg-red-700 p-2 rounded-sm">
