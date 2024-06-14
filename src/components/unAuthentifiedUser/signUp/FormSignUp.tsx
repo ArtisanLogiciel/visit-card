@@ -32,10 +32,18 @@ const FormSignUp = () => {
 
   const navigate = useNavigate();
 
-  const signUpUser = async ({ email, password,firstname,lastname }: Inputs) => {
-    const signupUser = (await registerUser(email, password,firstname,lastname)) as
-      | undefined
-      | { error: boolean };
+  const signUpUser = async ({
+    email,
+    password,
+    firstname,
+    lastname,
+  }: Inputs) => {
+    const signupUser = (await registerUser(
+      email,
+      password,
+      firstname,
+      lastname
+    )) as undefined | { error: boolean };
     if (!signupUser?.error) {
       navigate("/");
     }

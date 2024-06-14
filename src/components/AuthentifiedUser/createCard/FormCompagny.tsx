@@ -59,13 +59,13 @@ const FormCompagny = ({
     <div>
       <h1>Informations de l'entreprise</h1>
       <p>* : Saisie obligatoire</p>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(onSubmit)} className="form">
         <label htmlFor="compagny">Nom de l'entreprise *</label>
-        <input id="compagny" {...register("compagny", { required: true })} />
+        <input id="compagny" className="input" {...register("compagny", { required: true })} />
         {errors?.compagny && <p>{errors.compagny.message}</p>}
 
         <label htmlFor="country">Pays</label>
-        <input id="country " {...register("country")} />
+        <input id="country "  {...register("country")} />
         {errors?.country && <p>{errors.country.message}</p>}
 
         <label htmlFor="city">Ville</label>
@@ -75,7 +75,7 @@ const FormCompagny = ({
         <label htmlFor="address">Adresse</label>
         <input id="address" {...register("address")} />
         {errors?.address && <p>{errors.address.message}</p>}
-        <label htmlFor="zipcode">zipcode</label>
+        <label htmlFor="zipcode" >zipcode</label>
         <input id="zipcode" {...register("zipcode")} />
         {errors?.zipcode && <p>{errors.zipcode.message}</p>}
         <div className="container-buttons">
