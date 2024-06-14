@@ -11,6 +11,8 @@ import { z } from "zod";
 
 const InputsSchema = z.object({
   email: z.string().email(),
+  firstname: z.string().min(1),
+  lastname: z.string().min(1),
   password: z.string().min(6).max(30),
 });
 
@@ -30,17 +32,39 @@ const FormSignUp = () => {
 
   const navigate = useNavigate();
 
-  const signUpUser = async({ email, password }: Inputs) => {
-   const signupUser= await registerUser(email, password) as undefined | {error:boolean};
-   if (!signupUser?.error) {
-    navigate("/");
-   } 
+  const signUpUser = async ({ email, password,firstname,lastname }: Inputs) => {
+    const signupUser = (await registerUser(email, password,firstname,lastname)) as
+      | undefined
+      | { error: boolean };
+    if (!signupUser?.error) {
+      navigate("/");
+    }
   };
   return (
     <form
       className="flex flex-col w-5/6 space-y-1"
       onSubmit={handleSubmit(signUpUser)}
     >
+      <label className="mt-3" htmlFor="firstname">
+        Prénom
+      </label>
+      <input
+        id="firstname"
+        placeholder="Votre prénom"
+        {...register("firstname")}
+        className="p-2 border-2 border-gray-500/35"
+      />
+      {errors.firstname && <p>{errors.firstname.message}</p>}
+      <label className="mt-3" htmlFor="lastname">
+        Nom
+      </label>
+      <input
+        id="lastname"
+        placeholder="Votre nom"
+        {...register("lastname")}
+        className="p-2 border-2 border-gray-500/35"
+      />
+      {errors.firstname && <p>{errors.firstname.message}</p>}
       <label className="mt-3" htmlFor="email">
         Mail
       </label>
@@ -50,9 +74,9 @@ const FormSignUp = () => {
         placeholder="Votre email"
         {...register("email")}
         className="p-2 border-2 border-gray-500/35"
-        defaultValue={import.meta.env.DEV?"test@test.fr":""}
+        defaultValue={import.meta.env.DEV ? "test@test.fr" : ""}
       />
-      {errors.email?.message && <p>{errors.email.message}</p>}
+      {errors.email && <p>{errors.email.message}</p>}
       <label className="mt-3" htmlFor="password">
         Mot de passe
       </label>
@@ -61,10 +85,10 @@ const FormSignUp = () => {
         id="password"
         placeholder="Votre mot de passe"
         className="p-2 border-2 border-gray-500/35"
-        defaultValue={import.meta.env.DEV?"testtest":""}
+        defaultValue={import.meta.env.DEV ? "testtest" : ""}
         {...register("password")}
       />
-      {errors.password?.message && <p>{errors.password.message}</p>}
+      {errors.password && <p>{errors.password.message}</p>}
       <br />
       <input
         className="p-4 my-3 text-2xl text-white transition-all duration-300 ease-in-out bg-blue-600 border-2 rounded-md border-white/65 hover:text-slate-500 hover:bg-blue-300"

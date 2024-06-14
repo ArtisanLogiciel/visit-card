@@ -88,7 +88,7 @@ const AccountForm = () => {
         )}
         <label>
           Email d'inscription
-          <input value={account?.mailSignIn ?? ""} disabled />
+          <input value={account?.mailSignUp ?? ""} disabled />
         </label>
         <input type="submit" value={"Mettre à jour"} />
       </form>
