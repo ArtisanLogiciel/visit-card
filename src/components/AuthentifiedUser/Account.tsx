@@ -25,13 +25,13 @@ const Account = () => {
     );
 
   return (
-    <div className="flex flex-col items-center">
-      <h1>Mon compte</h1>
+    <div className="flex flex-col mx-3">
+      <h1 className="mb-3 font-bold">Mon compte</h1>
       <p>Prénom : {account?.firstname ?? "Non renseigné"}</p>
       <p>Nom : {account?.lastname ?? "Non renseigné"}</p>
       <p>Email d'inscription : {account?.mailSignUp ?? "Non renseigné"}</p>
-      <p>Date de création du compte : {account?.dateSignUp}</p>
-      <Link to="update">
+      <p>Date de création du compte : {account?.dateSignUp??"Inconnu"}</p>
+      <Link to="update" className="flex justify-center">
         <button className="p-2 mt-4 bg-red-500 rounded-md">
           Modifier mon profil
         </button>

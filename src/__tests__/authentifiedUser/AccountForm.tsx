@@ -47,7 +47,10 @@ const AccountForm = () => {
   const navigate = useNavigate();
 
   const onSubmit: SubmitHandler<Inputs> = (data: Inputs) => {
-    mutation.mutate({ firstname: data.firstname, lastname: data.lastname });
+    mutation.mutate({
+      firstname: data.firstname,
+      lastname: data.lastname,
+    });
     navigate("/account");
   };
   //
@@ -58,39 +61,45 @@ const AccountForm = () => {
     );
 
   return (
-    <div>
-      <h1>Mise à jour du compte</h1>
+    <div className="flex flex-col items-center">
+      <h1 className="font-semibold text-red-400">Mise à jour du compte</h1>
+
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="flex flex-col items-center"
       >
-        <label>
-          {" "}
-          Prénom
-          <input
-            defaultValue={account?.firstname ?? ""}
-            {...register("firstname", { required: true })}
-          />
-        </label>
+        <label htmlFor="firstname"> Prénom</label>
+        <input
+          id="firstname"
+          defaultValue={account?.firstname ?? ""}
+          {...register("firstname", { required: true })}
+          className="p-2 border-2 border-black"
+        />
         {errors.firstname && (
           <p className="text-red-400">{errors.firstname.message}</p>
         )}
-        <label>
-          {" "}
-          Nom
-          <input
-            defaultValue={account?.lastname ?? ""}
-            {...register("lastname", { required: true })}
-          />
-        </label>
+        <label htmlFor="lastname"> Nom</label>
+        <input
+          id="lastname"
+          defaultValue={account?.lastname ?? ""}
+          {...register("lastname", { required: true })}
+          className="p-2 border-2 border-black"
+        />
         {errors.lastname && (
           <p className="text-red-400">{errors.lastname.message}</p>
         )}
-        <label>
-          Email d'inscription
-          <input value={account?.mailSignUp ?? ""} disabled />
-        </label>
-        <input type="submit" value={"Mettre à jour"} />
+        <label htmlFor="email">Email d'inscription</label>
+        <input
+          id="email"
+          className="p-2 border-2 border-black "
+          value={account?.mailSignUp ?? ""}
+          disabled
+        />
+        <input
+          type="submit"
+          value={"Mettre à jour"}
+          className="p-2 mt-3 bg-red-700"
+        />
       </form>
       {errorFirebaseUser}
     </div>

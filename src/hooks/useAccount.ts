@@ -1,14 +1,9 @@
-
 import { database } from "@/firebase/firebase.config";
 import AccountSchema, { Account, AccountUpdate } from "@/types/account";
-import { create } from "@mui/material/styles/createTransitions";
 import { User } from "firebase/auth";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 
-
-
-
-const useAccount = ( user: User | null ) => {
+const useAccount = (user: User | null) => {
   const COLLECTION_ACCOUNT_FIRESTORE = "users";
 
   const getAccount = async () => {
@@ -24,24 +19,34 @@ const useAccount = ( user: User | null ) => {
     }
   };
 
-  const createAccount = async(data:Account)=>{
+  const createAccount = async (data: Account) => {
     if (!user?.email) return;
     const docRef = doc(database, COLLECTION_ACCOUNT_FIRESTORE, user.uid);
-    await setDoc(docRef, data, { merge: true });
+    await setDoc(
+      docRef,
+      {
+        ...data,
+        firstname: data.firstname.toLowerCase(),
+        lastname: data.lastname.toLowerCase(),
+      },
+      { merge: true }
+    );
   };
 
-
-
-
-  const updateAccount = async (
-    data: AccountUpdate
-  ) => {
+  const updateAccount = async ({ firstname, lastname }: AccountUpdate) => {
     if (!user?.email) return;
     const docRef = doc(database, COLLECTION_ACCOUNT_FIRESTORE, user.uid);
-    await setDoc(docRef, data, { merge: true });
+    await setDoc(
+      docRef,
+      {
+        firstname: firstname?.toLowerCase(),
+        lastname: lastname?.toLowerCase(),
+      },
+      { merge: true }
+    );
   };
 
-  return { getAccount , updateAccount , createAccount};
+  return { getAccount, updateAccount, createAccount };
 };
 
-export default useAccount
+export default useAccount;

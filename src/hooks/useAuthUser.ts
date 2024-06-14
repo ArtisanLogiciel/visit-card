@@ -7,6 +7,7 @@ import {
   signInWithEmailAndPassword,
   signOut,
 } from "firebase/auth";
+import { Timestamp } from "firebase/firestore";
 import React, { useEffect } from "react";
 import { auth } from "../firebase/firebase.config";
 import useDatabase from "./useDatabase";
@@ -38,22 +39,20 @@ const useAuthUser = () => {
   };
 
   useEffect(() => {
-    onAuthStateChanged(auth,async (user)=>{
-      if (user){
-         setAuthUser(user)
+    onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        setAuthUser(user);
+      } else {
+        setAuthUser(null);
       }
-      else {
-        setAuthUser(null)
-      }
-    })
-  },[]
-  )
+    });
+  }, []);
 
   const registerUser = async (
     email: string,
     password: string,
-    firstname:string,
-    lastname:string
+    firstname: string,
+    lastname: string
   ): Promise<void | {
     error: boolean;
   }> => {
@@ -65,9 +64,10 @@ const useAuthUser = () => {
       .then((userCredential) => {
         setAuthUser(userCredential.user);
         createUserDocument(userCredential.user.uid, {
-          mailSignIn: userCredential.user.email,
-          firstname,
-          lastname,
+          mailSignUp: userCredential.user.email,
+          firstname: firstname.toLowerCase(),
+          lastname: lastname.toLowerCase(),
+          dateSignUp: Timestamp.now(),
         });
       })
       .then(() => setErrorFirebaseUser(""))

@@ -53,7 +53,7 @@ const FormGeneral = ({ handleNext }: { handleNext: () => void }) => {
       <h1 className="">Informations générales</h1>
       <p>* : Saisie obligatoire</p>
       {/* <UploadImage /> */}
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(onSubmit)} className="form">
         <label htmlFor="firstname">Prénom *</label>
         <input id="firstname" {...register("firstname", { required: true })} />
         {errors.firstname?.message && <p>{errors.firstname.message}</p>}

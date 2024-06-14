@@ -2,7 +2,7 @@ import { UserContext, UserContextProvider } from "@/Providers/usersProviders";
 import useCard from "@/hooks/useCards";
 import { useQuery } from "@tanstack/react-query";
 import { useContext } from "react";
-import CardTabs from "../elements/card/CardTabs";
+import CardTabs from "./card/CardTabs";
 
 const ViewCardUserConnected = () => {
   const { authUser } = useContext<UserContextProvider | null>(

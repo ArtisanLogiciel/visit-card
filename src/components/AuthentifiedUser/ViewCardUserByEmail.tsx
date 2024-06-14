@@ -2,7 +2,7 @@ import useCard from "@/hooks/useCards";
 import Skeleton from "@mui/material/Skeleton";
 import { useQuery } from "@tanstack/react-query";
 import { Link, useParams } from "react-router-dom";
-import CardTabs from "../elements/card/CardTabs";
+import CardTabs from "./card/CardTabs";
 
 const ViewCardUserByEmail = () => {
   const { email } = useParams<{ email: string }>();
@@ -22,11 +22,11 @@ const ViewCardUserByEmail = () => {
   return (
     <div>
       <div className="flex flex-col items-center justify-center text-center">
-        <h1 className="text-4xl">Carte de visite </h1>
+        <h1 className="text-4xl">Carte de visite</h1>
         <div className="flex justify-center">
           <CardTabs card={card} isLoading={isLoading} isError={isError} />
         </div>
-        <Link to="/" className="bg-red-700 p-2 rounded-sm">
+        <Link to="/" className="p-2 bg-red-700 rounded-sm">
           Retour à l'accueil
         </Link>
       </div>
