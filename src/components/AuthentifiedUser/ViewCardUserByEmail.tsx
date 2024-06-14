@@ -1,7 +1,7 @@
 import Skeleton from "@mui/material/Skeleton";
 import { useQuery } from "@tanstack/react-query";
 import { Link, useParams } from "react-router-dom";
-import CardTabs from "../elements/card/CardTabs";
+import CardTabs from "./card/CardTabs";
 
 import { getStorage, list, ref } from "firebase/storage";
 import { useState } from "react";
@@ -42,7 +42,7 @@ const ViewCardUserByEmail = () => {
   return (
     <div>
       <div className="flex flex-col items-center justify-center text-center">
-        <h1 className="text-4xl">Carte de visite </h1>
+        <h1 className="text-4xl">Carte de visite</h1>
         <div className="flex justify-center">
           {showImage && <img src={showImage as string} alt="User Image" />}
           <CardTabs card={card} isLoading={isLoading} isError={isError} />

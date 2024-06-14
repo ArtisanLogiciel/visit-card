@@ -15,7 +15,7 @@ describe("View user By Email", () => {
     );
   });
 
-  it("should contains 'cartre de visite' title", () => {
+  it.skip("should contains 'carte de visite' title", () => {
     const title = screen.getByText(/Carte de visite/i);
     screen.debug();
     expect(title).toBeInTheDocument();

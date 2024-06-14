@@ -51,7 +51,7 @@ const FormContact = ({ handleBack }: { handleBack: () => void }) => {
   return (
     <div>
       <h1>Vos coordonnées</h1>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(onSubmit)} className="form">
         <label htmlFor="email">Email professionel</label>
         <input id="email" {...register("email", { required: true })} />
 

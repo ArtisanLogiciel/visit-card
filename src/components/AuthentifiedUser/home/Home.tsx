@@ -1,6 +1,6 @@
 import { UserContext, UserContextProvider } from "@/Providers/usersProviders";
 import useCard from "@/hooks/useCards";
-import { QueryClient } from "@tanstack/react-query";
+import { useQueryClient } from "@tanstack/react-query";
 import { useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
 import EditCardButton from "./EditCardButton";
@@ -12,8 +12,8 @@ const Home = () => {
   ) as UserContextProvider;
   const { getCard } = useCard(authUser);
 
+  const queryClient = useQueryClient();
   useEffect(() => {
-    const queryClient = new QueryClient();
     const prefetchCard = async () => {
       await queryClient.prefetchQuery({ queryKey: ["card"], queryFn: getCard });
     };
@@ -22,7 +22,6 @@ const Home = () => {
 
   return (
     <div className="flex flex-col items-center min-h-screen space-y-3 align-middle">
-      <p>Utilisateur connecté {authUser?.email}</p>
       <Link to="/display-qrcode">
         <button className="p-3 text-white transition-all duration-300 ease-linear bg-blue-600 rounded-md shadow-xl hover:bg-blue-400 m-">
           Partager votre carte de visite
