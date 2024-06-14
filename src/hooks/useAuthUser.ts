@@ -51,7 +51,9 @@ const useAuthUser = () => {
 
   const registerUser = async (
     email: string,
-    password: string
+    password: string,
+    firstname:string,
+    lastname:string
   ): Promise<void | {
     error: boolean;
   }> => {
@@ -64,6 +66,8 @@ const useAuthUser = () => {
         setAuthUser(userCredential.user);
         createUserDocument(userCredential.user.uid, {
           mailSignIn: userCredential.user.email,
+          firstname,
+          lastname,
         });
       })
       .then(() => setErrorFirebaseUser(""))

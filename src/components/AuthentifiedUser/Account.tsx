@@ -23,14 +23,18 @@ const Account = () => {
     return (
       <p>{import.meta.env.DEV ? error.message : "Une erreur est survenue"}</p>
     );
+
   return (
     <div className="flex flex-col items-center">
       <h1>Mon compte</h1>
       <p>Prénom : {account?.firstname ?? "Non renseigné"}</p>
       <p>Nom : {account?.lastname ?? "Non renseigné"}</p>
-      <p>Email d'inscription : {account?.mailSignIn ?? "Non renseigné"}</p>
+      <p>Email d'inscription : {account?.mailSignUp ?? "Non renseigné"}</p>
+      <p>Date de création du compte : {account?.dateSignUp}</p>
       <Link to="update">
-        <button className="p-2 mt-4 bg-red-500 rounded-md"> Modifier mon profil</button>
+        <button className="p-2 mt-4 bg-red-500 rounded-md">
+          Modifier mon profil
+        </button>
       </Link>
     </div>
   );
