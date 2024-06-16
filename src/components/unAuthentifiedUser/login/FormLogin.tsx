@@ -1,6 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import React from "react";
-import { useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { z } from "zod";
 import {
@@ -22,7 +22,7 @@ const FormLogin = () => {
     ) as UserContextProvider;
 
   const navigate = useNavigate();
-  const handleLogin = ({ mail, password }: Inputs) => {
+  const handleLogin: SubmitHandler<Inputs> = ({ mail, password }: Inputs) => {
     loginUser(mail, password);
     navigate("/");
   };

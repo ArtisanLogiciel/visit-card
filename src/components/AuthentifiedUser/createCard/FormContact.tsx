@@ -1,27 +1,28 @@
 import { UserContext, UserContextProvider } from "@/Providers/usersProviders";
-import useFirestore from "@/hooks/useFirestore";
+import useCard from "@/hooks/useCards";
 import { CardContact, CardContactFormSchema } from "@/types/card";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Skeleton } from "@mui/material";
+import { QueryClient, useMutation, useQuery } from "@tanstack/react-query";
 import { useContext } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import "./form.css";
-import { QueryClient, useMutation, useQuery } from "@tanstack/react-query";
-import { Skeleton } from "@mui/material";
 
 const FormContact = ({ handleBack }: { handleBack: () => void }) => {
   const navigate = useNavigate();
   const { authUser } = useContext<UserContextProvider | null>(
     UserContext
   ) as UserContextProvider;
-  const { updateCard } = useFirestore(authUser);
+  const { updateCard } = useCard(authUser);
 
-
-
-  const { getCard } = useFirestore(authUser);
+  const { getCard } = useCard(authUser);
 
   const query = new QueryClient();
-  const { data: card , isLoading } = useQuery({ queryKey: ["card"], queryFn: getCard });
+  const { data: card, isLoading } = useQuery({
+    queryKey: ["card"],
+    queryFn: getCard,
+  });
   const mutation = useMutation({
     mutationKey: ["card"],
     mutationFn: updateCard,
@@ -35,22 +36,22 @@ const FormContact = ({ handleBack }: { handleBack: () => void }) => {
     formState: { errors },
   } = useForm<CardContact>({
     resolver: zodResolver(CardContactFormSchema),
-    defaultValues:{
-      email:card?.email,
-      phoneDesktop:card?.phoneDesktop,
-      phoneMobile:card?.phoneMobile
-    }
+    defaultValues: {
+      email: card?.email,
+      phoneDesktop: card?.phoneDesktop,
+      phoneMobile: card?.phoneMobile,
+    },
   });
 
   const onSubmit: SubmitHandler<CardContact> = async (data) => {
     mutation.mutate(data);
     navigate("/");
   };
-  if(isLoading) return <Skeleton/>
+  if (isLoading) return <Skeleton />;
   return (
     <div>
       <h1>Vos coordonnées</h1>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(onSubmit)} className="form">
         <label htmlFor="email">Email professionel</label>
         <input id="email" {...register("email", { required: true })} />
 

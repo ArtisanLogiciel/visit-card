@@ -1,6 +1,6 @@
 import logo from "@/assets/logo-app.png";
-import ButtonLogout from "@/components/elements/ButtonLogout";
 import { Link } from "react-router-dom";
+import AccountButton from "../../AccountButton";
 
 const Header = () => {
   return (
@@ -9,7 +9,7 @@ const Header = () => {
         <img src={logo} alt="logo" className="size-16" />
       </Link>
 
-      <ButtonLogout />
+      <AccountButton />
     </div>
   );
 };
