@@ -8,9 +8,9 @@ import {
 } from "@/types/card";
 import { User } from "firebase/auth";
 import { doc, getDoc, setDoc } from "firebase/firestore";
-import { database } from "./../firebase/firebase.config";
+import { database } from "../firebase/firebase.config";
 
-const useFirestore = (user: User | null) => {
+const useCard = (user: User | null) => {
   const initialCard: Card = {
     firstname: "",
     lastname: "",
@@ -77,11 +77,11 @@ const useFirestore = (user: User | null) => {
 
   return {
     createEmptyCard,
-     getCardByEmail,
+    getCardByEmail,
     checkCardCreated,
     updateCard,
     getCard,
   };
 };
 
-export default useFirestore;
+export default useCard;

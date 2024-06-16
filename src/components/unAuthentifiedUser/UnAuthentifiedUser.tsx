@@ -1,7 +1,7 @@
 import { Route, Routes } from "react-router-dom";
 
 import ViewCardUserByEmail from "../AuthentifiedUser/ViewCardUserByEmail";
-import { DisplayQrCode } from "../elements/qrcode/DisplayQrCode";
+import { DisplayQrCode } from "../AuthentifiedUser/qrcode/DisplayQrCode";
 import PageNotFound from "../PageNotFound";
 import Home from "./home/Home";
 import LoginUser from "./login/LoginUser";

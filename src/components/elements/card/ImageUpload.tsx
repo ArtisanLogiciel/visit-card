@@ -48,7 +48,7 @@ const ImageUpload = () => {
         <div>
           <input type="file" onChange={handleFileChange} />
           <button
-            className=" bg-blue-600 text-white rounded-lg p-3 hover:bg-blue-400 transition-all duration-300 ease-linear my-4"
+            className="p-3 my-4 text-white transition-all duration-300 ease-linear bg-blue-600 rounded-lg  hover:bg-blue-400"
             onClick={handleUpload}
           >
             Télécharger Une Image

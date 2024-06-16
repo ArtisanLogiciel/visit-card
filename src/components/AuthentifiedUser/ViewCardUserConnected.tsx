@@ -1,14 +1,14 @@
 import { UserContext, UserContextProvider } from "@/Providers/usersProviders";
-import useFirestore from "@/hooks/useFirestore";
+import useCard from "@/hooks/useCards";
 import { useQuery } from "@tanstack/react-query";
 import { useContext } from "react";
-import CardTabs from "../elements/card/CardTabs";
+import CardTabs from "./card/CardTabs";
 
 const ViewCardUserConnected = () => {
   const { authUser } = useContext<UserContextProvider | null>(
     UserContext
   ) as UserContextProvider;
-  const { getCard } = useFirestore(authUser);
+  const { getCard } = useCard(authUser);
   const {
     data: card,
     isLoading,
