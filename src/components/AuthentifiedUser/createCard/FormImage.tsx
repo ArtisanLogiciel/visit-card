@@ -1,12 +1,8 @@
 import { UserContext, UserContextProvider } from "@/Providers/usersProviders";
-import { useMutation } from "@tanstack/react-query";
-import {
-  getDownloadURL,
-  getStorage,
-  ref,
-  uploadBytesResumable,
-} from "firebase/storage";
-import React from "react";
+import ImageProfil from "@/components/ImageProfil";
+import useImageProfil from "@/hooks/useImageProfil";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import React, { useState } from "react";
 
 const FormImage = ({
   handleNext,
@@ -19,28 +15,32 @@ const FormImage = ({
     UserContext
   ) as UserContextProvider;
 
-  const uploadImage = async (file: File) => {
-    const metadata = {
-      contentType: "image/jpeg",
-    };
-    const storage = getStorage();
-    const storageRef = ref(storage, `images/card/${authUser?.uid}/profil.jpg`);
-    const uploadTask = uploadBytesResumable(storageRef, file, metadata);
-    getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-      console.log("File available at", downloadURL);
-    });
-  };
+
+
+  const { uploadImage , deleteImage} = useImageProfil(authUser);
+
+  const query = useQueryClient();
   const mutation = useMutation({
     mutationKey: ["image", "card", authUser?.uid],
     mutationFn: uploadImage,
+    
+    onSuccess: () => {
+      query.refetchQueries({ queryKey: ["image", "card", authUser?.uid] });
+      query.refetchQueries({
+        queryKey: ["image", "card", "isProfilEmpty", authUser?.uid],
+      });
+      
+
+    },
   });
+
+ 
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0].name.includes(".jpg")) {
       mutation.mutate(e.target.files[0]);
-    }
-    else {
-      throw new Error ("Invalid format")
+    } else {
+      throw new Error("Invalid format");
     }
   };
 
@@ -52,8 +52,12 @@ const FormImage = ({
     <div>
       <div className="container">
         <p>Seul les fichiers au format jpg sont acceptés</p>
+        <ImageProfil />
+        {mutation.isError? mutation.error.message:null}
+        {mutation.isSuccess?<p>Photo ajoutée</p>:null}
         <form>
           <input type="file" onChange={handleFileChange} />
+          
         </form>
         {mutation.isPending ? <p>Chargement</p> : null}
         {mutation.isError ? (

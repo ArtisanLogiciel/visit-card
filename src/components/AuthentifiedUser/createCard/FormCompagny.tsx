@@ -2,7 +2,7 @@ import { UserContext, UserContextProvider } from "@/Providers/usersProviders";
 import useCard from "@/hooks/useCards";
 import { CardCompagny, CardCompagnyFormSchema } from "@/types/card";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { QueryClient, useMutation, useQuery } from "@tanstack/react-query";
+import { QueryClient, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useContext } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import "./form.css";
@@ -21,7 +21,7 @@ const FormCompagny = ({
 
   const { getCard } = useCard(authUser);
 
-  const query = new QueryClient();
+  const query = useQueryClient();
   const { data: card, isLoading } = useQuery({
     queryKey: ["card"],
     queryFn: getCard,

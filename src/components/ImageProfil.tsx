@@ -1,28 +1,43 @@
 import { UserContext, UserContextProvider } from "@/Providers/usersProviders";
+import useImageProfil from "@/hooks/useImageProfil";
+import Person2Rounded from "@mui/icons-material/Person2Rounded";
+import { Avatar, Skeleton } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
-import { getDownloadURL, getStorage, ref } from "firebase/storage";
 import { useContext } from "react";
-
-const storage = getStorage();
 
 const ImageProfil = () => {
   const { authUser } = useContext<UserContextProvider | null>(
     UserContext
   ) as UserContextProvider;
 
-  const getImage = async () => {
-    return await getDownloadURL(
-      ref(storage, `images/card/${authUser?.uid}/profil.jpg`)
-    ).then((url) => url);
-  };
-  const { data, isError, isLoading, error } = useQuery({
+  const { getImage, isRepertoryEmpty } = useImageProfil(authUser);
+  const {
+    data: imageSource,
+    isError,
+    isLoading,
+    error,
+ 
+  } = useQuery({
     queryKey: ["image", "card", authUser?.uid],
     queryFn: getImage,
+    
   });
-  if (isLoading) return <p>Chargement</p>;
-  if (isError) return <p>error {import.meta.env.DEV ? error.message : null}</p>;
 
-  return <img src={data} className="rounded-full size-24" />;
+  const { data: isRepertoryProfilEmpty } = useQuery({
+    queryKey: ["image", "card", "isProfilEmpty", authUser?.uid],
+    queryFn: isRepertoryEmpty,
+  });
+
+  if (isRepertoryProfilEmpty)
+    return (
+      <Avatar>
+        <Person2Rounded />
+      </Avatar>
+    );
+  if (isLoading) return <Skeleton variant="rounded" animation="pulse" />;
+  if (!imageSource && isError)
+    return <p>error {import.meta.env.DEV ? error.message : null}</p>;
+  return <Avatar src={imageSource} />;
 };
 
 export default ImageProfil;

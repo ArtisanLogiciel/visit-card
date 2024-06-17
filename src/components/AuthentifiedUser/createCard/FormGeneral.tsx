@@ -6,7 +6,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useContext } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import useCard from "../../../hooks/useCards";
-// import UploadImage from "../UploadImage";
+
 import "./form.css";
 
 const FormGeneral = ({ handleNext }: { handleNext: () => void }) => {
@@ -52,7 +52,7 @@ const FormGeneral = ({ handleNext }: { handleNext: () => void }) => {
     <div className="container">
       <h1 className="">Informations générales</h1>
       <p>* : Saisie obligatoire</p>
-      {/* <UploadImage /> */}
+  
       <div className="mx-auto text-center"></div>
       <form onSubmit={handleSubmit(onSubmit)} className="form">
         <label htmlFor="firstname">Prénom *</label>
