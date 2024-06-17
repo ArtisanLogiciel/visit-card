@@ -3,7 +3,7 @@ import { Box, Tab, Tabs, Typography } from "@mui/material";
 import { SyntheticEvent, useState } from "react";
 import CardCompagny from "./CardCompagny";
 import CardContact from "./CardContact";
-import CardCGeneral from "./cardCGeneral";
+import CardGeneral from "./cardGeneral";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -66,7 +66,7 @@ const CardTabs = ({
         <Tab label={steps.contact} />
       </Tabs>
       <CustomTabPanel index={0} value={value}>
-        <CardCGeneral firstname={card?.firstname} lastname={card?.lastname} />
+        <CardGeneral firstname={card?.firstname} lastname={card?.lastname} />
       </CustomTabPanel>
       <CustomTabPanel index={1} value={value}>
         <CardCompagny

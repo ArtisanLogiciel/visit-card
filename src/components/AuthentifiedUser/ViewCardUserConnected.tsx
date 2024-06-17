@@ -2,6 +2,7 @@ import { UserContext, UserContextProvider } from "@/Providers/usersProviders";
 import useCard from "@/hooks/useCards";
 import { useQuery } from "@tanstack/react-query";
 import { useContext } from "react";
+import ImageProfil from "../ImageProfil";
 import CardTabs from "./card/CardTabs";
 
 const ViewCardUserConnected = () => {
@@ -22,6 +23,7 @@ const ViewCardUserConnected = () => {
       <div className="flex flex-col items-center justify-center text-center">
         <h1 className="text-4xl">Ma Carte de visite </h1>
         <div className="flex justify-center">
+     
           <CardTabs card={card} isLoading={isLoading} isError={isError} />
         </div>
       </div>

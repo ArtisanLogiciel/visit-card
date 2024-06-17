@@ -7,7 +7,6 @@ import { useContext } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import useCard from "../../../hooks/useCards";
 // import UploadImage from "../UploadImage";
-import ImageUpload from "@/components/elements/card/ImageUpload";
 import "./form.css";
 
 const FormGeneral = ({ handleNext }: { handleNext: () => void }) => {
@@ -54,20 +53,15 @@ const FormGeneral = ({ handleNext }: { handleNext: () => void }) => {
       <h1 className="">Informations générales</h1>
       <p>* : Saisie obligatoire</p>
       {/* <UploadImage /> */}
-      <div className="mx-auto text-center">
-        <ImageUpload />
-      </div>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <div className="mx-auto text-center"></div>
+      <form onSubmit={handleSubmit(onSubmit)} className="form">
         <label htmlFor="firstname">Prénom *</label>
         <input id="firstname" {...register("firstname", { required: true })} />
         {errors.firstname?.message && <p>{errors.firstname.message}</p>}
         <label id="lastname" htmlFor="lastname">
           Nom *
         </label>
-        <input
-          {...register("lastname", { required: true })}
-          className="input"
-        />
+        <input {...register("lastname", { required: true })} />
         {errors.lastname?.message && <p>{errors.lastname.message}</p>}
         <button type="submit">Etape suivante</button>
       </form>

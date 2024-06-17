@@ -2,7 +2,7 @@ import { CardContact as CardContactType } from "@/types/card";
 import EmailIcon from "@mui/icons-material/Email";
 import PhoneIcon from "@mui/icons-material/Phone";
 import SmartphoneIcon from "@mui/icons-material/Smartphone";
-import CardContainerTab from "./CardContainerTab";
+import CardContainerContact from "./CardContainerContact";
 
 type CardContactPartial = Partial<CardContactType>;
 
@@ -13,20 +13,20 @@ const CardContact = ({
 }: CardContactPartial) => {
   return (
     <div>
-      <CardContainerTab>
-        <p>
+      <CardContainerContact>
+        <div className="flex justify-start">
           <EmailIcon />
-          {email}
-        </p>
-        <p>
+          <span>{email}</span>
+        </div>
+        <div className="flex justify-start">
           <PhoneIcon />
-          {phoneDesktop ?? ""}
-        </p>
-        <p>
+          <span>{phoneDesktop ?? ""}</span>
+        </div>
+        <div className="flex justify-start">
           <SmartphoneIcon />
-          {phoneMobile ?? ""}
-        </p>
-      </CardContainerTab>
+          <span>{phoneMobile ?? ""}</span>
+        </div>
+      </CardContainerContact>
     </div>
   );
 };
