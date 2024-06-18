@@ -1,5 +1,6 @@
 import { User } from "firebase/auth";
 import {
+  UploadMetadata,
   deleteObject,
   getDownloadURL,
   getStorage,
@@ -23,8 +24,11 @@ const useImageProfil = (user: User | null) => {
   };
 
   const uploadImage = async (file: File) => {
-    if (!file.name.includes(".jpg")) throw new Error("Format invalide")
-       return await uploadBytes(profilRef, file);
+    const metaData: UploadMetadata = {
+      contentType: "image/jpeg",
+    };
+
+    return await uploadBytes(profilRef, file);
   };
 
   const isRepertoryEmpty = async () => {

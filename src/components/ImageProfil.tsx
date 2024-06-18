@@ -10,6 +10,8 @@ const ImageProfil = () => {
     UserContext
   ) as UserContextProvider;
 
+  const IMAGE_SIZE = 80
+
   const { getImage, isRepertoryEmpty } = useImageProfil(authUser);
   const {
     data: imageSource,
@@ -37,7 +39,7 @@ const ImageProfil = () => {
   if (isLoading) return <Skeleton variant="rounded" animation="pulse" />;
   if (!imageSource && isError)
     return <p>error {import.meta.env.DEV ? error.message : null}</p>;
-  return <Avatar src={imageSource} />;
+  return <Avatar src={imageSource} sx={{width:IMAGE_SIZE,height:IMAGE_SIZE}}/>;
 };
 
 export default ImageProfil;
