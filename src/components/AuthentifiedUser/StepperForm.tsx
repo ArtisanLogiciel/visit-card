@@ -5,6 +5,7 @@ import useSteps from "../../hooks/useStep";
 import FormCompagny from "./createCard/FormCompagny";
 import FormContact from "./createCard/FormContact";
 import FormGeneral from "./createCard/FormGeneral";
+import FormImage from "./createCard/FormImage";
 
 const StepperForm = () => {
   const { steps, activeStep, handleNext, handleBack } = useSteps();
@@ -27,9 +28,12 @@ const StepperForm = () => {
         </>
       ) : null}
       {activeStep === steps.length - (steps.length - 1) ? (
-        <FormCompagny handleNext={handleNext} handleBack={handleBack} />
+        <FormImage handleNext={handleNext} handleBack={handleBack} />
       ) : null}
       {activeStep === steps.length - (steps.length - 2) ? (
+        <FormCompagny handleNext={handleNext} handleBack={handleBack} />
+      ) : null}
+      {activeStep === steps.length - (steps.length - 3) ? (
         <FormContact handleBack={handleBack} />
       ) : null}
     </div>

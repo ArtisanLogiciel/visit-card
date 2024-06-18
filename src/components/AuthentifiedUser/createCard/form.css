@@ -12,7 +12,7 @@
   @apply border-black border-2 p-2
 }
 
-.container button{
+.container button , .container-buttons button{
   @apply bg-red-600 p-2 rounded-md mt-4
 }
 
@@ -21,3 +21,4 @@
 .container-buttons {
   @apply flex space-x-3 mt-5
 }
+

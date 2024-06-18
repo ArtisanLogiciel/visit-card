@@ -2,7 +2,7 @@ import { UserContext, UserContextProvider } from "@/Providers/usersProviders";
 import useCard from "@/hooks/useCards";
 import { CardCompagny, CardCompagnyFormSchema } from "@/types/card";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { QueryClient, useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useContext } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import "./form.css";
@@ -21,7 +21,7 @@ const FormCompagny = ({
 
   const { getCard } = useCard(authUser);
 
-  const query = new QueryClient();
+  const query = useQueryClient();
   const { data: card, isLoading } = useQuery({
     queryKey: ["card"],
     queryFn: getCard,
@@ -61,11 +61,15 @@ const FormCompagny = ({
       <p>* : Saisie obligatoire</p>
       <form onSubmit={handleSubmit(onSubmit)} className="form">
         <label htmlFor="compagny">Nom de l'entreprise *</label>
-        <input id="compagny" className="input" {...register("compagny", { required: true })} />
+        <input
+          id="compagny"
+          className="input"
+          {...register("compagny", { required: true })}
+        />
         {errors?.compagny && <p>{errors.compagny.message}</p>}
 
         <label htmlFor="country">Pays</label>
-        <input id="country "  {...register("country")} />
+        <input id="country " {...register("country")} />
         {errors?.country && <p>{errors.country.message}</p>}
 
         <label htmlFor="city">Ville</label>
@@ -75,7 +79,7 @@ const FormCompagny = ({
         <label htmlFor="address">Adresse</label>
         <input id="address" {...register("address")} />
         {errors?.address && <p>{errors.address.message}</p>}
-        <label htmlFor="zipcode" >zipcode</label>
+        <label htmlFor="zipcode">zipcode</label>
         <input id="zipcode" {...register("zipcode")} />
         {errors?.zipcode && <p>{errors.zipcode.message}</p>}
         <div className="container-buttons">

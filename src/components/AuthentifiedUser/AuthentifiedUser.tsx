@@ -1,6 +1,7 @@
 import AccountForm from "@/__tests__/authentifiedUser/AccountForm";
 import { Route, Routes } from "react-router-dom";
 import PageNotFound from "../PageNotFound";
+
 import Account from "./Account";
 import StepperForm from "./StepperForm";
 import ViewCardUserByEmail from "./ViewCardUserByEmail";
@@ -15,6 +16,7 @@ const AuthentifiedUser = () => {
       <Header />
       <Routes>
         <Route path="/" element={<Home />} />
+
         <Route path="/create-card" element={<StepperForm />} />
         <Route path="/display-my-card" element={<ViewCardUserConnected />} />
         <Route path="/display-card/:email" element={<ViewCardUserByEmail />} />
