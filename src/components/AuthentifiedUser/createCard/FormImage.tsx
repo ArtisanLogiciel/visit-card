@@ -1,7 +1,7 @@
 import { UserContext, UserContextProvider } from "@/Providers/usersProviders";
 import ImageProfil from "@/components/ImageProfil";
 import useImageProfil from "@/hooks/useImageProfil";
-import { CardImage, CardImageSchema } from "@/types/card";
+import CardImageSchema, { CardImage } from "@/types/storage/CardImage";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -61,12 +61,12 @@ const FormImage = ({
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const MAX_IMAGE_SIZE = 1 * 1024 * 1024;
     await mutation.reset();
-    clearErrors("image.filename");
+    clearErrors("filename");
     if (!e.target?.files?.[0]) return;
     else if (e.target.files[0].type !== "image/jpeg") {
-      setError("image.filename", { message: "Le format est invalide" });
+      setError("filename", { message: "Le format est invalide" });
     } else if (e.target.files[0].size > MAX_IMAGE_SIZE) {
-      setError("image.filename", {
+      setError("filename", {
         message: "La taille de l'image ne doit pas dépasser 1 Mo.",
       });
     } else {
@@ -80,7 +80,7 @@ const FormImage = ({
 
   const handleDelete = async () => {
     await mutation.reset();
-    clearErrors("image.filename");
+    clearErrors("filename");
     await deleteMutation.mutate();
     if (inputRef.current) {
       inputRef.current.value = "";
@@ -97,17 +97,17 @@ const FormImage = ({
           <label htmlFor="file">Photo de profil</label>
           <input
             id="file"
-            {...register("image.filename")}
+            {...register("filename")}
             type="file"
             onChange={handleFileChange}
-            onClick={() => clearErrors("image.filename")}
+            onClick={() => clearErrors("filename")}
             ref={inputRef}
           />
           <p className="p-2 m-2 font-bold border-2 border-red-500">
             Seuls les fichiers au format JPEG de moins de 1Mo sont acceptés
           </p>
-          {errors.image?.filename ? (
-            <p className="text-red-700">{errors.image.filename.message}</p>
+          {errors.filename ? (
+            <p className="text-red-700">{errors.filename.message}</p>
           ) : null}
 
           {!isProfilImageAbsent ? (

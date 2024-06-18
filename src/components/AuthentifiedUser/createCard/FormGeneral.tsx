@@ -46,13 +46,13 @@ const FormGeneral = ({ handleNext }: { handleNext: () => void }) => {
     mutation.mutate(data);
     handleNext();
   };
-  if (isLoading) return <Skeleton />;
+  if (isLoading) return <Skeleton variant="rectangular" />;
 
   return (
     <div className="container">
       <h1 className="">Informations générales</h1>
       <p>* : Saisie obligatoire</p>
-  
+
       <div className="mx-auto text-center"></div>
       <form onSubmit={handleSubmit(onSubmit)} className="form">
         <label htmlFor="firstname">Prénom *</label>

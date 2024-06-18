@@ -28,7 +28,7 @@ const useImageProfil = (user: User | null) => {
       contentType: "image/jpeg",
     };
 
-    return await uploadBytes(profilRef, file);
+    return await uploadBytes(profilRef, file, metaData);
   };
 
   const isRepertoryEmpty = async () => {

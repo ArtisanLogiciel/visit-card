@@ -67,20 +67,6 @@ const CardFormSchema = CardSchemaFirebase.extend({
   email: z.string().email({ message: "L'email est requis" }),
   phoneMobile: z.string().optional(),
   phoneDesktop: z.string().optional(),
-
-  image: z.object({
-    filename: z
-      .instanceof(File)
-      .refine(
-        (file?) => {
-          if (file) return file.type === "image/jpeg";
-        },
-        {
-          message: "Le fichier doit être au format JPEG",
-        }
-      )
-      .optional(),
-  }),
 });
 
 const CardGeneralSchema = CardFormSchema.pick({
@@ -108,9 +94,6 @@ const CardContactFormSchema = CardFormSchema.pick({
   phoneMobile: true,
 });
 
-const CardImageSchema = CardFormSchema.pick({ image: true });
-
-type CardImage = z.infer<typeof CardImageSchema>;
 type Card = z.infer<typeof CardFormSchema>;
 type CardGeneral = z.infer<typeof CardGeneralSchema>;
 type CardCompagny = z.infer<typeof CardCompagnyFormSchema>;
@@ -124,7 +107,6 @@ export {
   CardDesignFormSchema,
   CardFormSchema,
   CardGeneralSchema,
-  CardImageSchema,
   CardSchemaFirebase,
 };
 export type {
@@ -134,5 +116,4 @@ export type {
   CardDesign,
   CardFirebase,
   CardGeneral,
-  CardImage,
 };
