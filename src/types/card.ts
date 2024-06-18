@@ -16,22 +16,71 @@ const CardSchemaFirebase = z.object({
   textColor: z.string(),
 });
 
+const digitRegex = /\d/;
+
 const CardFormSchema = CardSchemaFirebase.extend({
-  firstname: z.string(),
+  firstname: z.string().refine((value) => !digitRegex.test(value), {
+    message: "Le prénom ne doit pas contenir de chiffres",
+  }),
   lastname: z
     .string()
-    .min(1, { message: "Doit contenir au moins 1 catactère" }),
-  compagny: z
+    .min(1, { message: "Le prénom doit contenir au moins 1 catactère" })
+    .refine((value) => !digitRegex.test(value), {
+      message: "Le nom de doit pas contenir de chiffres",
+    }),
+  compagny: z.string().min(1, {
+    message: "Le nom de l'entreprise doit contenir au moins 1 caractère",
+  }),
+  address: z
     .string()
-    .min(1, { message: "Doit contenir au moins 1 caractère" }),
-  address: z.string().optional(),
-  city: z.string().optional(),
-  zipcode: z.string().optional(),
-  country: z.string().optional(),
+    .optional()
+    .transform((value) => {
+      if (value) return value.toLowerCase();
+    }),
+  city: z
+    .string()
+    .optional()
+    .refine(
+      (value) => {
+        if (value) return !digitRegex.test(value);
+      },
+      { message: "La ville ne doit pas contenir de chiffres" }
+    ),
+  zipcode: z
+    .string()
+    .optional()
+    .refine(
+      (value) => {
+        if (value) return digitRegex.test(value);
+      },
+      { message: "Le zipcode doit contenir uniquement des chiffres" }
+    )
+    .transform((value) => {
+      if (value) return value.toLowerCase();
+    }),
+  country: z
+    .string()
+    .optional()
+    .refine((value) => {
+      if (value) return !digitRegex.test(value);
+    }),
   email: z.string().email({ message: "L'email est requis" }),
   phoneMobile: z.string().optional(),
   phoneDesktop: z.string().optional(),
-  avatarUrl: z.string().optional(),
+
+  image: z.object({
+    filename: z
+      .instanceof(File)
+      .refine(
+        (file?) => {
+          if (file) return file.type === "image/jpeg";
+        },
+        {
+          message: "Le fichier doit être au format JPEG",
+        }
+      )
+      .optional(),
+  }),
 });
 
 const CardGeneralSchema = CardFormSchema.pick({
@@ -59,6 +108,9 @@ const CardContactFormSchema = CardFormSchema.pick({
   phoneMobile: true,
 });
 
+const CardImageSchema = CardFormSchema.pick({ image: true });
+
+type CardImage = z.infer<typeof CardImageSchema>;
 type Card = z.infer<typeof CardFormSchema>;
 type CardGeneral = z.infer<typeof CardGeneralSchema>;
 type CardCompagny = z.infer<typeof CardCompagnyFormSchema>;
@@ -72,6 +124,7 @@ export {
   CardDesignFormSchema,
   CardFormSchema,
   CardGeneralSchema,
+  CardImageSchema,
   CardSchemaFirebase,
 };
 export type {
@@ -81,4 +134,5 @@ export type {
   CardDesign,
   CardFirebase,
   CardGeneral,
+  CardImage,
 };
