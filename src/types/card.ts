@@ -16,22 +16,57 @@ const CardSchemaFirebase = z.object({
   textColor: z.string(),
 });
 
+const digitRegex = /\d/;
+
 const CardFormSchema = CardSchemaFirebase.extend({
-  firstname: z.string(),
+  firstname: z.string().refine((value) => !digitRegex.test(value), {
+    message: "Le prénom ne doit pas contenir de chiffres",
+  }),
   lastname: z
     .string()
-    .min(1, { message: "Doit contenir au moins 1 catactère" }),
-  compagny: z
+    .min(1, { message: "Le prénom doit contenir au moins 1 catactère" })
+    .refine((value) => !digitRegex.test(value), {
+      message: "Le nom de doit pas contenir de chiffres",
+    }),
+  compagny: z.string().min(1, {
+    message: "Le nom de l'entreprise doit contenir au moins 1 caractère",
+  }),
+  address: z
     .string()
-    .min(1, { message: "Doit contenir au moins 1 caractère" }),
-  address: z.string().optional(),
-  city: z.string().optional(),
-  zipcode: z.string().optional(),
-  country: z.string().optional(),
+    .optional()
+    .transform((value) => {
+      if (value) return value.toLowerCase();
+    }),
+  city: z
+    .string()
+    .optional()
+    .refine(
+      (value) => {
+        if (value) return !digitRegex.test(value);
+      },
+      { message: "La ville ne doit pas contenir de chiffres" }
+    ),
+  zipcode: z
+    .string()
+    .optional()
+    .refine(
+      (value) => {
+        if (value) return digitRegex.test(value);
+      },
+      { message: "Le zipcode doit contenir uniquement des chiffres" }
+    )
+    .transform((value) => {
+      if (value) return value.toLowerCase();
+    }),
+  country: z
+    .string()
+    .optional()
+    .refine((value) => {
+      if (value) return !digitRegex.test(value);
+    }),
   email: z.string().email({ message: "L'email est requis" }),
   phoneMobile: z.string().optional(),
   phoneDesktop: z.string().optional(),
-  avatarUrl: z.string().optional(),
 });
 
 const CardGeneralSchema = CardFormSchema.pick({
