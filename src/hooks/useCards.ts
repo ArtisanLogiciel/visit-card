@@ -22,9 +22,9 @@ const useCard = (user: User | null) => {
     email: "",
     phoneDesktop: "",
     phoneMobile: "",
-    avatarUrl: "",
-    bgColor: "",
-    textColor: "",
+    job:""
+   
+   
   };
 
   const COLLECTION_CARDS_FIRESTORE = "cards";

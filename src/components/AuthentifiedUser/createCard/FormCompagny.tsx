@@ -52,6 +52,7 @@ const FormCompagny = ({
       city: card?.city,
       address: card?.address,
       zipcode: card?.zipcode,
+      job:card?.job
     },
   });
   if (isLoading) return <p>Loading...</p>;
@@ -67,7 +68,8 @@ const FormCompagny = ({
           {...register("compagny", { required: true })}
         />
         {errors?.compagny && <p>{errors.compagny.message}</p>}
-
+        <label>Votre poste</label>
+        <input id="job" className="input" {...register("job",{required:true})}/>
         <label htmlFor="country">Pays</label>
         <input id="country " {...register("country")} />
         {errors?.country && <p>{errors.country.message}</p>}

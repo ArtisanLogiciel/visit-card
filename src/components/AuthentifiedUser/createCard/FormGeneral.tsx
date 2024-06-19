@@ -38,12 +38,12 @@ const FormGeneral = ({ handleNext }: { handleNext: () => void }) => {
     defaultValues: {
       firstname: card?.firstname,
       lastname: card?.lastname,
-      avatarUrl: card?.avatarUrl,
+  
     },
   });
 
   const onSubmit: SubmitHandler<CardGeneral> = async (data) => {
-    mutation.mutate(data);
+    await mutation.mutate(data);
     handleNext();
   };
   if (isLoading) return <Skeleton variant="rectangular" />;
@@ -51,7 +51,7 @@ const FormGeneral = ({ handleNext }: { handleNext: () => void }) => {
   return (
     <div className="container">
       <h1 className="">Informations générales</h1>
-      <p>* : Saisie obligatoire</p>
+      <p className="">* : Saisie obligatoire</p>
 
       <div className="mx-auto text-center"></div>
       <form onSubmit={handleSubmit(onSubmit)} className="form">

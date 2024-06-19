@@ -4,6 +4,7 @@ const CardSchemaFirebase = z.object({
   firstname: z.string(),
   lastname: z.string(),
   compagny: z.string(),
+  job:z.string(),
   address: z.string(),
   city: z.string(),
   zipcode: z.string(),
@@ -11,9 +12,6 @@ const CardSchemaFirebase = z.object({
   email: z.string().email().or(z.literal("")),
   phoneMobile: z.string(),
   phoneDesktop: z.string(),
-  avatarUrl: z.string(),
-  bgColor: z.string(),
-  textColor: z.string(),
 });
 
 const digitRegex = /\d/;
@@ -29,6 +27,9 @@ const CardFormSchema = CardSchemaFirebase.extend({
       message: "Le nom de doit pas contenir de chiffres",
     }),
   compagny: z.string().min(1, {
+    message: "Le nom de l'entreprise doit contenir au moins 1 caractère",
+  }),
+  job: z.string().min(1, {
     message: "Le nom de l'entreprise doit contenir au moins 1 caractère",
   }),
   address: z
@@ -72,7 +73,7 @@ const CardFormSchema = CardSchemaFirebase.extend({
 const CardGeneralSchema = CardFormSchema.pick({
   firstname: true,
   lastname: true,
-  avatarUrl: true,
+ 
 });
 
 const CardCompagnyFormSchema = CardFormSchema.pick({
@@ -81,12 +82,10 @@ const CardCompagnyFormSchema = CardFormSchema.pick({
   address: true,
   country: true,
   zipcode: true,
+  job:true
 });
 
-const CardDesignFormSchema = CardFormSchema.pick({
-  textColor: true,
-  bgColor: true,
-});
+
 
 const CardContactFormSchema = CardFormSchema.pick({
   email: true,
@@ -98,13 +97,13 @@ type Card = z.infer<typeof CardFormSchema>;
 type CardGeneral = z.infer<typeof CardGeneralSchema>;
 type CardCompagny = z.infer<typeof CardCompagnyFormSchema>;
 type CardContact = z.infer<typeof CardContactFormSchema>;
-type CardDesign = z.infer<typeof CardDesignFormSchema>;
+
 type CardFirebase = z.infer<typeof CardSchemaFirebase>;
 
 export {
   CardCompagnyFormSchema,
   CardContactFormSchema,
-  CardDesignFormSchema,
+
   CardFormSchema,
   CardGeneralSchema,
   CardSchemaFirebase,
@@ -113,7 +112,7 @@ export type {
   Card,
   CardCompagny,
   CardContact,
-  CardDesign,
+
   CardFirebase,
   CardGeneral,
 };
