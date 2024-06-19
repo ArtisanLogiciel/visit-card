@@ -1,18 +1,20 @@
 import { UserContext, UserContextProvider } from "@/Providers/usersProviders";
 import useCard from "@/hooks/useCards";
-import { CardCompagny, CardCompagnyFormSchema } from "@/types/card";
+import { Card, CardCompagny, CardCompagnyFormSchema } from "@/types/card";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useContext } from "react";
+import { MutableRefObject, useContext } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import "./form.css";
 
 const FormCompagny = ({
   handleNext,
   handleBack,
+  cardRef
 }: {
   handleNext: () => void;
   handleBack: () => void;
+  cardRef:MutableRefObject<Card>
 }) => {
   const { authUser } = useContext<UserContextProvider | null>(
     UserContext
@@ -35,8 +37,8 @@ const FormCompagny = ({
     },
   });
 
-  const onSubmit: SubmitHandler<CardCompagny> = async (data) => {
-    mutation.mutate(data);
+  const onSubmit: SubmitHandler<CardCompagny> =  (data) => {
+    cardRef.current={...cardRef.current,...data}
     handleNext();
   };
 

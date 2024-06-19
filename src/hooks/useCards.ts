@@ -22,9 +22,7 @@ const useCard = (user: User | null) => {
     email: "",
     phoneDesktop: "",
     phoneMobile: "",
-    job:""
-   
-   
+    job: "",
   };
 
   const COLLECTION_CARDS_FIRESTORE = "cards";
@@ -74,11 +72,9 @@ const useCard = (user: User | null) => {
       throw new Error("la carte n'existe pas");
     }
   };
-  const deleteCard = async () => {
-    if (!user?.email) return;
-    const docRef = doc(database, COLLECTION_CARDS_FIRESTORE, user?.uid);
-    await deleteDoc(docRef);
-  };
+
+  const cardQueryKey = ["card", user?.uid];
+  const cardMutationKey = ["card", user?.uid];
 
   return {
     createEmptyCard,
@@ -86,7 +82,8 @@ const useCard = (user: User | null) => {
     checkCardCreated,
     updateCard,
     getCard,
-    deleteCard,
+    cardMutationKey,
+    cardQueryKey,
   };
 };
 

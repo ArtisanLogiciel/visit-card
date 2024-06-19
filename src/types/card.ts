@@ -70,6 +70,8 @@ const CardFormSchema = CardSchemaFirebase.extend({
   phoneDesktop: z.string().optional(),
 });
 
+
+
 const CardGeneralSchema = CardFormSchema.pick({
   firstname: true,
   lastname: true,

@@ -1,15 +1,87 @@
+import { UserContext, UserContextProvider } from "@/Providers/usersProviders";
+import useCard from "@/hooks/useCards";
+import useImageProfil from "@/hooks/useImageProfil";
+import { Card } from "@/types/card";
 import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
 import Stepper from "@mui/material/Stepper";
+import { useQuery } from "@tanstack/react-query";
+import { useContext, useEffect, useRef, useState } from "react";
 import useSteps from "../../hooks/useStep";
 import FormCompagny from "./createCard/FormCompagny";
 import FormContact from "./createCard/FormContact";
 import FormGeneral from "./createCard/FormGeneral";
 import FormImage from "./createCard/FormImage";
+import Skeleton from "@mui/material/Skeleton";
 
 const StepperForm = () => {
   const { steps, activeStep, handleNext, handleBack } = useSteps();
 
+  const { authUser } = useContext<UserContextProvider | null>(
+    UserContext
+  ) as UserContextProvider;
+
+  const {
+    getImage,
+    downloadImage,
+    imageURLMutationKey,
+    imageURLQueryKey,
+    fileQueryKey,
+    fileMutationKey,
+  } = useImageProfil(authUser);
+  const { getCard, cardQueryKey } = useCard(authUser);
+
+  const {
+    data: cardQuery,
+    isSuccess: isSuccessCard,
+    isLoading,
+  } = useQuery({
+    queryKey: cardQueryKey,
+    queryFn: getCard,
+  });
+  const { data: imageURLQuery } = useQuery({
+    queryKey: imageURLQueryKey,
+    queryFn: getImage,
+  });
+  const fileRef = useRef<File | null>(null);
+
+  const cardRef = useRef<Card>({
+    firstname: "",
+    job: "",
+    lastname: "",
+    compagny: "",
+    address: "",
+    city: "",
+    zipcode: "",
+    country: "",
+    email: "",
+    phoneDesktop: "",
+    phoneMobile: "",
+  });
+
+  const updateCardRef = (data: Partial<Card>) => {
+    cardRef.current = { ...cardRef.current, ...data };
+  };
+
+  const { data: fileQuery, isSuccess: isFileSuccess } = useQuery({
+    queryKey: fileQueryKey,
+    queryFn: () => downloadImage(imageURLQuery),
+  });
+
+  const [state,setState]=useState(0)
+
+  useEffect(() => {
+    
+    if (cardQuery) {
+      cardRef.current = { ...cardQuery };
+      setState(state+1)
+    }
+    if (fileQuery && isFileSuccess) fileRef.current = fileQuery;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [cardQuery, fileQuery, isSuccessCard, isFileSuccess]);
+
+
+  if (isLoading) return <Skeleton/>;
   return (
     <div className="flex flex-col mt-4">
       <Stepper activeStep={activeStep}>
@@ -24,17 +96,33 @@ const StepperForm = () => {
 
       {activeStep === steps.length - steps.length ? (
         <>
-          <FormGeneral handleNext={handleNext} />
+          <FormGeneral
+            handleNext={handleNext}
+            cardRef={cardRef}
+            updateCardRef={updateCardRef}
+          />
         </>
       ) : null}
       {activeStep === steps.length - (steps.length - 1) ? (
-        <FormImage handleNext={handleNext} handleBack={handleBack} />
+        <FormImage
+          handleNext={handleNext}
+          handleBack={handleBack}
+          fileRef={fileRef}
+        />
       ) : null}
       {activeStep === steps.length - (steps.length - 2) ? (
-        <FormCompagny handleNext={handleNext} handleBack={handleBack} />
+        <FormCompagny
+          handleNext={handleNext}
+          handleBack={handleBack}
+          cardRef={cardRef}
+        />
       ) : null}
       {activeStep === steps.length - (steps.length - 3) ? (
-        <FormContact handleBack={handleBack} />
+        <FormContact
+          handleBack={handleBack}
+          cardRef={cardRef}
+          fileRef={fileRef}
+        />
       ) : null}
     </div>
   );

@@ -1,35 +1,49 @@
 import { UserContext, UserContextProvider } from "@/Providers/usersProviders";
 import useCard from "@/hooks/useCards";
-import { CardContact, CardContactFormSchema } from "@/types/card";
+import useImageProfil from "@/hooks/useImageProfil";
+import { Card, CardContact, CardContactFormSchema } from "@/types/card";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Skeleton } from "@mui/material";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useContext } from "react";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { MutableRefObject, useContext } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import "./form.css";
 
-const FormContact = ({ handleBack }: { handleBack: () => void }) => {
+const FormContact = ({
+  handleBack,
+  cardRef,
+  fileRef,
+}: {
+  handleBack: () => void;
+  cardRef: MutableRefObject<Card>;
+  fileRef: MutableRefObject<File | null>;
+}) => {
   const navigate = useNavigate();
   const { authUser } = useContext<UserContextProvider | null>(
     UserContext
   ) as UserContextProvider;
-  const { updateCard } = useCard(authUser);
-
-  const { getCard } = useCard(authUser);
+  const { uploadImage , fileMutationKey,fileQueryKey,imageURLQueryKey } = useImageProfil(authUser);
 
   const query = useQueryClient();
-  const { data: card, isLoading } = useQuery({
-    queryKey: ["card"],
-    queryFn: getCard,
+  
+  const imageMutation = useMutation({
+    mutationKey: fileMutationKey,
+    mutationFn: uploadImage,
+    onSuccess:()=>{
+      query.invalidateQueries({queryKey:imageURLQueryKey})
+      query.invalidateQueries({queryKey:fileQueryKey})
+    }
   });
-  const mutation = useMutation({
-    mutationKey: ["card"],
+  const { updateCard , cardMutationKey, cardQueryKey} = useCard(authUser);
+
+  const dataMutation = useMutation({
+    mutationKey: cardMutationKey,
     mutationFn: updateCard,
     onSuccess: () => {
-      query.invalidateQueries({ queryKey: ["card"] });
+      query.invalidateQueries({queryKey:cardQueryKey})
     },
   });
+
   const {
     register,
     handleSubmit,
@@ -37,17 +51,23 @@ const FormContact = ({ handleBack }: { handleBack: () => void }) => {
   } = useForm<CardContact>({
     resolver: zodResolver(CardContactFormSchema),
     defaultValues: {
-      email: card?.email,
-      phoneDesktop: card?.phoneDesktop,
-      phoneMobile: card?.phoneMobile,
+      email: cardRef.current.email,
+      phoneDesktop: cardRef.current.phoneDesktop,
+      phoneMobile: cardRef.current.phoneMobile,
     },
   });
 
   const onSubmit: SubmitHandler<CardContact> = async (data) => {
-    mutation.mutate(data);
-    navigate("/");
-  };
-  if (isLoading) return <Skeleton />;
+    cardRef.current={...cardRef.current,...data}
+    if (fileRef.current) await imageMutation.mutate(fileRef.current);
+    await dataMutation.mutate(cardRef.current)
+    navigate("/")
+  }
+    
+ 
+
+
+  
   return (
     <div>
       <h1>Vos coordonnées</h1>
@@ -64,7 +84,7 @@ const FormContact = ({ handleBack }: { handleBack: () => void }) => {
         {errors?.phoneMobile && <p>{errors.phoneMobile.message}</p>}
         <div className="container-buttons ">
           <button onClick={handleBack}>Précédent</button>
-          <button type="submit">Terminer</button>
+          <button type="submit">Sauvegarder</button>
         </div>
       </form>
     </div>
