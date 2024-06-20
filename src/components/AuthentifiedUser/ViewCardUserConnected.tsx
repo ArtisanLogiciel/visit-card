@@ -1,6 +1,5 @@
 import { UserContext, UserContextProvider } from "@/Providers/usersProviders";
-import useCard from "@/hooks/useCards";
-import useImageProfil from "@/hooks/useImageProfil";
+import useCard from "@/hooks/useCard";
 import { useQuery } from "@tanstack/react-query";
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
@@ -32,7 +31,7 @@ const ViewCardUserConnected = () => {
         <div className="flex flex-col justify-center">
           <CardTabs card={card} isLoading={isLoading} isError={isError} />
           <button
-            className="bg-blue-700 text-white p-2 rounded-lg hover:bg-blue-500 transition-all duration-150 ease-out"
+            className="p-2 text-white transition-all duration-150 ease-out bg-blue-700 rounded-lg hover:bg-blue-500"
             onClick={handleDeleteCard}
           >
             Supprimer la carte

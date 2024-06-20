@@ -3,19 +3,19 @@ import { useQuery } from "@tanstack/react-query";
 import { Link, useParams } from "react-router-dom";
 import CardTabs from "./card/CardTabs";
 
-import useCard from "@/hooks/useCards";
+import useCard from "@/hooks/useCard";
 import { getStorage, list, ref } from "firebase/storage";
 import { useState } from "react";
 
 const ViewCardUserByEmail = () => {
-  const { id } = useParams<{ id: string }>();
+  const { email } = useParams<{ email: string }>();
   const [showImage, setShowImage] = useState<object | null | string>(null);
-  const idQuery = id ?? "";
+  const emailQuery = email ?? "";
 
   async function displayImage() {
     // Create a reference under which you want to list
     const storage = getStorage();
-    const listRef = ref(storage, `files/${idQuery}/`);
+    const listRef = ref(storage, `files/${emailQuery}/`);
 
     // Fetch the first page of 100.
     const image = await list(listRef, { maxResults: 1 });
@@ -28,14 +28,14 @@ const ViewCardUserByEmail = () => {
     .catch((error) => {
       console.error("Erreur lors de l'affichage de l'image:", error);
     });
-  const { getCardById } = useCard(null);
+  const { getCardByEmail } = useCard(null);
   const {
     data: card,
     isLoading,
     isError,
   } = useQuery({
-    queryKey: [`card/${idQuery}`],
-    queryFn: () => getCardById(idQuery),
+    queryKey: [`card/${emailQuery}`],
+    queryFn: () => getCardByEmail(emailQuery),
   });
   if (isLoading) return <Skeleton />;
   if (!card) return <p>Pas de carte de visite</p>;

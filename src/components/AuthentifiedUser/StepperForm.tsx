@@ -1,18 +1,18 @@
 import { UserContext, UserContextProvider } from "@/Providers/usersProviders";
-import useCard from "@/hooks/useCards";
+import useCard from "@/hooks/useCard";
 import useImageProfil from "@/hooks/useImageProfil";
 import { Card } from "@/types/card";
+import Skeleton from "@mui/material/Skeleton";
 import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
 import Stepper from "@mui/material/Stepper";
 import { useQuery } from "@tanstack/react-query";
-import { useContext, useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef } from "react";
 import useSteps from "../../hooks/useStep";
 import FormCompagny from "./createCard/FormCompagny";
 import FormContact from "./createCard/FormContact";
 import FormGeneral from "./createCard/FormGeneral";
 import FormImage from "./createCard/FormImage";
-import Skeleton from "@mui/material/Skeleton";
 
 const StepperForm = () => {
   const { steps, activeStep, handleNext, handleBack } = useSteps();
@@ -24,10 +24,9 @@ const StepperForm = () => {
   const {
     getImage,
     downloadImage,
-    imageURLMutationKey,
+
     imageURLQueryKey,
     fileQueryKey,
-    fileMutationKey,
   } = useImageProfil(authUser);
   const { getCard, cardQueryKey } = useCard(authUser);
 
@@ -50,13 +49,8 @@ const StepperForm = () => {
     job: "",
     lastname: "",
     compagny: "",
-    address: "",
-    city: "",
-    zipcode: "",
-    country: "",
+
     email: "",
-    phoneDesktop: "",
-    phoneMobile: "",
   });
 
   const updateCardRef = (data: Partial<Card>) => {
@@ -68,20 +62,15 @@ const StepperForm = () => {
     queryFn: () => downloadImage(imageURLQuery),
   });
 
-  const [state,setState]=useState(0)
-
   useEffect(() => {
-    
     if (cardQuery) {
       cardRef.current = { ...cardQuery };
-      setState(state+1)
     }
     if (fileQuery && isFileSuccess) fileRef.current = fileQuery;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cardQuery, fileQuery, isSuccessCard, isFileSuccess]);
 
-
-  if (isLoading) return <Skeleton/>;
+  if (isLoading) return <Skeleton />;
   return (
     <div className="flex flex-col mt-4">
       <Stepper activeStep={activeStep}>

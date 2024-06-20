@@ -1,5 +1,5 @@
 import { UserContext, UserContextProvider } from "@/Providers/usersProviders";
-import useCard from "@/hooks/useCards";
+import useCard from "@/hooks/useCard";
 import useImageProfil from "@/hooks/useImageProfil";
 import { Card, CardContact, CardContactFormSchema } from "@/types/card";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -19,28 +19,36 @@ const FormContact = ({
   fileRef: MutableRefObject<File | null>;
 }) => {
   const navigate = useNavigate();
+
+  const query = useQueryClient();
   const { authUser } = useContext<UserContextProvider | null>(
     UserContext
   ) as UserContextProvider;
-  const { uploadImage , fileMutationKey,fileQueryKey,imageURLQueryKey } = useImageProfil(authUser);
 
-  const query = useQueryClient();
-  
+  const { uploadImage, fileMutationKey, fileQueryKey, imageURLQueryKey } =
+    useImageProfil(authUser);
+
+  const {
+    cardMutationKey,
+    cardQueryKey,
+
+    editCard,
+  } = useCard(authUser);
+
   const imageMutation = useMutation({
     mutationKey: fileMutationKey,
     mutationFn: uploadImage,
-    onSuccess:()=>{
-      query.invalidateQueries({queryKey:imageURLQueryKey})
-      query.invalidateQueries({queryKey:fileQueryKey})
-    }
-  });
-  const { updateCard , cardMutationKey, cardQueryKey} = useCard(authUser);
-
-  const dataMutation = useMutation({
-    mutationKey: cardMutationKey,
-    mutationFn: updateCard,
     onSuccess: () => {
-      query.invalidateQueries({queryKey:cardQueryKey})
+      query.invalidateQueries({ queryKey: imageURLQueryKey });
+      query.invalidateQueries({ queryKey: fileQueryKey });
+    },
+  });
+
+  const cardMutation = useMutation({
+    mutationKey: cardMutationKey,
+    mutationFn: editCard,
+    onSuccess: () => {
+      query.invalidateQueries({ queryKey: cardQueryKey });
     },
   });
 
@@ -50,29 +58,29 @@ const FormContact = ({
     formState: { errors },
   } = useForm<CardContact>({
     resolver: zodResolver(CardContactFormSchema),
-    defaultValues: {
-      email: cardRef.current.email,
-      phoneDesktop: cardRef.current.phoneDesktop,
-      phoneMobile: cardRef.current.phoneMobile,
-    },
+    defaultValues: async () =>
+      new Promise((resolve) => {
+        return resolve({
+          email: cardRef.current.email,
+          phoneDesktop: cardRef.current.phoneDesktop,
+          phoneMobile: cardRef.current.phoneMobile,
+        });
+      }),
   });
 
   const onSubmit: SubmitHandler<CardContact> = async (data) => {
-    cardRef.current={...cardRef.current,...data}
+    console.log(data)
+    cardRef.current = { ...cardRef.current, ...data };
     if (fileRef.current) await imageMutation.mutate(fileRef.current);
-    await dataMutation.mutate(cardRef.current)
-    navigate("/")
-  }
-    
- 
+    cardMutation.mutate(cardRef.current);
+    navigate("/");
+  };
 
-
-  
   return (
     <div>
       <h1>Vos coordonnées</h1>
       <form onSubmit={handleSubmit(onSubmit)} className="form">
-        <label htmlFor="email">Email professionel</label>
+        <label htmlFor="email">Email professionel *</label>
         <input id="email" {...register("email", { required: true })} />
 
         {errors?.email && <p>{errors.email.message}</p>}

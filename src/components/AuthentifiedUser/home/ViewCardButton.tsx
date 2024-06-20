@@ -1,5 +1,5 @@
 import { UserContext, UserContextProvider } from "@/Providers/usersProviders";
-import useCard from "@/hooks/useCards";
+import useCard from "@/hooks/useCard";
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
 import { Link } from "react-router-dom";

@@ -20,10 +20,7 @@ const FormGeneral = ({
     formState: { errors },
   } = useForm<CardGeneral>({
     resolver: zodResolver(CardGeneralSchema),
-    // defaultValues: {
-    //   firstname: cardRef.current.firstname,
-    //   lastname: cardRef.current.lastname,
-    // },
+    
     defaultValues: async () => await
       new Promise((resolve) =>
         resolve({
@@ -38,7 +35,7 @@ const FormGeneral = ({
     handleNext();
   };
 
-  console.log(cardRef.current.firstname);
+ 
 
   return (
     <div className="container">

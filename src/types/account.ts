@@ -11,6 +11,7 @@ const AccountSchema = z.object({
   dateSignUp: z
     .instanceof(Timestamp)
     .transform((date) => date.toDate().toLocaleDateString()),
+  cartId:z.string().optional()  
 });
 
 type Account = z.infer<typeof AccountSchema>;

@@ -4,7 +4,7 @@ const CardSchemaFirebase = z.object({
   firstname: z.string(),
   lastname: z.string(),
   compagny: z.string(),
-  job:z.string(),
+  job: z.string(),
   address: z.string(),
   city: z.string(),
   zipcode: z.string(),
@@ -29,13 +29,19 @@ const CardFormSchema = CardSchemaFirebase.extend({
   compagny: z.string().min(1, {
     message: "Le nom de l'entreprise doit contenir au moins 1 caractère",
   }),
-  job: z.string().min(1, {
-    message: "Le nom de l'entreprise doit contenir au moins 1 caractère",
-  }),
+  job: z
+    .string()
+    .min(1, {
+      message: "Le nom de l'entreprise doit contenir au moins 1 caractère",
+    })
+    .transform((value) => {
+      if (value) return value.toLowerCase();
+    }),
   address: z
     .string()
     .optional()
     .transform((value) => {
+      if (!value) return;
       if (value) return value.toLowerCase();
     }),
   city: z
@@ -43,26 +49,21 @@ const CardFormSchema = CardSchemaFirebase.extend({
     .optional()
     .refine(
       (value) => {
+        if (!value) return true;
         if (value) return !digitRegex.test(value);
       },
       { message: "La ville ne doit pas contenir de chiffres" }
-    ),
-  zipcode: z
-    .string()
-    .optional()
-    .refine(
-      (value) => {
-        if (value) return digitRegex.test(value);
-      },
-      { message: "Le zipcode doit contenir uniquement des chiffres" }
     )
     .transform((value) => {
+      if (!value) return;
       if (value) return value.toLowerCase();
     }),
+  zipcode: z.string().optional(),
   country: z
     .string()
     .optional()
     .refine((value) => {
+      if (!value) return true;
       if (value) return !digitRegex.test(value);
     }),
   email: z.string().email({ message: "L'email est requis" }),
@@ -70,24 +71,19 @@ const CardFormSchema = CardSchemaFirebase.extend({
   phoneDesktop: z.string().optional(),
 });
 
-
-
 const CardGeneralSchema = CardFormSchema.pick({
   firstname: true,
   lastname: true,
- 
 });
 
 const CardCompagnyFormSchema = CardFormSchema.pick({
   compagny: true,
+  job: true,
   city: true,
   address: true,
   country: true,
   zipcode: true,
-  job:true
 });
-
-
 
 const CardContactFormSchema = CardFormSchema.pick({
   email: true,
@@ -105,16 +101,8 @@ type CardFirebase = z.infer<typeof CardSchemaFirebase>;
 export {
   CardCompagnyFormSchema,
   CardContactFormSchema,
-
   CardFormSchema,
   CardGeneralSchema,
   CardSchemaFirebase,
 };
-export type {
-  Card,
-  CardCompagny,
-  CardContact,
-
-  CardFirebase,
-  CardGeneral,
-};
+export type { Card, CardCompagny, CardContact, CardFirebase, CardGeneral };
