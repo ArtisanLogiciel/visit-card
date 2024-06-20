@@ -2,9 +2,10 @@ import AccountForm from "@/__tests__/authentifiedUser/AccountForm";
 import { Route, Routes } from "react-router-dom";
 import PageNotFound from "../PageNotFound";
 
+import DeleteCard from "../AuthentifiedUser/DeletedCard";
 import Account from "./Account";
 import StepperForm from "./StepperForm";
-import ViewCardUserByEmail from "./ViewCardUserByEmail";
+import ViewCardUserByEmail from "./ViewCardUserById";
 import ViewCardUserConnected from "./ViewCardUserConnected";
 import Header from "./createCard/header/Header";
 import Home from "./home/Home";
@@ -23,6 +24,7 @@ const AuthentifiedUser = () => {
         <Route path="/display-qrcode" element={<DisplayQrCode />} />
         <Route path="/account" element={<Account />} />
         <Route path="/account/update" element={<AccountForm />} />
+        <Route path="/delete-card" element={<DeleteCard />} />
         <Route path="*" element={<PageNotFound />} />
       </Routes>
     </div>
