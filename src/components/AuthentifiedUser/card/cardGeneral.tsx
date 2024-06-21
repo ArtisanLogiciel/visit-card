@@ -13,12 +13,7 @@ const CardGeneral = ({ firstname, lastname }: CardGeneralPartial) => {
   ) as UserContextProvider;
   const { getImageURLSourceImage, imageURLQueryKey } = useImageProfil(authUser);
 
-  const {
-    data: url,
-    isLoading,
-    error,
-    isError,
-  } = useQuery({
+  const { data: url } = useQuery({
     queryKey: imageURLQueryKey,
     queryFn: getImageURLSourceImage,
   });

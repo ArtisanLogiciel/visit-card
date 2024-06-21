@@ -23,7 +23,7 @@ const StepperForm = () => {
 
   const {
     data: cardQuery,
-    isSuccess: isSuccessCard,
+
     isLoading,
     isError,
     error,

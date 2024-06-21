@@ -33,7 +33,7 @@ const FormImage = ({
 
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const { data: imageSource, isSuccess } = useQuery({
+  const { data: imageSource } = useQuery({
     queryKey: imageURLQueryKey,
     queryFn: getImageURLSourceImage,
   });

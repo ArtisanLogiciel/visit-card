@@ -7,9 +7,7 @@ import useAccount from "./useAccount";
 
 const useCard = (user: User | null) => {
   const COLLECTION_CARDS_FIRESTORE = "cards";
-  const COLLECTION_USERS_FIRESTORE = "users";
 
-  
   const { getCardId, createCardId } = useAccount(user);
 
   const editCard = async (data: CardFirebase) => {
@@ -77,7 +75,6 @@ const useCard = (user: User | null) => {
     editCard,
     getCardById,
     isCardCreated,
-
     getCard,
     cardMutationKey,
     cardQueryKey,

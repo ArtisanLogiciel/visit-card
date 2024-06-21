@@ -1,4 +1,8 @@
-import { Card, CardCompagny, CardCompagnyFormSchema, CardFirebase } from "@/types/card";
+import {
+  CardCompagny,
+  CardCompagnyFormSchema,
+  CardFirebase,
+} from "@/types/card";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { MutableRefObject } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -44,17 +48,16 @@ const FormCompagny = ({
     country,
     job,
     zipcode,
-    city
+    city,
   }: CardCompagny) => {
     cardRef.current = {
       ...cardRef.current,
       compagny,
-      address:address??null,
-      country:country??null,
-      job:job??null,
-      zipcode:zipcode??null,
-      city:city??null
-      
+      address: address ?? null,
+      country: country ?? null,
+      job: job ?? null,
+      zipcode: zipcode ?? null,
+      city: city ?? null,
     };
 
     handleNext();
