@@ -9,7 +9,7 @@ const ViewCardButton = () => {
     UserContext
   ) as UserContextProvider;
 
-  const { checkCardCreated } = useCard(authUser);
+  const { isCardCreated:isCardCreactedFunction , isCardCreatedQueryKey} = useCard(authUser);
 
   const {
     data: isCardCreated,
@@ -17,7 +17,7 @@ const ViewCardButton = () => {
     isLoading,
     isSuccess,
     error,
-  } = useQuery({ queryKey: ["isCardCreated"], queryFn: checkCardCreated });
+  } = useQuery({ queryKey: isCardCreatedQueryKey, queryFn: isCardCreactedFunction });
 
   const displayViewCardButton = isCardCreated ? (
     <Link to={"/display-my-card"}>

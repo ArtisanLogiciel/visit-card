@@ -1,7 +1,11 @@
+import { UserContext, UserContextProvider } from "@/Providers/usersProviders";
+import useImageProfil from "@/hooks/useImageProfil";
 import CardImageSchema, { CardImage } from "@/types/storage/CardImage";
 
+import ImageProfil from "@/components/ImageProfil";
 import { zodResolver } from "@hookform/resolvers/zod";
-import React, { MutableRefObject, useRef } from "react";
+import { useQuery } from "@tanstack/react-query";
+import React, { MutableRefObject, useContext, useRef } from "react";
 import { useForm } from "react-hook-form";
 
 const FormImage = ({
@@ -21,8 +25,18 @@ const FormImage = ({
     clearErrors,
   } = useForm<CardImage>({ resolver: zodResolver(CardImageSchema) });
 
+  const { authUser } = useContext<UserContextProvider | null>(
+    UserContext
+  ) as UserContextProvider;
+
+  const { getImageURLSourceImage, imageURLQueryKey } = useImageProfil(authUser);
+
   const inputRef = useRef<HTMLInputElement>(null);
-  console.log("firef",fileRef.current);
+
+  const { data: imageSource, isSuccess } = useQuery({
+    queryKey: imageURLQueryKey,
+    queryFn: getImageURLSourceImage,
+  });
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const MAX_IMAGE_SIZE = 1 * 1024 * 1024;
@@ -55,7 +69,11 @@ const FormImage = ({
   return (
     <div>
       <div className="container">
-        {/* <ImageProfil fileRef={} /> */}
+        {imageSource && !fileRef.current ? (
+          <ImageProfil url={imageSource} size={80} />
+        ) : (
+          <ImageProfil size={80} file={fileRef.current} />
+        )}
 
         <form>
           <label htmlFor="file">Photo de profil</label>

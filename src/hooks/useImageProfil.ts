@@ -2,62 +2,108 @@ import { User } from "firebase/auth";
 import {
   UploadMetadata,
   deleteObject,
+  getBlob,
   getDownloadURL,
   getStorage,
-  listAll,
   ref,
   uploadBytes,
 } from "firebase/storage";
+import useAccount from "./useAccount";
+
+const imagePath = "images/card";
+const storage = getStorage();
 
 const useImageProfil = (user: User | null) => {
-  const pathImage = `images/card/${user?.uid}/profil.jpg`;
-  const storage = getStorage();
-  const profilRef = ref(storage, pathImage);
+  const { getCardId } = useAccount(user);
 
-  const getImage = async () => {
+  const imageName = "profil.jpg";
+
+  const getImagePathStorage = async () => {
+    const cardId = await getCardId();
+
+    if (!cardId) return null;
+    return `${imagePath}/${cardId}`;
+  };
+
+  const getImageURLStorage = async () => {
     if (!user) return;
-    return await getDownloadURL(profilRef);
+    const imagePath = await getImagePathStorage();
+
+    if (!imagePath) return;
+    return `${imagePath}/${imageName}`;
+  };
+
+  
+
+  const getImageURLSourceImage = async () => {
+    if (!user) return;
+    const urlImage = await getImageURLStorage();
+    if (!urlImage) return;
+    const imageRef = ref(storage, urlImage);
+    return getDownloadURL(imageRef);
   };
 
   const deleteImage = async () => {
-    return await deleteObject(profilRef);
+    if (!user) return;
+    const imagePath = await getImagePathStorage();
+    if (!imagePath) return;
+    return await deleteObject(ref(storage, `${imagePath}/${imageName}`));
   };
 
-  const uploadImage = async (file: File) => {
+  const uploadImage = async (file: File | null) => {
+    if (!user) return;
+    if (!file) return;
     const metaData: UploadMetadata = {
       contentType: "image/jpeg",
     };
 
-    return await uploadBytes(profilRef, file, metaData);
+    // const imageRef = ref(storage, "images/card/toto.jpg");
+
+    const imagePathCardId = await getImagePathStorage();
+    if (!imagePathCardId) return;
+
+    const imageRef = ref(storage, `${imagePathCardId}/${imageName}`);
+
+    await uploadBytes(imageRef, file, metaData).catch((error) =>
+      console.log(error)
+    );
   };
 
   const isRepertoryEmpty = async () => {
-    const listRef = ref(storage, `images/card/${user?.uid}`);
-    const listResult = await listAll(listRef);
-    return listResult.items.length === 0;
+    const imagePath = await getImagePathStorage();
+    if (!imagePath) return true;
+    const imageRef = ref(storage, imagePath);
+
+    return Boolean(imageRef);
   };
 
-  const downloadImage = async (imageQuery: string | undefined) => {
-    if (!imageQuery) return;
-    const image = imageQuery;
-    const response = await fetch(image);
-    const blob = await response.blob();
-    const filename = image.substring(image.lastIndexOf("/") + 1);
-    return await new File([blob], filename);
+  //Nécessite une configuration CORES pour fonctionner
+  const downloadImage = async () => {
+    const imagePath = await getImageURLStorage();
+    console.log(imagePath);
+    const imageRef = ref(storage, imagePath);
+    console.log(imageRef);
+    const blob = await getBlob(imageRef);
+    if (!blob) return;
+
+    const file = new File([blob], imageName);
+    if (!file) return null;
+    return await file;
   };
 
-  const imageURLQueryKey = ["urlImage", user?.uid];
-  const fileQueryKey = ["file", user?.uid];
+  const imageURLQueryKey = ["urlImage"];
+  const fileQueryKey = ["file"];
 
-  const imageURLMutationKey = ["urlImage", user?.uid];
-  const fileMutationKey = ["file", user?.uid];
+  const imageURLMutationKey = ["urlImage"];
+  const fileMutationKey = ["file"];
 
   return {
-    getImage,
+    getImage: getImageURLStorage,
     deleteImage,
     uploadImage,
     isRepertoryEmpty,
     downloadImage,
+    getImageURLSourceImage,
     imageURLQueryKey,
     fileQueryKey,
     imageURLMutationKey,

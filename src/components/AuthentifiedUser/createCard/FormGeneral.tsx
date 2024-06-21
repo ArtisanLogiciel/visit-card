@@ -8,11 +8,11 @@ import "./form.css";
 const FormGeneral = ({
   handleNext,
   cardRef,
-  updateCardRef,
+
 }: {
   handleNext: () => void;
   cardRef: MutableRefObject<Card>;
-  updateCardRef: (data: Partial<Card>) => void;
+  
 }) => {
   const {
     register,
@@ -31,7 +31,7 @@ const FormGeneral = ({
   });
 
   const onSubmit: SubmitHandler<CardGeneral> = (data) => {
-    updateCardRef(data);
+    cardRef.current={...cardRef.current,...data}
     handleNext();
   };
 

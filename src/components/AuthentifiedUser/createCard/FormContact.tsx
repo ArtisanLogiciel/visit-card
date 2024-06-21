@@ -1,7 +1,7 @@
 import { UserContext, UserContextProvider } from "@/Providers/usersProviders";
 import useCard from "@/hooks/useCard";
 import useImageProfil from "@/hooks/useImageProfil";
-import { Card, CardContact, CardContactFormSchema } from "@/types/card";
+import { CardContact, CardContactFormSchema, CardFirebase } from "@/types/card";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { MutableRefObject, useContext } from "react";
@@ -15,10 +15,12 @@ const FormContact = ({
   fileRef,
 }: {
   handleBack: () => void;
-  cardRef: MutableRefObject<Card>;
+  cardRef: MutableRefObject<CardFirebase>;
   fileRef: MutableRefObject<File | null>;
 }) => {
   const navigate = useNavigate();
+
+
 
   const query = useQueryClient();
   const { authUser } = useContext<UserContextProvider | null>(
@@ -31,7 +33,7 @@ const FormContact = ({
   const {
     cardMutationKey,
     cardQueryKey,
-
+    isCardCreatedQueryKey,
     editCard,
   } = useCard(authUser);
 
@@ -41,7 +43,9 @@ const FormContact = ({
     onSuccess: () => {
       query.invalidateQueries({ queryKey: imageURLQueryKey });
       query.invalidateQueries({ queryKey: fileQueryKey });
+      query.invalidateQueries({ queryKey: fileQueryKey });
     },
+    
   });
 
   const cardMutation = useMutation({
@@ -49,6 +53,7 @@ const FormContact = ({
     mutationFn: editCard,
     onSuccess: () => {
       query.invalidateQueries({ queryKey: cardQueryKey });
+      query.invalidateQueries({queryKey:isCardCreatedQueryKey})
     },
   });
 
@@ -60,19 +65,31 @@ const FormContact = ({
     resolver: zodResolver(CardContactFormSchema),
     defaultValues: async () =>
       new Promise((resolve) => {
+        const { email, phoneDesktop, phoneMobile } = cardRef.current;
         return resolve({
-          email: cardRef.current.email,
-          phoneDesktop: cardRef.current.phoneDesktop,
-          phoneMobile: cardRef.current.phoneMobile,
+          email,
+          phoneDesktop,
+          phoneMobile,
         });
       }),
   });
 
-  const onSubmit: SubmitHandler<CardContact> = async (data) => {
-    console.log(data)
-    cardRef.current = { ...cardRef.current, ...data };
-    if (fileRef.current) await imageMutation.mutate(fileRef.current);
-    cardMutation.mutate(cardRef.current);
+  const onSubmit: SubmitHandler<CardContact> = async ({
+    email,
+    phoneDesktop,
+    phoneMobile,
+  }) => {
+    cardRef.current = {
+      ...cardRef.current,
+      email: email ?? null,
+      phoneDesktop: phoneDesktop ?? null,
+      phoneMobile: phoneMobile ?? null,
+    };
+    await cardMutation.mutate(cardRef.current);
+    // Déjai ajouté pour avoir le temps de fetch la valeur de cardId
+    setTimeout(async () => {
+      await imageMutation.mutate(fileRef.current);
+    },1000);
     navigate("/");
   };
 

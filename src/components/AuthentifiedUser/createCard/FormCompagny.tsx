@@ -1,4 +1,4 @@
-import { Card, CardCompagny, CardCompagnyFormSchema } from "@/types/card";
+import { Card, CardCompagny, CardCompagnyFormSchema, CardFirebase } from "@/types/card";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { MutableRefObject } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -11,7 +11,7 @@ const FormCompagny = ({
 }: {
   handleNext: () => void;
   handleBack: () => void;
-  cardRef: MutableRefObject<Card>;
+  cardRef: MutableRefObject<CardFirebase>;
 }) => {
   const {
     register,
@@ -22,23 +22,39 @@ const FormCompagny = ({
     resolver: zodResolver(CardCompagnyFormSchema),
     defaultValues: async () =>
       new Promise((resolve) => {
-        return resolve({
-          compagny: cardRef.current.compagny,
-          country: cardRef.current.country,
-          city: cardRef.current.city,
-          address: cardRef.current.address,
+        const { compagny, country, city, address, job, zipcode } =
+          cardRef.current;
 
-          job: cardRef.current.job,
+        return resolve({
+          compagny,
+          country,
+          city,
+          address,
+          job,
+          zipcode,
         });
       }),
   });
 
   caches;
 
-  const onSubmit: SubmitHandler<CardCompagny> = (data) => {
+  const onSubmit: SubmitHandler<CardCompagny> = ({
+    compagny,
+    address,
+    country,
+    job,
+    zipcode,
+    city
+  }: CardCompagny) => {
     cardRef.current = {
       ...cardRef.current,
-      ...data,
+      compagny,
+      address:address??null,
+      country:country??null,
+      job:job??null,
+      zipcode:zipcode??null,
+      city:city??null
+      
     };
 
     handleNext();

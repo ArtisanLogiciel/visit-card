@@ -5,13 +5,13 @@ const CardSchemaFirebase = z.object({
   lastname: z.string(),
   compagny: z.string(),
   job: z.string(),
-  address: z.string(),
-  city: z.string(),
-  zipcode: z.string(),
-  country: z.string(),
-  email: z.string().email().or(z.literal("")),
-  phoneMobile: z.string(),
-  phoneDesktop: z.string(),
+  address: z.string().nullable(),
+  city: z.string().nullable(),
+  zipcode: z.string().nullable(),
+  country: z.string().nullable(),
+  email: z.string().email(),
+  phoneMobile: z.string().nullable(),
+  phoneDesktop: z.string().nullable(),
 });
 
 const digitRegex = /\d/;
@@ -20,6 +20,7 @@ const CardFormSchema = CardSchemaFirebase.extend({
   firstname: z.string().refine((value) => !digitRegex.test(value), {
     message: "Le prénom ne doit pas contenir de chiffres",
   }),
+
   lastname: z
     .string()
     .min(1, { message: "Le prénom doit contenir au moins 1 catactère" })
@@ -35,18 +36,18 @@ const CardFormSchema = CardSchemaFirebase.extend({
       message: "Le nom de l'entreprise doit contenir au moins 1 caractère",
     })
     .transform((value) => {
-      if (value) return value.toLowerCase();
+      return value.toLowerCase();
     }),
   address: z
     .string()
-    .optional()
+    .nullable()
     .transform((value) => {
-      if (!value) return;
+      if (!value) return null;
       if (value) return value.toLowerCase();
     }),
   city: z
     .string()
-    .optional()
+    .nullable()
     .refine(
       (value) => {
         if (!value) return true;
@@ -55,20 +56,20 @@ const CardFormSchema = CardSchemaFirebase.extend({
       { message: "La ville ne doit pas contenir de chiffres" }
     )
     .transform((value) => {
-      if (!value) return;
+      if (!value) return null;
       if (value) return value.toLowerCase();
     }),
-  zipcode: z.string().optional(),
+  zipcode: z.string().nullable(),
   country: z
     .string()
-    .optional()
+    .nullable()
     .refine((value) => {
       if (!value) return true;
       if (value) return !digitRegex.test(value);
     }),
   email: z.string().email({ message: "L'email est requis" }),
-  phoneMobile: z.string().optional(),
-  phoneDesktop: z.string().optional(),
+  phoneMobile: z.string().nullable(),
+  phoneDesktop: z.string().nullable(),
 });
 
 const CardGeneralSchema = CardFormSchema.pick({

@@ -1,7 +1,6 @@
 import { UserContext, UserContextProvider } from "@/Providers/usersProviders";
 import useCard from "@/hooks/useCard";
-import useImageProfil from "@/hooks/useImageProfil";
-import { Card } from "@/types/card";
+import { CardFirebase } from "@/types/card";
 import Skeleton from "@mui/material/Skeleton";
 import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
@@ -20,55 +19,42 @@ const StepperForm = () => {
   const { authUser } = useContext<UserContextProvider | null>(
     UserContext
   ) as UserContextProvider;
-
-  const {
-    getImage,
-    downloadImage,
-
-    imageURLQueryKey,
-    fileQueryKey,
-  } = useImageProfil(authUser);
   const { getCard, cardQueryKey } = useCard(authUser);
 
   const {
     data: cardQuery,
     isSuccess: isSuccessCard,
     isLoading,
+    isError,
+    error,
   } = useQuery({
     queryKey: cardQueryKey,
     queryFn: getCard,
   });
-  const { data: imageURLQuery } = useQuery({
-    queryKey: imageURLQueryKey,
-    queryFn: getImage,
-  });
-  const fileRef = useRef<File | null>(null);
 
-  const cardRef = useRef<Card>({
+  const fileRef = useRef<File | null>(null);
+  const cardRef = useRef<CardFirebase>({
     firstname: "",
     job: "",
     lastname: "",
     compagny: "",
-
     email: "",
-  });
-
-  const updateCardRef = (data: Partial<Card>) => {
-    cardRef.current = { ...cardRef.current, ...data };
-  };
-
-  const { data: fileQuery, isSuccess: isFileSuccess } = useQuery({
-    queryKey: fileQueryKey,
-    queryFn: () => downloadImage(imageURLQuery),
-  });
+    address: null,
+    city: null,
+    country: null,
+    zipcode: null,
+    phoneDesktop: null,
+    phoneMobile: null,
+  } as CardFirebase);
 
   useEffect(() => {
+    if (isError) console.log(error.message);
     if (cardQuery) {
       cardRef.current = { ...cardQuery };
     }
-    if (fileQuery && isFileSuccess) fileRef.current = fileQuery;
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [cardQuery, fileQuery, isSuccessCard, isFileSuccess]);
+  });
 
   if (isLoading) return <Skeleton />;
   return (
@@ -85,11 +71,7 @@ const StepperForm = () => {
 
       {activeStep === steps.length - steps.length ? (
         <>
-          <FormGeneral
-            handleNext={handleNext}
-            cardRef={cardRef}
-            updateCardRef={updateCardRef}
-          />
+          <FormGeneral handleNext={handleNext} cardRef={cardRef} />
         </>
       ) : null}
       {activeStep === steps.length - (steps.length - 1) ? (
