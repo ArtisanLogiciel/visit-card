@@ -1,45 +1,27 @@
-import { UserContext, UserContextProvider } from "@/Providers/usersProviders";
-import useImageProfil from "@/hooks/useImageProfil";
 import Person2Rounded from "@mui/icons-material/Person2Rounded";
-import { Avatar, Skeleton } from "@mui/material";
-import { useQuery } from "@tanstack/react-query";
-import { useContext } from "react";
+import { Avatar } from "@mui/material";
 
-const ImageProfil = () => {
-  const { authUser } = useContext<UserContextProvider | null>(
-    UserContext
-  ) as UserContextProvider;
+const IMAGE_SIZE_DEFAULT = 80;
 
-  const IMAGE_SIZE = 80
+const ImageProfil = ({
+  file,
+  url,
+  size = IMAGE_SIZE_DEFAULT,
+}: {
+  file?: File | null;
+  url?:string
+  size: number;
+}) => {
+  const imageURL = file ? URL.createObjectURL(file) : url;
 
-  const { getImage, isRepertoryEmpty } = useImageProfil(authUser);
-  const {
-    data: imageSource,
-    isError,
-    isLoading,
-    error,
- 
-  } = useQuery({
-    queryKey: ["image", "card", authUser?.uid],
-    queryFn: getImage,
-    
-  });
-
-  const { data: isRepertoryProfilEmpty } = useQuery({
-    queryKey: ["image", "card", "isProfilEmpty", authUser?.uid],
-    queryFn: isRepertoryEmpty,
-  });
-
-  if (isRepertoryProfilEmpty)
+  if (!imageURL)
     return (
-      <Avatar>
+      <Avatar sx={{ width: size, height: size }}>
         <Person2Rounded />
       </Avatar>
     );
-  if (isLoading) return <Skeleton variant="rounded" animation="pulse" />;
-  if (!imageSource && isError)
-    return <p>error {import.meta.env.DEV ? error.message : null}</p>;
-  return <Avatar src={imageSource} sx={{width:IMAGE_SIZE,height:IMAGE_SIZE}}/>;
+
+  return <Avatar src={imageURL} sx={{ width: size, height: size }} />;
 };
 
 export default ImageProfil;

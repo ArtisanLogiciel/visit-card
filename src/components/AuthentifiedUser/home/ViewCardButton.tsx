@@ -1,5 +1,5 @@
 import { UserContext, UserContextProvider } from "@/Providers/usersProviders";
-import useCard from "@/hooks/useCards";
+import useCard from "@/hooks/useCard";
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
 import { Link } from "react-router-dom";
@@ -9,7 +9,7 @@ const ViewCardButton = () => {
     UserContext
   ) as UserContextProvider;
 
-  const { checkCardCreated } = useCard(authUser);
+  const { isCardCreated:isCardCreactedFunction , isCardCreatedQueryKey} = useCard(authUser);
 
   const {
     data: isCardCreated,
@@ -17,7 +17,7 @@ const ViewCardButton = () => {
     isLoading,
     isSuccess,
     error,
-  } = useQuery({ queryKey: ["isCardCreated"], queryFn: checkCardCreated });
+  } = useQuery({ queryKey: isCardCreatedQueryKey, queryFn: isCardCreactedFunction });
 
   const displayViewCardButton = isCardCreated ? (
     <Link to={"/display-my-card"}>

@@ -5,7 +5,7 @@ import PageNotFound from "../PageNotFound";
 import DeleteCard from "../AuthentifiedUser/DeletedCard";
 import Account from "./Account";
 import StepperForm from "./StepperForm";
-import ViewCardUserByEmail from "./ViewCardUserById";
+
 import ViewCardUserConnected from "./ViewCardUserConnected";
 import Header from "./createCard/header/Header";
 import Home from "./home/Home";
@@ -20,7 +20,7 @@ const AuthentifiedUser = () => {
 
         <Route path="/create-card" element={<StepperForm />} />
         <Route path="/display-my-card" element={<ViewCardUserConnected />} />
-        <Route path="/display-card/:email" element={<ViewCardUserByEmail />} />
+        <Route path="/display-card/:cardId" element={<p>temporaire</p>} />
         <Route path="/display-qrcode" element={<DisplayQrCode />} />
         <Route path="/account" element={<Account />} />
         <Route path="/account/update" element={<AccountForm />} />

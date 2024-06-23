@@ -1,60 +1,68 @@
-import { UserContext, UserContextProvider } from "@/Providers/usersProviders";
-import useCard from "@/hooks/useCards";
-import { CardCompagny, CardCompagnyFormSchema } from "@/types/card";
+import {
+  CardCompagny,
+  CardCompagnyFormSchema,
+  CardFirebase,
+} from "@/types/card";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useContext } from "react";
+import { MutableRefObject } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import "./form.css";
 
 const FormCompagny = ({
   handleNext,
   handleBack,
+  cardRef,
 }: {
   handleNext: () => void;
   handleBack: () => void;
+  cardRef: MutableRefObject<CardFirebase>;
 }) => {
-  const { authUser } = useContext<UserContextProvider | null>(
-    UserContext
-  ) as UserContextProvider;
-  const { updateCard } = useCard(authUser);
-
-  const { getCard } = useCard(authUser);
-
-  const query = useQueryClient();
-  const { data: card, isLoading } = useQuery({
-    queryKey: ["card"],
-    queryFn: getCard,
-  });
-
-  const mutation = useMutation({
-    mutationKey: ["card"],
-    mutationFn: updateCard,
-    onSuccess: () => {
-      query.invalidateQueries({ queryKey: ["card"] });
-    },
-  });
-
-  const onSubmit: SubmitHandler<CardCompagny> = async (data) => {
-    mutation.mutate(data);
-    handleNext();
-  };
-
   const {
     register,
     handleSubmit,
+
     formState: { errors },
   } = useForm<CardCompagny>({
     resolver: zodResolver(CardCompagnyFormSchema),
-    defaultValues: {
-      compagny: card?.compagny,
-      country: card?.country,
-      city: card?.city,
-      address: card?.address,
-      zipcode: card?.zipcode,
-    },
+    defaultValues: async () =>
+      new Promise((resolve) => {
+        const { compagny, country, city, address, job, zipcode } =
+          cardRef.current;
+
+        return resolve({
+          compagny,
+          country,
+          city,
+          address,
+          job,
+          zipcode,
+        });
+      }),
   });
-  if (isLoading) return <p>Loading...</p>;
+
+  caches;
+
+  const onSubmit: SubmitHandler<CardCompagny> = ({
+    compagny,
+    address,
+    country,
+    job,
+    zipcode,
+    city,
+  }: CardCompagny) => {
+    cardRef.current = {
+      ...cardRef.current,
+      compagny,
+      address: address ?? null,
+      country: country ?? null,
+      job: job ?? null,
+      zipcode: zipcode ?? null,
+      city: city ?? null,
+    };
+
+    handleNext();
+  };
+
   return (
     <div>
       <h1>Informations de l'entreprise</h1>
@@ -68,8 +76,16 @@ const FormCompagny = ({
         />
         {errors?.compagny && <p>{errors.compagny.message}</p>}
 
+        <label>Votre poste *</label>
+        <input
+          id="job"
+          className="input"
+          placeholder="Agent immobilier, ingénieur..."
+          {...register("job", { required: true })}
+        />
+
         <label htmlFor="country">Pays</label>
-        <input id="country " {...register("country")} />
+        <input id="country" {...register("country", { required: true })} />
         {errors?.country && <p>{errors.country.message}</p>}
 
         <label htmlFor="city">Ville</label>
@@ -79,9 +95,11 @@ const FormCompagny = ({
         <label htmlFor="address">Adresse</label>
         <input id="address" {...register("address")} />
         {errors?.address && <p>{errors.address.message}</p>}
-        <label htmlFor="zipcode">zipcode</label>
-        <input id="zipcode" {...register("zipcode")} />
+
+        <label htmlFor="zipcode">Code postal</label>
+        <input id="zipcode" {...register("zipcode")} type="number" />
         {errors?.zipcode && <p>{errors.zipcode.message}</p>}
+
         <div className="container-buttons">
           <button onClick={handleBack}>Précédent</button>
           <button type="submit">Suivant</button>

@@ -1,57 +1,47 @@
-import { UserContext, UserContextProvider } from "@/Providers/usersProviders";
-import { CardGeneral, CardGeneralSchema } from "@/types/card";
+import { Card, CardGeneral, CardGeneralSchema } from "@/types/card";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Skeleton } from "@mui/material";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useContext } from "react";
+import { MutableRefObject } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import useCard from "../../../hooks/useCards";
 
 import "./form.css";
 
-const FormGeneral = ({ handleNext }: { handleNext: () => void }) => {
-  const { authUser } = useContext<UserContextProvider | null>(
-    UserContext
-  ) as UserContextProvider;
-  const { updateCard, getCard } = useCard(authUser);
-  const queryClient = useQueryClient();
+const FormGeneral = ({
+  handleNext,
+  cardRef,
 
-  const { data: card, isLoading } = useQuery({
-    queryKey: ["card"],
-    queryFn: getCard,
-  });
-
-  const mutation = useMutation({
-    mutationKey: ["card"],
-    mutationFn: updateCard,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["card"] });
-    },
-  });
-
+}: {
+  handleNext: () => void;
+  cardRef: MutableRefObject<Card>;
+  
+}) => {
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<CardGeneral>({
     resolver: zodResolver(CardGeneralSchema),
-    defaultValues: {
-      firstname: card?.firstname,
-      lastname: card?.lastname,
-      avatarUrl: card?.avatarUrl,
-    },
+    
+    defaultValues: async () => await
+      new Promise((resolve) =>
+        resolve({
+          firstname: cardRef.current.firstname,
+          lastname: cardRef.current.lastname,
+        })
+      ),
   });
 
-  const onSubmit: SubmitHandler<CardGeneral> = async (data) => {
-    mutation.mutate(data);
+  const onSubmit: SubmitHandler<CardGeneral> = (data) => {
+    cardRef.current={...cardRef.current,...data}
     handleNext();
   };
-  if (isLoading) return <Skeleton variant="rectangular" />;
+
+ 
 
   return (
     <div className="container">
-      <h1 className="">Informations générales</h1>
-      <p>* : Saisie obligatoire</p>
+      <h1>Informations générales</h1>
+      <p className="">* : Saisie obligatoire</p>
+      <p>{cardRef.current.firstname ?? "Iconnu"}</p>
 
       <div className="mx-auto text-center"></div>
       <form onSubmit={handleSubmit(onSubmit)} className="form">
