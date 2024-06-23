@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import DeleteCardButton from "../DeleteCardButton";
 import EditCardButton from "./EditCardButton";
 import ViewCardButton from "./ViewCardButton";
 
@@ -12,8 +13,7 @@ const Home = () => {
       </Link>
       <EditCardButton />
       <ViewCardButton />
-
-      <br />
+      <DeleteCardButton />
     </div>
   );
 };
