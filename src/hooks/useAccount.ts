@@ -65,7 +65,9 @@ const useAccount = (user: User | null) => {
     );
   };
 
-  return { getAccount, updateAccount, createAccount, getCardId , createCardId};
+  const cardIdQueryKey = ["cardId"]
+
+  return { getAccount, updateAccount, createAccount, getCardId , createCardId , cardIdQueryKey};
 };
 
 export default useAccount;

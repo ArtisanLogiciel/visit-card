@@ -1,6 +1,13 @@
 import { CardFirebase, CardSchemaFirebase } from "@/types/card";
 import { User } from "firebase/auth";
-import { deleteDoc, deleteField, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
+import {
+  deleteDoc,
+  deleteField,
+  doc,
+  getDoc,
+  setDoc,
+  updateDoc,
+} from "firebase/firestore";
 import ShortUniqueId from "short-unique-id";
 import { database } from "../firebase/firebase.config";
 import useAccount from "./useAccount";
@@ -54,9 +61,8 @@ const useCard = (user: User | null) => {
       return null;
     }
   };
-  const getCardById = async () => {
-    const cardId = await getCardId();
-    if (!cardId) return;
+  const getCardById = async (cardId?: string) => {
+    if(!cardId) return
     const docRef = doc(database, COLLECTION_CARDS_FIRESTORE, cardId);
     const docSnap = await getDoc(docRef);
     if (docSnap.exists()) {
@@ -72,10 +78,13 @@ const useCard = (user: User | null) => {
     const cardId = await getCardId();
     if (!cardId) return;
     await deleteDoc(doc(database, COLLECTION_CARDS_FIRESTORE, cardId));
-    await updateDoc(doc(database,"users",user.uid),{cardId:deleteField()})
+    await updateDoc(doc(database, "users", user.uid), {
+      cardId: deleteField(),
+    });
   };
 
   const cardQueryKey = ["card"];
+  
   const cardMutationKey = ["card"];
   const isCardCreatedQueryKey = ["isCardCreated"];
 

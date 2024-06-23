@@ -12,11 +12,10 @@ import useAccount from "./useAccount";
 
 const imagePath = "images/card";
 const storage = getStorage();
+const imageName = "profil.jpg";
 
 const useImageProfil = (user: User | null) => {
   const { getCardId } = useAccount(user);
-
-  const imageName = "profil.jpg";
 
   const getImagePathStorage = async () => {
     const cardId = await getCardId();
@@ -33,14 +32,19 @@ const useImageProfil = (user: User | null) => {
     return `${imagePath}/${imageName}`;
   };
 
-  
-
   const getImageURLSourceImage = async () => {
     if (!user) return;
     const urlImage = await getImageURLStorage();
     if (!urlImage) return;
     const imageRef = ref(storage, urlImage);
     return getDownloadURL(imageRef);
+  };
+
+  const getURLImageByCardId = async (cardId?: string) => {
+    if (!cardId) return;
+    return await getDownloadURL(
+      ref(storage, `${imagePath}/${cardId}/${imageName}`)
+    );
   };
 
   const deleteImage = async () => {
@@ -104,6 +108,7 @@ const useImageProfil = (user: User | null) => {
     isRepertoryEmpty,
     downloadImage,
     getImageURLSourceImage,
+    getURLImageByCardId,
     imageURLQueryKey,
     fileQueryKey,
     imageURLMutationKey,
