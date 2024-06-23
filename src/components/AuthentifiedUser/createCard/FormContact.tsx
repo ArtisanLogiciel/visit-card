@@ -20,8 +20,6 @@ const FormContact = ({
 }) => {
   const navigate = useNavigate();
 
-
-
   const query = useQueryClient();
   const { authUser } = useContext<UserContextProvider | null>(
     UserContext
@@ -30,12 +28,8 @@ const FormContact = ({
   const { uploadImage, fileMutationKey, fileQueryKey, imageURLQueryKey } =
     useImageProfil(authUser);
 
-  const {
-    cardMutationKey,
-    cardQueryKey,
-    isCardCreatedQueryKey,
-    editCard,
-  } = useCard(authUser);
+  const { cardMutationKey, cardQueryKey, isCardCreatedQueryKey, editCard } =
+    useCard(authUser);
 
   const imageMutation = useMutation({
     mutationKey: fileMutationKey,
@@ -45,7 +39,6 @@ const FormContact = ({
       query.invalidateQueries({ queryKey: fileQueryKey });
       query.invalidateQueries({ queryKey: fileQueryKey });
     },
-    
   });
 
   const cardMutation = useMutation({
@@ -53,7 +46,7 @@ const FormContact = ({
     mutationFn: editCard,
     onSuccess: () => {
       query.invalidateQueries({ queryKey: cardQueryKey });
-      query.invalidateQueries({queryKey:isCardCreatedQueryKey})
+      query.invalidateQueries({ queryKey: isCardCreatedQueryKey });
     },
   });
 
@@ -89,7 +82,7 @@ const FormContact = ({
     // Déjai ajouté pour avoir le temps de fetch la valeur de cardId
     setTimeout(async () => {
       await imageMutation.mutate(fileRef.current);
-    },1000);
+    }, 1000);
     navigate("/");
   };
 

@@ -8,11 +8,9 @@ import "./form.css";
 const FormGeneral = ({
   handleNext,
   cardRef,
-
 }: {
   handleNext: () => void;
   cardRef: MutableRefObject<Card>;
-  
 }) => {
   const {
     register,
@@ -20,9 +18,9 @@ const FormGeneral = ({
     formState: { errors },
   } = useForm<CardGeneral>({
     resolver: zodResolver(CardGeneralSchema),
-    
-    defaultValues: async () => await
-      new Promise((resolve) =>
+
+    defaultValues: async () =>
+      await new Promise((resolve) =>
         resolve({
           firstname: cardRef.current.firstname,
           lastname: cardRef.current.lastname,
@@ -31,11 +29,9 @@ const FormGeneral = ({
   });
 
   const onSubmit: SubmitHandler<CardGeneral> = (data) => {
-    cardRef.current={...cardRef.current,...data}
+    cardRef.current = { ...cardRef.current, ...data };
     handleNext();
   };
-
- 
 
   return (
     <div className="container">
