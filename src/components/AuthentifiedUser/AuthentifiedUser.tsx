@@ -2,8 +2,8 @@ import AccountForm from "@/__tests__/authentifiedUser/AccountForm";
 import { Route, Routes } from "react-router-dom";
 import PageNotFound from "../PageNotFound";
 
-import DeleteCard from "../AuthentifiedUser/DeletedCard";
 import Account from "./Account";
+import DeleteCard from "./DeleteCard";
 import StepperForm from "./StepperForm";
 
 import ViewCardUserConnected from "./ViewCardUserConnected";
