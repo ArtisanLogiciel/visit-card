@@ -35,10 +35,12 @@ const CardTabs = ({
   card,
   isLoading,
   isError,
+  urlImage,
 }: {
   card: Card;
   isLoading: boolean;
   isError: boolean;
+  urlImage: string | undefined;
 }) => {
   const [value, setValue] = useState(0);
 
@@ -56,17 +58,17 @@ const CardTabs = ({
   if (isError) return <p>Une erreur est survenue</p>;
   return (
     <div className="sm:text-2xl">
-      <Tabs
-        value={value}
-        onChange={handleChangeTabs}
-        aria-label="basic tabs exemple"
-      >
+      <Tabs value={value} onChange={handleChangeTabs}>
         <Tab label={steps.general} />
         <Tab label={steps.compagny} />
         <Tab label={steps.contact} />
       </Tabs>
       <CustomTabPanel index={0} value={value}>
-        <CardGeneral firstname={card?.firstname} lastname={card?.lastname} />
+        <CardGeneral
+          firstname={card?.firstname}
+          lastname={card?.lastname}
+          urlImage={urlImage}
+        />
       </CustomTabPanel>
       <CustomTabPanel index={1} value={value}>
         <CardCompagny

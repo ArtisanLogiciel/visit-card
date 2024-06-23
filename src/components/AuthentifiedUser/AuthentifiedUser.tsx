@@ -6,10 +6,11 @@ import Account from "./Account";
 import DeleteCard from "./DeleteCard";
 import StepperForm from "./StepperForm";
 
+import ViewCardUserById from "./ViewCardUserById";
 import ViewCardUserConnected from "./ViewCardUserConnected";
 import Header from "./createCard/header/Header";
 import Home from "./home/Home";
-import { DisplayQrCode } from "./qrcode/DisplayQrCode";
+import { ShareQrCode } from "./qrcode/ShareQrCode";
 
 const AuthentifiedUser = () => {
   return (
@@ -20,8 +21,8 @@ const AuthentifiedUser = () => {
 
         <Route path="/create-card" element={<StepperForm />} />
         <Route path="/display-my-card" element={<ViewCardUserConnected />} />
-        <Route path="/display-card/:cardId" element={<p>temporaire</p>} />
-        <Route path="/display-qrcode" element={<DisplayQrCode />} />
+        <Route path="/display-card/:cardId" element={<ViewCardUserById />} />
+        <Route path="/display-qrcode" element={<ShareQrCode />} />
         <Route path="/account" element={<Account />} />
         <Route path="/account/update" element={<AccountForm />} />
         <Route path="/delete-card" element={<DeleteCard />} />
