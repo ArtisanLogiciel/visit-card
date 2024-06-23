@@ -28,14 +28,14 @@ const ViewCardUserByEmail = () => {
     .catch((error) => {
       console.error("Erreur lors de l'affichage de l'image:", error);
     });
-  const { getCardByEmail } = useCard(null);
+  const { getCardById} = useCard(null);
   const {
     data: card,
     isLoading,
     isError,
   } = useQuery({
     queryKey: [`card/${emailQuery}`],
-    queryFn: () => getCardByEmail(emailQuery),
+    queryFn: getCardById,
   });
   if (isLoading) return <Skeleton />;
   if (!card) return <p>Pas de carte de visite</p>;

@@ -2,12 +2,12 @@ import {
   Card,
   CardCompagny,
   CardContact,
-  CardDesign,
+
   CardGeneral,
   CardSchemaFirebase,
 } from "@/types/card";
 import { User } from "firebase/auth";
-import { deleteDoc, doc, getDoc, setDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc } from "firebase/firestore";
 import { database } from "../firebase/firebase.config";
 
 const useCard = (user: User | null) => {
@@ -43,7 +43,7 @@ const useCard = (user: User | null) => {
   };
 
   const updateCard = async (
-    data: CardCompagny | CardDesign | CardGeneral | CardContact
+    data: CardCompagny |  CardGeneral | CardContact
   ) => {
     if (!user?.email) return;
     const docRef = doc(database, COLLECTION_CARDS_FIRESTORE, user.uid);

@@ -9,8 +9,8 @@ const ViewCardUserConnected = () => {
   const { authUser } = useContext<UserContextProvider | null>(
     UserContext
   ) as UserContextProvider;
-  const { getCard, deleteCard } = useCard(authUser);
-  const { deleteImage } = useImageProfil(authUser);
+  const { getCard } = useCard(authUser);
+
   const {
     data: card,
     isLoading,
@@ -20,8 +20,6 @@ const ViewCardUserConnected = () => {
   if (isLoading) return <p>Chargement</p>;
   if (!card) return <p>Pas de carte de visite</p>;
   const handleDeleteCard = () => {
-    deleteCard();
-    deleteImage();
     navigate("/delete-card");
   };
   return (
