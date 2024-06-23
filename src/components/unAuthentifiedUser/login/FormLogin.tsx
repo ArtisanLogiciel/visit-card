@@ -1,6 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import React from "react";
-import { useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { z } from "zod";
 import {
@@ -22,7 +22,7 @@ const FormLogin = () => {
     ) as UserContextProvider;
 
   const navigate = useNavigate();
-  const signupUpser = ({ mail, password }: Inputs) => {
+  const handleLogin: SubmitHandler<Inputs> = ({ mail, password }: Inputs) => {
     loginUser(mail, password);
     navigate("/");
   };
@@ -35,16 +35,17 @@ const FormLogin = () => {
   return (
     <form
       className="flex flex-col w-5/6 space-y-1 sm:w-1/4"
-      onSubmit={handleSubmit(signupUpser)}
+      onSubmit={handleSubmit(handleLogin)}
     >
-      <label className="mt-3" htmlFor="email">
+      <label className="mt-3" htmlFor="mail">
         Mail
       </label>
       <input
+        id="mail"
         type="email"
         className="p-2 border-2 border-gray-500/35"
         placeholder="Votre email"
-        defaultValue={import.meta.env.DEV?"test@test.fr":""}
+        defaultValue={import.meta.env.DEV ? "test@test.fr" : ""}
         {...register("mail")}
       />
       {errors.mail?.message && <p>{errors.mail.message}</p>}
@@ -53,13 +54,13 @@ const FormLogin = () => {
         Mot de passe
       </label>
       <input
+        id="password"
         type="password"
         className="p-2 border-2 border-gray-500/35"
         required
         placeholder="Mot de passe"
         minLength={6}
-        defaultValue={import.meta.env.DEV?"testtest":""}
-       
+        defaultValue={import.meta.env.DEV ? "testtest" : ""}
         {...register("password")}
       />
       {errors.password?.message && <p>errors.mail.message</p>}
@@ -68,7 +69,6 @@ const FormLogin = () => {
         type="submit"
         className="p-4 text-xl text-white bg-blue-600 border-2 border-white rounded-md my-9 "
         value={"Connexion"}
-      
       />
       {errorFirebaseUser && <p>{errorFirebaseUser}</p>}
     </form>

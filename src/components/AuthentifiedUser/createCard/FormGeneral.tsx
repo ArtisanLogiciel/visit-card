@@ -1,70 +1,53 @@
-import { UserContext, UserContextProvider } from "@/Providers/usersProviders";
-import { CardGeneral, CardGeneralSchema } from "@/types/card";
+import { Card, CardGeneral, CardGeneralSchema } from "@/types/card";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Skeleton } from "@mui/material";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useContext } from "react";
+import { MutableRefObject } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import useFirestore from "../../../hooks/useFirestore";
-// import UploadImage from "../UploadImage";
+
 import "./form.css";
 
-const FormGeneral = ({ handleNext }: { handleNext: () => void }) => {
-  const { authUser } = useContext<UserContextProvider | null>(
-    UserContext
-  ) as UserContextProvider;
-  const { updateCard, getCard } = useFirestore(authUser);
-  const queryClient = useQueryClient();
-
-  const { data: card, isLoading } = useQuery({
-    queryKey: ["card"],
-    queryFn: getCard,
-  });
-
-  const mutation = useMutation({
-    mutationKey: ["card"],
-    mutationFn: updateCard,
-    onSuccess: () => {
-     
-      queryClient.invalidateQueries({ queryKey: ["card"] });
-    },
-  });
-
+const FormGeneral = ({
+  handleNext,
+  cardRef,
+}: {
+  handleNext: () => void;
+  cardRef: MutableRefObject<Card>;
+}) => {
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<CardGeneral>({
     resolver: zodResolver(CardGeneralSchema),
-    defaultValues: {
-      firstname: card?.firstname,
-      lastname: card?.lastname,
-      avatarUrl: card?.avatarUrl,
-    },
+
+    defaultValues: async () =>
+      await new Promise((resolve) =>
+        resolve({
+          firstname: cardRef.current.firstname,
+          lastname: cardRef.current.lastname,
+        })
+      ),
   });
 
-  const onSubmit: SubmitHandler<CardGeneral> = async (data) => {
-    mutation.mutate(data);
+  const onSubmit: SubmitHandler<CardGeneral> = (data) => {
+    cardRef.current = { ...cardRef.current, ...data };
     handleNext();
   };
-  if (isLoading) return <Skeleton />;
 
   return (
     <div className="container">
-      <h1 className="">Informations générales</h1>
-      <p>* : Saisie obligatoire</p>
-      {/* <UploadImage /> */}
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <h1>Informations générales</h1>
+      <p className="">* : Saisie obligatoire</p>
+      <p>{cardRef.current.firstname ?? "Iconnu"}</p>
+
+      <div className="mx-auto text-center"></div>
+      <form onSubmit={handleSubmit(onSubmit)} className="form">
         <label htmlFor="firstname">Prénom *</label>
         <input id="firstname" {...register("firstname", { required: true })} />
         {errors.firstname?.message && <p>{errors.firstname.message}</p>}
         <label id="lastname" htmlFor="lastname">
           Nom *
         </label>
-        <input
-          {...register("lastname", { required: true })}
-          className="input"
-        />
+        <input {...register("lastname", { required: true })} />
         {errors.lastname?.message && <p>{errors.lastname.message}</p>}
         <button type="submit">Etape suivante</button>
       </form>

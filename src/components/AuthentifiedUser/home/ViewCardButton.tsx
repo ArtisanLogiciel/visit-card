@@ -1,5 +1,5 @@
 import { UserContext, UserContextProvider } from "@/Providers/usersProviders";
-import useFirestore from "@/hooks/useFirestore";
+import useCard from "@/hooks/useCard";
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
 import { Link } from "react-router-dom";
@@ -9,15 +9,15 @@ const ViewCardButton = () => {
     UserContext
   ) as UserContextProvider;
 
-  const { checkCardCreated } = useFirestore(authUser);
+  const { isCardCreated:isCardCreactedFunction , isCardCreatedQueryKey} = useCard(authUser);
 
   const {
     data: isCardCreated,
     isError,
     isLoading,
     isSuccess,
-    error
-  } = useQuery({ queryKey: ["isCardCreated"], queryFn: checkCardCreated });
+    error,
+  } = useQuery({ queryKey: isCardCreatedQueryKey, queryFn: isCardCreactedFunction });
 
   const displayViewCardButton = isCardCreated ? (
     <Link to={"/display-my-card"}>
@@ -29,7 +29,11 @@ const ViewCardButton = () => {
 
   return (
     <div>
-      {isError && <p>Une erreur est survenue {import.meta.env.DEV?error.message:null}</p>}
+      {isError && (
+        <p>
+          Une erreur est survenue {import.meta.env.DEV ? error.message : null}
+        </p>
+      )}
       {isLoading && <p>Chargement en cours ...</p>}
       {isSuccess && displayViewCardButton}
     </div>

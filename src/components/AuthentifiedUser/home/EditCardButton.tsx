@@ -1,6 +1,6 @@
 import { UserContext, UserContextProvider } from "@/Providers/usersProviders";
-import useFirestore from "@/hooks/useFirestore";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import useCard from "@/hooks/useCard";
+import { useQuery } from "@tanstack/react-query";
 import { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -9,7 +9,8 @@ const EditCardButton = () => {
     UserContext
   ) as UserContextProvider;
 
-  const { createEmptyCard, checkCardCreated} = useFirestore(authUser);
+  const { isCardCreated: isCardCreatedFirestore, isCardCreatedQueryKey } =
+    useCard(authUser);
   const navigate = useNavigate();
 
   const {
@@ -17,28 +18,14 @@ const EditCardButton = () => {
     isError,
     isLoading,
     isSuccess,
-    error
-    
-  } = useQuery({ queryKey: ["isCardCreated"], queryFn: checkCardCreated });
-
-  const mutation = useMutation({
-    mutationKey: ["isCardCreated"],
-    mutationFn: createEmptyCard,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["isCardCreated"] });
-    },
+    error,
+  } = useQuery({
+    queryKey: isCardCreatedQueryKey,
+    queryFn: isCardCreatedFirestore,
   });
 
-  const queryClient = useQueryClient();
-
   const handleEditCard = async () => {
-    if (isCardCreated) {
-      navigate("/create-card");
-    } else {
-      mutation.mutate();
-
-      navigate("/create-card");
-    }
+    navigate("/create-card");
   };
 
   const displayEditCardButton = (
@@ -53,7 +40,11 @@ const EditCardButton = () => {
 
   return (
     <div>
-      {isError && <p>Une erreur est survenue {import.meta.env.DEV?error.message:null}</p>}
+      {isError && (
+        <p>
+          Une erreur est survenue {import.meta.env.DEV ? error.message : null}
+        </p>
+      )}
       {isLoading && <p>Chargement...</p>}
       {isSuccess && displayEditCardButton}
     </div>
