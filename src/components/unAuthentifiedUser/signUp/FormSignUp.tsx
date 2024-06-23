@@ -6,7 +6,6 @@ import {
   UserContextProvider,
 } from "../../../Providers/usersProviders";
 
-import { useNavigate } from "react-router-dom";
 import { z } from "zod";
 
 const InputsSchema = z.object({
@@ -30,28 +29,19 @@ const FormSignUp = () => {
     formState: { errors },
   } = useForm<Inputs>({ resolver: zodResolver(InputsSchema) });
 
-  const navigate = useNavigate();
-
-  const signUpUser = async ({
+  const handleRegister = async ({
     email,
     password,
     firstname,
     lastname,
   }: Inputs) => {
-    const signupUser = (await registerUser(
-      email,
-      password,
-      firstname,
-      lastname
-    )) as undefined | { error: boolean };
-    if (!signupUser?.error) {
-      navigate("/");
-    }
+    await registerUser(email, password, firstname, lastname);
   };
+
   return (
     <form
       className="flex flex-col w-5/6 space-y-1"
-      onSubmit={handleSubmit(signUpUser)}
+      onSubmit={handleSubmit(handleRegister)}
     >
       <label className="mt-3" htmlFor="firstname">
         Prénom

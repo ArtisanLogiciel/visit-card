@@ -9,6 +9,7 @@ import {
 } from "firebase/auth";
 import { Timestamp } from "firebase/firestore";
 import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { auth } from "../firebase/firebase.config";
 import useDatabase from "./useDatabase";
 
@@ -16,6 +17,8 @@ const useAuthUser = () => {
   const [authUser, setAuthUser] = React.useState<User | null>(null);
   const [errorFirebaseUser, setErrorFirebaseUser] = React.useState("");
   const { createUserDocument } = useDatabase();
+
+  const navigate = useNavigate();
 
   const loginUser = async (
     email: string,
@@ -30,6 +33,7 @@ const useAuthUser = () => {
           .then((userCredential) => setAuthUser(userCredential.user))
           .then(() => setErrorFirebaseUser(""));
       })
+      .then(() => navigate("/"))
       .catch((error) => {
         setErrorFirebaseUser(error.message);
         return { error: true };
@@ -70,6 +74,7 @@ const useAuthUser = () => {
           dateSignUp: Timestamp.now(),
         });
       })
+      .then(() => navigate("/"))
       .then(() => setErrorFirebaseUser(""))
       .catch((error) => {
         setErrorFirebaseUser(error.message);
