@@ -37,26 +37,26 @@ const useImageProfil = (user: User | null) => {
     const urlImage = await getImageURLStorage();
     if (!urlImage) return null;
     const imageRef = ref(storage, urlImage);
-    return getDownloadURL(imageRef);
+    return getDownloadURL(imageRef).catch(() => null);
   };
 
   const getURLImageByCardId = async (cardId?: string) => {
     if (!cardId) return null;
     return await getDownloadURL(
       ref(storage, `${imagePath}/${cardId}/${imageName}`)
-    );
+    ).catch(() => null);
   };
 
   const deleteImage = async () => {
-    if (!user) return ;
+    if (!user) return;
     const imagePath = await getImagePathStorage();
-    if (!imagePath) return ;
+    if (!imagePath) return;
     return await deleteObject(ref(storage, `${imagePath}/${imageName}`));
   };
 
   const uploadImage = async (file: File | null) => {
-    if (!user) return ;
-    if (!file) return ;
+    if (!user) return;
+    if (!file) return;
     const metaData: UploadMetadata = {
       contentType: "image/jpeg",
     };
@@ -84,7 +84,7 @@ const useImageProfil = (user: User | null) => {
   //Nécessite une configuration CORES pour fonctionner
   const downloadImage = async () => {
     const imagePath = await getImageURLStorage();
-    if(!imagePath) return null
+    if (!imagePath) return null;
     const imageRef = ref(storage, imagePath);
     console.log(imageRef);
     const blob = await getBlob(imageRef);

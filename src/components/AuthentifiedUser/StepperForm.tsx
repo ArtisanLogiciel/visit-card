@@ -49,8 +49,9 @@ const StepperForm = () => {
       cardRef.current = { ...cardQuery };
     }
   }, [cardQuery]);
+  
 
-  if (isLoading) return <Skeleton />;
+  if (isLoading) return <div className="flex justify-center"><Skeleton variant="rectangular" width={"80%"} height={"200px"} /></div>;
   return (
     <div className="flex flex-col mt-4">
       <Stepper activeStep={activeStep}>

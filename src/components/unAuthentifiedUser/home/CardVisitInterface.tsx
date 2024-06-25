@@ -1,23 +1,39 @@
-const CardVisitInterface = () => {
-  return (
-    <div className="flex flex-col space-y-3" data-testid="card-visit-interface">
-      <div className="p-2 bg-white">
-        <h1>Jean Dupont</h1>
-        <h2>Macon </h2>
-        <h2>Les bricoleurs </h2>
-      </div>
-      <form className="ml-2 space-x-1 space-y-1 text-xs ">
-        <input type="radio" id="PDF" />
-        <label>PDF</label>
-        <input type="radio" id="image" defaultChecked />
-        <label>Image</label>
+// import Card from "@/components/AuthentifiedUser/card/Card";
 
-        <input
-          type="submit"
-          className="p-2 bg-orange-500 rounded-sm"
-          value={"Enregistrer"}
-        />
-      </form>
+import fakePerson from "@/assets/fakePerson.jfif";
+import ImageProfil from "@/components/ImageProfil";
+import { Card as CardType } from "@/types/card";
+import { useQuery } from "@tanstack/react-query";
+
+const fakeCard: CardType = {
+  firstname: "Jean",
+  lastname: "Dupond",
+  compagny: "THE COMPAGNY",
+  country: "France",
+  email: `jean.dupond@thecompagny.fr`,
+  job: "Consultant",
+  phoneDesktop: "+000000",
+  phoneMobile: "+111111",
+  zipcode: "21000",
+};
+
+const CardVisitInterface = () => {
+  const fakeUrlQuery = useQuery({
+    queryKey: ["fake"],
+    queryFn: () => fakePerson,
+  });
+
+  return (
+    <div className="flex flex-col items-center justify-center w-5/6 sm:w-[400px] p-4 shadow-lg bg-blue-50 text-xs">
+      <ImageProfil url={fakeUrlQuery} size={60} />
+
+      <h1 className="font-bold">
+        {fakeCard.firstname} {fakeCard.lastname}
+      </h1>
+      <p>
+        {fakeCard.job} , {fakeCard.compagny}
+      </p>
+      <div className="mt-3"></div>
     </div>
   );
 };

@@ -61,14 +61,14 @@ const useCard = (user: User | null) => {
     }
   };
   const getCardById = async (cardId?: string) => {
-    if(!cardId) return
+    if(!cardId) return null
     const docRef = doc(database, COLLECTION_CARDS_FIRESTORE, cardId);
     const docSnap = await getDoc(docRef);
     if (docSnap.exists()) {
       const data = CardSchemaFirebase.parse(docSnap.data());
       return data;
     } else {
-      throw new Error("la carte n'existe pas");
+      return null;
     }
   };
 
