@@ -23,10 +23,7 @@ const StepperForm = () => {
 
   const {
     data: cardQuery,
-
     isLoading,
-    isError,
-    error,
   } = useQuery({
     queryKey: cardQueryKey,
     queryFn: getCard,
@@ -48,13 +45,10 @@ const StepperForm = () => {
   } as CardFirebase);
 
   useEffect(() => {
-    if (isError) console.log(error.message);
     if (cardQuery) {
       cardRef.current = { ...cardQuery };
     }
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  });
+  }, [cardQuery]);
 
   if (isLoading) return <Skeleton />;
   return (

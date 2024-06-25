@@ -25,38 +25,38 @@ const useImageProfil = (user: User | null) => {
   };
 
   const getImageURLStorage = async () => {
-    if (!user) return;
+    if (!user) return null;
     const imagePath = await getImagePathStorage();
 
-    if (!imagePath) return;
+    if (!imagePath) return null;
     return `${imagePath}/${imageName}`;
   };
 
   const getImageURLSourceImage = async () => {
-    if (!user) return;
+    if (!user) return null;
     const urlImage = await getImageURLStorage();
-    if (!urlImage) return;
+    if (!urlImage) return null;
     const imageRef = ref(storage, urlImage);
     return getDownloadURL(imageRef);
   };
 
   const getURLImageByCardId = async (cardId?: string) => {
-    if (!cardId) return;
+    if (!cardId) return null;
     return await getDownloadURL(
       ref(storage, `${imagePath}/${cardId}/${imageName}`)
     );
   };
 
   const deleteImage = async () => {
-    if (!user) return;
+    if (!user) return ;
     const imagePath = await getImagePathStorage();
-    if (!imagePath) return;
+    if (!imagePath) return ;
     return await deleteObject(ref(storage, `${imagePath}/${imageName}`));
   };
 
   const uploadImage = async (file: File | null) => {
-    if (!user) return;
-    if (!file) return;
+    if (!user) return ;
+    if (!file) return ;
     const metaData: UploadMetadata = {
       contentType: "image/jpeg",
     };
@@ -84,7 +84,7 @@ const useImageProfil = (user: User | null) => {
   //Nécessite une configuration CORES pour fonctionner
   const downloadImage = async () => {
     const imagePath = await getImageURLStorage();
-    console.log(imagePath);
+    if(!imagePath) return null
     const imageRef = ref(storage, imagePath);
     console.log(imageRef);
     const blob = await getBlob(imageRef);

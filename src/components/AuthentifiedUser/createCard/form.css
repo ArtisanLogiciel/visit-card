@@ -1,21 +1,24 @@
 .container {
-  @apply flex flex-col items-center space-y-8 mt-7
+  @apply flex flex-col items-center  
 }
 
-.container h1 {
-  @apply text-center
-}
 
 .form {
-  @apply flex flex-col items-center space-y-1 my-4
+  @apply flex flex-col items-center justify-center my-8 space-y-2
 }
 
-.form input {
-  @apply border-black border-2 p-2
+.form input{
+  @apply   p-2 border-[1px] border-black 
 }
+
+.container-buttons input[type="submit"] , .form input[type="submit"]{
+  @apply  mt-4 bg-blue-500 p-2 border-[1px] border-black
+}
+
+
 
 .container button , .container-buttons button{
-  @apply bg-red-600 p-2 rounded-md mt-4
+  @apply  p-2 rounded-md mt-4 border-[1px] border-black
 }
 
 

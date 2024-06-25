@@ -1,14 +1,27 @@
+import firstLetterUpperCase from "@/utils/firstLetterUpperCase";
 import { z } from "zod";
 
 const CardSchemaFirebase = z.object({
-  firstname: z.string(),
-  lastname: z.string(),
-  compagny: z.string(),
-  job: z.string(),
+  firstname: z.string().transform(firstLetterUpperCase),
+  lastname: z.string().transform(firstLetterUpperCase),
+  compagny: z.string().transform((value) => value.toUpperCase()),
+  job: z.string().transform(firstLetterUpperCase),
   address: z.string().nullable(),
-  city: z.string().nullable(),
+  city: z
+    .string()
+    .nullable()
+    .transform((value) => {
+      if (!value) return null;
+      return firstLetterUpperCase(value);
+    }),
   zipcode: z.string().nullable(),
-  country: z.string().nullable(),
+  country: z
+    .string()
+    .nullable()
+    .transform((value) => {
+      if (!value) return null;
+      return firstLetterUpperCase(value);
+    }),
   email: z.string().email(),
   phoneMobile: z.string().nullable(),
   phoneDesktop: z.string().nullable(),
@@ -17,19 +30,27 @@ const CardSchemaFirebase = z.object({
 const digitRegex = /\d/;
 
 const CardFormSchema = CardSchemaFirebase.extend({
-  firstname: z.string().refine((value) => !digitRegex.test(value), {
-    message: "Le prénom ne doit pas contenir de chiffres",
-  }),
+  firstname: z
+    .string()
+    .min(1, { message: "Le prénom doit contenir au moins 1 caract_re" })
+    .transform((value) => value.toLowerCase())
+    .refine((value) => !digitRegex.test(value), {
+      message: "Le prénom ne doit pas contenir de chiffres",
+    }),
 
   lastname: z
     .string()
     .min(1, { message: "Le prénom doit contenir au moins 1 catactère" })
+    .transform((value) => value.toLowerCase())
     .refine((value) => !digitRegex.test(value), {
       message: "Le nom de doit pas contenir de chiffres",
     }),
-  compagny: z.string().min(1, {
-    message: "Le nom de l'entreprise doit contenir au moins 1 caractère",
-  }),
+  compagny: z
+    .string()
+    .min(1, {
+      message: "Le nom de l'entreprise doit contenir au moins 1 caractère",
+    })
+    .transform((value) => value.toLowerCase()),
   job: z
     .string()
     .min(1, {
@@ -66,8 +87,18 @@ const CardFormSchema = CardSchemaFirebase.extend({
     .refine((value) => {
       if (!value) return true;
       if (value) return !digitRegex.test(value);
+    })
+    .transform((value) => {
+      if (!value) return null;
+      return value.toLowerCase();
     }),
-  email: z.string().email({ message: "L'email est requis" }),
+
+  email: z
+    .string()
+    .email({ message: "L'email est requis" })
+    .transform((value) => {
+      return value.toLowerCase();
+    }),
   phoneMobile: z.string().nullable(),
   phoneDesktop: z.string().nullable(),
 });

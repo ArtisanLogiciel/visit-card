@@ -74,12 +74,13 @@ const FormContact = ({
   }) => {
     cardRef.current = {
       ...cardRef.current,
-      email: email ?? null,
+      email: email,
       phoneDesktop: phoneDesktop ?? null,
       phoneMobile: phoneMobile ?? null,
     };
+   
     await cardMutation.mutate(cardRef.current);
-    // Déjai ajouté pour avoir le temps de fetch la valeur de cardId
+    // Délai ajouté pour avoir le temps de fetch la valeur de cardId
     setTimeout(async () => {
       await imageMutation.mutate(fileRef.current);
     }, 1000);
@@ -87,8 +88,8 @@ const FormContact = ({
   };
 
   return (
-    <div>
-      <h1>Vos coordonnées</h1>
+    <div className="container">
+      
       <form onSubmit={handleSubmit(onSubmit)} className="form">
         <label htmlFor="email">Email professionel *</label>
         <input id="email" {...register("email", { required: true })} />

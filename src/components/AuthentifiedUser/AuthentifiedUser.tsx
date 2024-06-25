@@ -20,6 +20,7 @@ const AuthentifiedUser = () => {
         <Route path="/" element={<Home />} />
 
         <Route path="/create-card" element={<StepperForm />} />
+        <Route path="/edit-card" element={<StepperForm />} />
         <Route path="/display-my-card" element={<ViewCardUserConnected />} />
         <Route path="/display-card/:cardId" element={<ViewCardUserById />} />
         <Route path="/display-qrcode" element={<ShareQrCode />} />

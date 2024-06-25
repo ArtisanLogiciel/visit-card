@@ -9,16 +9,18 @@ const ImageProfil = ({
   size = IMAGE_SIZE_DEFAULT,
 }: {
   file?: File | null;
-  url?:string
+  url?:string|null
   size: number;
 }) => {
   const imageURL = file ? URL.createObjectURL(file) : url;
 
   if (!imageURL)
     return (
+  
       <Avatar sx={{ width: size, height: size }}>
         <Person2Rounded />
       </Avatar>
+ 
     );
 
   return <Avatar src={imageURL} sx={{ width: size, height: size }} />;
