@@ -7,6 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useQuery } from "@tanstack/react-query";
 import React, { MutableRefObject, useContext, useRef } from "react";
 import { useForm } from "react-hook-form";
+import InfoIcon from '@mui/icons-material/Info';
 
 const FormImage = ({
   handleNext,
@@ -33,7 +34,7 @@ const FormImage = ({
 
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const { data: imageSource } = useQuery({
+  const imageSource = useQuery({
     queryKey: imageURLQueryKey,
     queryFn: getImageURLSourceImage,
   });
@@ -54,7 +55,7 @@ const FormImage = ({
     }
   };
 
-  const handleUploadNextPage = async () => {
+  const handleNextPage =  () => {
     handleNext();
   };
 
@@ -68,15 +69,16 @@ const FormImage = ({
 
   return (
     <div>
-      <div className="container">
+      <div className="container mt-6">
         {imageSource && !fileRef.current ? (
-          <ImageProfil url={imageSource} size={80} />
+          <ImageProfil url={imageSource} size={60} />
         ) : (
-          <ImageProfil size={80} file={fileRef.current} />
+          <ImageProfil size={60} file={fileRef.current} />
         )}
-
-        <form>
-          <label htmlFor="file">Photo de profil</label>
+          <br/>
+        <form onSubmit={handleSubmit(handleNextPage)} >
+          
+        
           <input
             id="file"
             {...register("filename")}
@@ -85,13 +87,17 @@ const FormImage = ({
             onClick={() => clearErrors("filename")}
             ref={inputRef}
           />
-          <p className="p-2 m-2 font-bold border-2 border-red-500">
-            Seuls les fichiers au format JPEG de moins de 1Mo sont acceptés
+          <div className="flex items-center">
+
+          <InfoIcon/> 
+          <p className="p-2 m-2 font-bold ">
+           Seuls les fichiers au format JPEG de moins de 1Mo sont acceptés
           </p>
+         
+          </div>
           {errors.filename ? (
             <p className="text-red-700">{errors.filename.message}</p>
           ) : null}
-
           {fileRef.current ? (
             <input
               type="button"
@@ -100,12 +106,13 @@ const FormImage = ({
               value={"Supprimer l'image"}
             />
           ) : null}
+          <div className="container-buttons">
+          <button onClick={handleBack}>Précédent</button>
+          <input  type="submit" value={"Etape suivante"}/>
+        </div>
         </form>
 
-        <div className="container-buttons">
-          <button onClick={handleBack}>Précédent</button>
-          <button onClick={handleSubmit(handleUploadNextPage)}>Suivant</button>
-        </div>
+        
       </div>
     </div>
   );

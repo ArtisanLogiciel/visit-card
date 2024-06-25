@@ -1,5 +1,5 @@
 import { Route, Routes } from "react-router-dom";
-import ViewCardUserById from "../AuthentifiedUser/ViewCardUserById";
+import CardUserById from "../AuthentifiedUser/CardUserById";
 
 import { ShareQrCode } from "../AuthentifiedUser/qrcode/ShareQrCode";
 
@@ -14,8 +14,7 @@ const UnAuthentifiedUser = () => {
       <Route path="/" element={<Home />} />
       <Route path="/login" element={<LoginUser />} />
       <Route path="/sign-up" element={<SignUpUser />} />
-      <Route path="/display-card/:cardId" element={<ViewCardUserById />} />
-
+      <Route path="/card/:cardId" element={<CardUserById />} />
       <Route path="/display-qrcode" element={<ShareQrCode />} />
       <Route path="*" element={<PageNotFound />} />
     </Routes>

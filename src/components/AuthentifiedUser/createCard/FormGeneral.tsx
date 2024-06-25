@@ -35,10 +35,6 @@ const FormGeneral = ({
 
   return (
     <div className="container">
-      <h1>Informations générales</h1>
-      <p className="">* : Saisie obligatoire</p>
-      <p>{cardRef.current.firstname ?? "Iconnu"}</p>
-
       <div className="mx-auto text-center"></div>
       <form onSubmit={handleSubmit(onSubmit)} className="form">
         <label htmlFor="firstname">Prénom *</label>
@@ -49,8 +45,9 @@ const FormGeneral = ({
         </label>
         <input {...register("lastname", { required: true })} />
         {errors.lastname?.message && <p>{errors.lastname.message}</p>}
-        <button type="submit">Etape suivante</button>
+        <input type="submit" value={"Etape suivante"} />
       </form>
+      <p className="text-xl font-bold text-red-500">* : Saisie obligatoire</p>
     </div>
   );
 };

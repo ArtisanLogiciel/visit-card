@@ -64,9 +64,7 @@ const FormCompagny = ({
   };
 
   return (
-    <div>
-      <h1>Informations de l'entreprise</h1>
-      <p>* : Saisie obligatoire</p>
+    <div className="container">
       <form onSubmit={handleSubmit(onSubmit)} className="form">
         <label htmlFor="compagny">Nom de l'entreprise *</label>
         <input
@@ -102,7 +100,7 @@ const FormCompagny = ({
 
         <div className="container-buttons">
           <button onClick={handleBack}>Précédent</button>
-          <button type="submit">Suivant</button>
+          <input type="submit" value={"Etape suivante"} />
         </div>
       </form>
     </div>

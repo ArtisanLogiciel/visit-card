@@ -23,10 +23,7 @@ const StepperForm = () => {
 
   const {
     data: cardQuery,
-
     isLoading,
-    isError,
-    error,
   } = useQuery({
     queryKey: cardQueryKey,
     queryFn: getCard,
@@ -48,15 +45,13 @@ const StepperForm = () => {
   } as CardFirebase);
 
   useEffect(() => {
-    if (isError) console.log(error.message);
     if (cardQuery) {
       cardRef.current = { ...cardQuery };
     }
+  }, [cardQuery]);
+  
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  });
-
-  if (isLoading) return <Skeleton />;
+  if (isLoading) return <div className="flex justify-center"><Skeleton variant="rectangular" width={"80%"} height={"200px"} /></div>;
   return (
     <div className="flex flex-col mt-4">
       <Stepper activeStep={activeStep}>

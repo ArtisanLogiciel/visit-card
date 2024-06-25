@@ -1,19 +1,24 @@
-import { Link } from "react-router-dom";
-import DeleteCardButton from "../DeleteCardButton";
-import EditCardButton from "./EditCardButton";
-import ViewCardButton from "./ViewCardButton";
+import { UserContext, UserContextProvider } from "@/Providers/usersProviders";
+import PreviewCard from "@/components/PreviewCard";
+import useCard from "@/hooks/useCard";
+import { useQuery } from "@tanstack/react-query";
+import { useContext } from "react";
+import FirstCardCreation from "../FirstCardCreation";
 
 const Home = () => {
+  const { authUser } = useContext<UserContextProvider | null>(
+    UserContext
+  ) as UserContextProvider;
+
+  const { isCardCreated, isCardCreatedQueryKey } = useCard(authUser);
+
+  const { data: isCardCreatedQuery } = useQuery({
+    queryKey: isCardCreatedQueryKey,
+    queryFn: isCardCreated,
+  });
   return (
-    <div className="flex flex-col items-center min-h-screen space-y-3 align-middle">
-      <Link to="/display-qrcode">
-        <button className="p-3 text-white transition-all duration-300 ease-linear bg-blue-600 rounded-md shadow-xl hover:bg-blue-400 m-">
-          Partager votre carte de visite
-        </button>
-      </Link>
-      <EditCardButton />
-      <ViewCardButton />
-      <DeleteCardButton />
+    <div className="flex justify-center ">
+      {isCardCreatedQuery ? <PreviewCard /> : <FirstCardCreation />}
     </div>
   );
 };
