@@ -21,7 +21,7 @@ export const ShareQrCode = () => {
   });
 
   const [toast, setToast] = useState(false);
-  const linkSharable = `${window.location.host}/display-card/${cardId}`;
+  const linkSharable = `${window.location.host}/card/${cardId}`;
 
   const copyLink = () => {
     navigator.clipboard.writeText(linkSharable);
@@ -29,7 +29,7 @@ export const ShareQrCode = () => {
   };
 
   const handleClose = (
-    event: React.SyntheticEvent | Event,
+    _event: React.SyntheticEvent | Event,
     reason?: string
   ) => {
     if (reason === "clickaway") {
@@ -55,14 +55,13 @@ export const ShareQrCode = () => {
   );
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen overflow-hidden w-sreen">
+    <div className="flex flex-col items-center h-screen mt-4 space-y-3 overflow-hidden w-sreen">
       <h1 className="text-2xl font-extrabold text-black mb-7">
-        {" "}
         Partage de votre carte
       </h1>
       <QRCode value={linkSharable} renderAs="canvas" />
       <p className="mt-2 text-center underline">{linkSharable}</p>
-      <button onClick={copyLink} className="p-2 mt-2 bg-slate-400">
+      <button onClick={copyLink} className="p-2 mt-4 bg-slate-400">
         Copier dans le presse-papier
       </button>
       <Snackbar

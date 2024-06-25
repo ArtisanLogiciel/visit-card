@@ -1,4 +1,4 @@
-import ViewCardUserById from "@/components/AuthentifiedUser/ViewCardUserById";
+import CardUserById from "@/components/AuthentifiedUser/CardUserById";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { render, screen } from "@testing-library/react";
 import { BrowserRouter } from "react-router-dom";
@@ -9,7 +9,7 @@ describe("View user By Email", () => {
     render(
       <QueryClientProvider client={queryClient}>
         <BrowserRouter>
-          <ViewCardUserById />
+          <CardUserById />
         </BrowserRouter>
       </QueryClientProvider>
     );

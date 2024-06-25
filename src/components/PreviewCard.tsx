@@ -24,8 +24,7 @@ const PreviewCard = () => {
     queryFn: getImageURLSourceImage,
   });
 
-  if (url.isLoading) return <Skeleton />;
-  if (card.isLoading) return <Skeleton />;
+  if (card.isLoading) return <Skeleton variant="rectangular" />;
   return (
     <div className="flex flex-col items-center w-full space-y-3">
       <h1 className="text-lg font-bold">Ma carte</h1>
@@ -36,7 +35,9 @@ const PreviewCard = () => {
         </div>
 
         <div className="flex justify-around">
-          <ImageProfil size={80} url={url.data} />
+          {url.isLoading && <Skeleton variant="circular" />}
+          {url.isSuccess && <ImageProfil url={url} size={80} />}
+
           <div>
             <h1>
               {card?.data?.firstname} {card.data?.lastname}
